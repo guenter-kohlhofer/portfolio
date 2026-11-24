@@ -66,9 +66,9 @@
     <h1>Abläufe verstehen.<br>Mit KI automatisieren.<br>Im Alltag einsetzen.</h1>
     <p class="lead">IT-Techniker mit rund zehn Jahren Praxis in Geräteverwaltung und Werkstattbetrieb. Seit 2026 baue ich mit KI (vor allem Claude) Werkzeuge, die echte Arbeit abnehmen: von der Kassa für ein Café bis zur automatischen Aufbereitung von Produktfotos. Diese Seite zeigt, was dabei entstanden ist.</p>
     <div class="stats">
-      <div class="stat"><b>10+</b><span>Projekte seit 2026</span></div>
+      <div class="stat"><b>20+</b><span>Projekte seit 2026</span></div>
       <div class="stat"><b>8</b><span>eigene KI-Skills (wiederverwendbare Abläufe)</span></div>
-      <div class="stat"><b>5+</b><span>veröffentlichte Webseiten &amp; Web-Apps</span></div>
+      <div class="stat"><b>50</b><span>Python-Skripte im täglichen Trading-System</span></div>
     </div>
   </div>
 </header>
@@ -76,7 +76,9 @@
 <nav class="toc"><div class="wrap">
   <a href="#arbeitsweise">Arbeitsweise</a>
   <a href="#automatisierung">Praxisprojekt</a>
-  <a href="#ki-workflows">KI-Workflows &amp; Skills</a>
+  <a href="#trading">Trading-System</a>
+  <a href="#ki-workflows">KI-Skills</a>
+  <a href="#konzepte">Konzepte</a>
   <a href="#web">Webseiten &amp; Web-Apps</a>
   <a href="#werkzeuge">Werkzeuge</a>
 </div></nav>
@@ -115,23 +117,59 @@
   </div>
 </section>
 
-<section id="ki-workflows">
-  <h2>KI-Workflows &amp; Skills</h2>
-  <p class="sub">Wiederkehrende Abläufe, die ich als „Skills“ für Claude festgehalten habe: einmal sauber beschrieben, danach auf Zuruf wiederholbar, mit Prüfschritten und Bestätigung an den richtigen Stellen.</p>
+<section id="trading">
+  <h2>Trading-System mit KI</h2>
+  <p class="sub">Mein größtes Projekt: ein regelbasiertes System für Swing-Trading, das seit Mitte 2026 täglich läuft. Code rechnet, ein schriftliches Regelwerk entscheidet, Claude analysiert und dokumentiert, die Order gebe ich selbst auf. Keine Anlageberatung.</p>
   <div class="grid">
 
     <article class="card feature">
-      <h3>AI Trading Workbench</h3>
-      <div class="meta">Python · Claude mit Projektgedächtnis · geplante Aufgaben</div>
-      <p>Ein persönliches Forschungsprojekt, das regelbasiertes Swing-Trading als Engineering-Aufgabe behandelt. Drei Schichten mit klarer Arbeitsteilung:</p>
+      <h3>AI Trading Workbench (öffentliches Repository)</h3>
+      <div class="meta">Python · Backtesting · Claude mit Projektgedächtnis</div>
+      <p>Der veröffentlichte Kern des Systems mit Beispielkonfiguration statt echter Depotdaten:</p>
       <ul>
-        <li><b>Deterministischer Code:</b> Watchlist-Scanner (Trendfilter, Relative Stärke, Volatilität, Marktregime), Echtzeitkurse über eine API, Backtests mit Out-of-Sample-Prüfung. Täglicher Lauf über die Windows-Aufgabenplanung.</li>
-        <li><b>Schriftliches Regelwerk:</b> Einstiegsbedingungen, risikobasierte Positionsgröße, Stops und Ausstiege, damit jede Entscheidung prüfbar ist.</li>
-        <li><b>KI-Workflow:</b> automatische Briefings, Session-Routinen, Selbst-Evaluation des Gedächtnisses mit festen Grenzen und Regeln für Schreibrechte je Datei.</li>
+        <li><b>Watchlist-Scanner:</b> Trendfilter, Relative Stärke, Volatilität, Volumen-Gate, Marktregime und Sektor-Heatmap in einer Tabelle, täglicher Lauf über die Windows-Aufgabenplanung.</li>
+        <li><b>Backtest in sechs Iterationen:</b> Out-of-Sample-Prüfung auf getrennten Zeitfenstern und einem zurückgehaltenen Aktien-Set, mit offen dokumentierten Schwächen.</li>
+        <li><b>Regelwerk und KI-Workflow</b> als eigene Dokumente: wer was darf, was die KI nie schätzt, wo der Mensch entscheidet.</li>
       </ul>
-      <p><span class="label">Stand</span><br>Repository mit README, Methodik und Architektur ist vorbereitet und wird veröffentlicht. Keine Anlageberatung.</p>
-      <div class="tags"><span class="tag">Python</span><span class="tag">yfinance / Finnhub</span><span class="tag">Backtesting</span><span class="tag">Prompt- &amp; Memory-Architektur</span><span class="tag">Governance</span></div>
+      <div class="tags"><span class="tag">Python</span><span class="tag">yfinance / Finnhub</span><span class="tag">Backtesting</span><span class="tag">Governance</span></div>
+      <a class="link" href="https://github.com/guenter-kohlhofer/ai-trading-workbench" rel="noopener">Repository auf GitHub ansehen →</a>
     </article>
+
+    <article class="card">
+      <h3>Tägliche Aufrufkette</h3>
+      <div class="meta">rund 50 Python-Skripte</div>
+      <p>Lagebild, Einstiegs-Check, Risiko-Check, Stop-Vorschläge, Trailing-Wächter, Nachrichten-Scan und Wochenschluss laufen in fester Reihenfolge. Das Lagebild prüft am Ende Alter, tote Verweise und Widersprüche aller Statusdateien. Grundsatz: lieber keine Zahl als eine veraltete.</p>
+      <div class="tags"><span class="tag">Automatisierung</span><span class="tag">Datenqualität</span><span class="tag">Fehlerlogik</span></div>
+    </article>
+
+    <article class="card">
+      <h3>Geplante KI-Aufgaben</h3>
+      <div class="meta">Claude · zeitgesteuert</div>
+      <p>Wiederkehrende Abläufe ohne Zutun: Pre-Trade-Prüfung gegen impulsive Käufe, Nachrichten-Scan vor dem Handel, Kontrollen nach Zinsentscheiden und Wirtschaftsdaten, Wochenmemo, Handelsjournal und eine wöchentliche Sicherung des KI-Gedächtnisses in die Cloud.</p>
+      <div class="tags"><span class="tag">Scheduling</span><span class="tag">Prozessdisziplin</span></div>
+    </article>
+
+    <article class="card">
+      <h3>Studien statt Bauchgefühl</h3>
+      <div class="meta">Walk-Forward · Bootstrap · Gegenproben</div>
+      <p>Jede neue Regel muss sich in einer eigenen Studie beweisen, inklusive eines bewussten Widerlegungsversuchs. Beispiele: optimale Haltedauer, Alter der Kursdaten, Kapitalumschlag, Kosten und Steuern aus den echten Abrechnungen, Token-Verbrauch der KI.</p>
+      <div class="tags"><span class="tag">Statistik</span><span class="tag">Reproduzierbarkeit</span><span class="tag">PowerShell</span></div>
+    </article>
+
+    <article class="card">
+      <h3>Dashboards</h3>
+      <div class="meta">HTML · über 30 Versionen</div>
+      <p>Ein Pipeline-Dashboard zeigt alle Kandidaten mit Stufe, Auslöser und Verfallsdatum auf einen Blick, dazu ein Aufgaben-Dashboard und ein Morgenbriefing. Laufend aus der Praxis weiterentwickelt.</p>
+      <div class="tags"><span class="tag">Visualisierung</span><span class="tag">Iteration</span></div>
+    </article>
+
+  </div>
+</section>
+
+<section id="ki-workflows">
+  <h2>KI-Skills: wiederverwendbare Abläufe</h2>
+  <p class="sub">Wiederkehrende Abläufe, die ich als „Skills“ für Claude festgehalten habe: einmal sauber beschrieben, danach auf Zuruf wiederholbar, mit Prüfschritten und Bestätigung an den richtigen Stellen.</p>
+  <div class="grid">
 
     <article class="card">
       <h3>Homepage-Pipeline auf GitHub Pages</h3>
@@ -155,10 +193,58 @@
     </article>
 
     <article class="card">
+      <h3>Artikel-Archiv</h3>
+      <div class="meta">Claude-Skill · Google Drive</div>
+      <p>Legt Quellen und Artikel als dauerhafte Belege mit einheitlicher Benennung in Google Drive ab, damit Aussagen auch später noch nachweisbar sind.</p>
+      <div class="tags"><span class="tag">Wissensmanagement</span><span class="tag">Drive</span></div>
+    </article>
+
+    <article class="card">
       <h3>Projekte sichern &amp; umziehen</h3>
       <div class="meta">Claude-Skill</div>
       <p>Sichert ein komplettes KI-Projekt inklusive der Teile, die beim Gerätewechsel sonst verloren gehen (Gedächtnis, eigene Skills), trennt nach Wert in Cloud- und Offline-Sicherung, lässt sensible Dokumente bewusst weg und prüft die Vollständigkeit.</p>
       <div class="tags"><span class="tag">Backup</span><span class="tag">Migration</span></div>
+    </article>
+
+  </div>
+</section>
+
+<section id="konzepte">
+  <h2>Konzepte &amp; Analysen</h2>
+  <p class="sub">Bevor gebaut wird, wird geprüft: Markt, Recht, Kosten, Risiken. Mit Quellen, damit jede Aussage nachprüfbar ist.</p>
+  <div class="grid">
+
+    <article class="card feature">
+      <h3>Lokale KI-Box für Kleinbetriebe</h3>
+      <div class="meta">Produktkonzept · Machbarkeitsprüfung</div>
+      <p>Idee: Ein Mini-PC im Netzwerk von Kanzleien und Praxen erledigt Büroarbeit mit einem offenen Sprachmodell, ohne dass Daten das Haus verlassen. Rechnungen auslesen, mit dem Angebot abgleichen, als Vorerfassung an die Buchhaltung übergeben, Fristen in den Kalender. Gebucht wird nie automatisch, der Mensch gibt frei.</p>
+      <ul>
+        <li>Marktlücke, Preise der Mitbewerber in Graz, Lizenzlage der Automatisierungsplattform (n8n) und Schnittstelle zur Buchhaltungssoftware recherchiert.</li>
+        <li>Rechtlicher Rahmen: EU-KI-Verordnung, neue Produkthaftung für Software ab Dezember 2026.</li>
+        <li>Risiken offen benannt, mit hartem Go/No-Go-Test vor jeder Investition.</li>
+      </ul>
+      <div class="tags"><span class="tag">Lokale LLMs</span><span class="tag">n8n</span><span class="tag">Datenschutz</span><span class="tag">Business Case</span></div>
+    </article>
+
+    <article class="card">
+      <h3>Arbeitsmarkt IT &amp; KI Steiermark</h3>
+      <div class="meta">Datenrecherche</div>
+      <p>Auswertung von Stelleninseraten auf drei Jobportalen nach Technologien, Einstiegsstellen und Titeln, ergänzt um offizielle Statistiken. Eigene Zählungen wurden nachgezählt und korrigiert, wo sie nicht hielten.</p>
+      <div class="tags"><span class="tag">Datenauswertung</span><span class="tag">Quellenkritik</span></div>
+    </article>
+
+    <article class="card">
+      <h3>Microsoft 365 &amp; KI-Governance</h3>
+      <div class="meta">Konzept</div>
+      <p>Wie ein Betrieb KI im Microsoft-Umfeld einführt und verwaltet: Rollen, Berechtigungen, Datenschutz und Schulungspflicht nach der EU-KI-Verordnung.</p>
+      <div class="tags"><span class="tag">M365</span><span class="tag">Governance</span></div>
+    </article>
+
+    <article class="card">
+      <h3>Sicherheits-Check einer Firmenwebsite</h3>
+      <div class="meta">Audit · PDF-Bericht</div>
+      <p>Prüfung einer bestehenden Unternehmensseite auf Sicherheits- und Datenschutzmängel, mit verständlichem Bericht und priorisierten Empfehlungen für den Betreiber.</p>
+      <div class="tags"><span class="tag">Websicherheit</span><span class="tag">DSGVO</span></div>
     </article>
 
   </div>
@@ -170,9 +256,17 @@
   <div class="grid">
 
     <article class="card">
+      <h3>Geli's Holzwerkstatt</h3>
+      <div class="meta">Website eines Familienbetriebs</div>
+      <p>Auftritt für handgemachte Holzprodukte mit Produktseiten, Galerie, Impressum und Datenschutz. Dazu ein Skript, das Produktfotos automatisch für das Web verkleinert und optimiert.</p>
+      <div class="tags"><span class="tag">HTML/CSS</span><span class="tag">Bildoptimierung</span></div>
+      <a class="link" href="https://kohlhofer.net/" rel="noopener">kohlhofer.net ansehen →</a>
+    </article>
+
+    <article class="card">
       <h3>Sturm-Fakten</h3>
       <div class="meta">Recherche-Seite · eigene Domain</div>
-      <p>Faktenanalyse dazu, was der SK Sturm Graz der Stadt Graz bringt: mit Zahlen, Quellen und Offenlegung, verständlich aufbereitet.</p>
+      <p>Faktenanalyse dazu, was der SK Sturm Graz der Stadt Graz bringt: mit Zahlen, Quellen und Offenlegung, verständlich aufbereitet. Umbauten laufen über eigene Skripte, die Quellen werden als Kopie gesichert, falls sie offline gehen.</p>
       <div class="tags"><span class="tag">Recherche</span><span class="tag">Datenaufbereitung</span><span class="tag">HTML/CSS</span></div>
       <a class="link" href="https://sturm-fakten.at/" rel="noopener">sturm-fakten.at ansehen →</a>
     </article>
@@ -199,6 +293,8 @@
         <li>Abo-Verwaltung als installierbare Web-App (PWA)</li>
         <li>Quiz zum SK Sturm Graz in React</li>
         <li>Konverter, der Beiträge von X für Facebook umformatiert</li>
+        <li>Fahrtenbuch, das die Kosten eines geteilten Autos fair aufteilt</li>
+        <li>Trainingspläne als persönliche Webseiten</li>
       </ul>
       <div class="tags"><span class="tag">PWA</span><span class="tag">React</span><span class="tag">Web Speech API</span></div>
     </article>
@@ -209,8 +305,8 @@
 <section id="werkzeuge">
   <h2>Werkzeuge, mit denen ich arbeite</h2>
   <div class="cols">
-    <div class="step"><h4>KI</h4><p>Claude (Chat, Code, Projekte mit Gedächtnis, eigene Skills, geplante Aufgaben), MCP-Anbindungen an Mail, Kalender, Drive und Browser</p></div>
-    <div class="step"><h4>Sprachen &amp; Formate</h4><p>Python, VBA, PowerShell, HTML, CSS, JavaScript, SQL-Grundlagen, Markdown</p></div>
+    <div class="step"><h4>KI</h4><p>Claude (Chat, Code, Cowork, Projekte mit Gedächtnis, eigene Skills, geplante Aufgaben), MCP-Anbindungen an Mail, Kalender, Drive und Browser</p></div>
+    <div class="step"><h4>Sprachen &amp; Formate</h4><p>Python, VBA, PowerShell, Batch, HTML, CSS, JavaScript, SQL-Grundlagen, Markdown</p></div>
     <div class="step"><h4>Office &amp; Plattformen</h4><p>Word- und Excel-Automatisierung, Google Workspace, Git und GitHub, Windows-Aufgabenplanung</p></div>
     <div class="step"><h4>Hintergrund</h4><p>IT-Techniker, Microsoft-Zertifizierungen, rund zehn Jahre Praxis in Endgeräte-Management und Werkstattbetrieb</p></div>
   </div>
