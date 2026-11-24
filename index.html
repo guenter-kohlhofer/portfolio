@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Günter Kohlhofer – Projekte mit KI</title>
+<meta name="description" content="Übersicht über Projekte, die mit KI (Claude) spezifiziert, gebaut und im Alltag eingesetzt wurden.">
+<style>
+  :root{
+    --bg:#0f1419; --panel:#161d25; --panel2:#1c2530; --line:#2a3542;
+    --text:#e6edf3; --muted:#9aa7b4; --accent:#d4a853; --accent2:#5fb3a1;
+    --radius:14px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--text);
+    font:16px/1.6 "Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{max-width:1100px;margin:0 auto;padding:0 22px}
+  header.hero{padding:72px 0 40px;border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 80% -10%,rgba(212,168,83,.14),transparent 60%),
+               radial-gradient(900px 400px at -10% 120%,rgba(95,179,161,.10),transparent 60%)}
+  .kicker{color:var(--accent);font-weight:600;letter-spacing:.12em;text-transform:uppercase;font-size:.8rem}
+  h1{font-size:clamp(2rem,4.6vw,3.2rem);line-height:1.15;margin:.35em 0 .4em}
+  .lead{font-size:1.15rem;color:var(--muted);max-width:760px}
+  .stats{display:flex;flex-wrap:wrap;gap:14px;margin-top:28px}
+  .stat{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:14px 18px;min-width:150px}
+  .stat b{display:block;font-size:1.6rem;color:var(--accent)}
+  .stat span{color:var(--muted);font-size:.9rem}
+  nav.toc{position:sticky;top:0;z-index:5;background:rgba(15,20,25,.92);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+  nav.toc .wrap{display:flex;gap:18px;overflow-x:auto;padding-top:12px;padding-bottom:12px;white-space:nowrap}
+  nav.toc a{color:var(--muted);font-size:.95rem}
+  nav.toc a:hover{color:var(--text)}
+  section{padding:56px 0 8px}
+  h2{font-size:1.7rem;margin:0 0 6px}
+  .sub{color:var(--muted);margin:0 0 26px;max-width:780px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:22px;display:flex;flex-direction:column}
+  .card.feature{grid-column:1/-1;background:linear-gradient(135deg,var(--panel2),var(--panel))}
+  .card h3{margin:0 0 4px;font-size:1.2rem}
+  .meta{color:var(--accent2);font-size:.85rem;font-weight:600;margin-bottom:12px}
+  .card p{margin:.3em 0 .7em}
+  .card ul{margin:.2em 0 .9em;padding-left:1.15em}
+  .card li{margin:.2em 0}
+  .label{font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:700;margin-top:6px}
+  .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto;padding-top:10px}
+  .tag{font-size:.78rem;background:#0f1419;border:1px solid var(--line);border-radius:999px;padding:3px 10px;color:var(--muted)}
+  .link{margin-top:10px;font-weight:600}
+  .cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
+  .step{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
+  .step .n{display:inline-block;width:30px;height:30px;border-radius:50%;background:var(--accent);color:#111;font-weight:800;text-align:center;line-height:30px;margin-bottom:8px}
+  .step h4{margin:0 0 4px}
+  .step p{margin:0;color:var(--muted);font-size:.95rem}
+  .note{border-left:3px solid var(--accent);background:var(--panel);padding:14px 18px;border-radius:0 var(--radius) var(--radius) 0;color:var(--muted);margin-top:22px}
+  footer{margin-top:60px;border-top:1px solid var(--line);padding:30px 0 50px;color:var(--muted);font-size:.9rem}
+  @media (max-width:560px){.grid{grid-template-columns:1fr}.card.feature{grid-column:auto}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="kicker" id="kicker">Günter Kohlhofer · Portfolio · Graz</div>
+    <h1>Abläufe verstehen.<br>Mit KI automatisieren.<br>Im Alltag einsetzen.</h1>
+    <p class="lead">IT-Techniker mit rund zehn Jahren Praxis in Geräteverwaltung und Werkstattbetrieb. Seit 2026 baue ich mit KI (vor allem Claude) Werkzeuge, die echte Arbeit abnehmen: von der Kassa für ein Café bis zur automatischen Aufbereitung von Produktfotos. Diese Seite zeigt, was dabei entstanden ist.</p>
+    <div class="stats">
+      <div class="stat"><b>10+</b><span>Projekte seit 2026</span></div>
+      <div class="stat"><b>8</b><span>eigene KI-Skills (wiederverwendbare Abläufe)</span></div>
+      <div class="stat"><b>5+</b><span>veröffentlichte Webseiten &amp; Web-Apps</span></div>
+    </div>
+  </div>
+</header>
+
+<nav class="toc"><div class="wrap">
+  <a href="#arbeitsweise">Arbeitsweise</a>
+  <a href="#automatisierung">Praxisprojekt</a>
+  <a href="#ki-workflows">KI-Workflows &amp; Skills</a>
+  <a href="#web">Webseiten &amp; Web-Apps</a>
+  <a href="#werkzeuge">Werkzeuge</a>
+</div></nav>
+
+<main class="wrap">
+
+<section id="arbeitsweise">
+  <h2>So arbeite ich mit KI</h2>
+  <p class="sub">Ich schreibe nicht jede Zeile Code selbst. Meine Stärke liegt davor und danach: den Ablauf verstehen, die Lösung genau beschreiben, das Ergebnis prüfen und im Betrieb verantworten.</p>
+  <div class="cols">
+    <div class="step"><span class="n">1</span><h4>Ablauf aufnehmen</h4><p>Wie wird heute gearbeitet, wo geht Zeit verloren, wo passieren Fehler?</p></div>
+    <div class="step"><span class="n">2</span><h4>Genau spezifizieren</h4><p>Regeln, Formate und Grenzfälle so beschreiben, dass die KI das Richtige baut.</p></div>
+    <div class="step"><span class="n">3</span><h4>Bauen lassen &amp; prüfen</h4><p>Code entsteht mit Claude, ich teste mit echten Daten und lasse nachbessern.</p></div>
+    <div class="step"><span class="n">4</span><h4>Übergeben &amp; dokumentieren</h4><p>Anleitung, Versionsstand und Grenzen schriftlich, damit es auch ohne mich läuft.</p></div>
+  </div>
+  <div class="note">Grundsatz in allen Projekten: Zahlen rechnet der Code, nicht das Sprachmodell. Die KI analysiert und dokumentiert, entschieden wird vom Menschen.</div>
+</section>
+
+<section id="automatisierung">
+  <h2>Praxisprojekt</h2>
+  <p class="sub">Ein echter Ablauf mit echten Nutzern, gelöst mit dem, was vor Ort ohnehin vorhanden ist: ein Browser und die bestehenden Excel-Mappen.</p>
+  <div class="grid">
+
+    <article class="card feature">
+      <h3>Café-Kassa</h3>
+      <div class="meta">HTML + JavaScript, eine Datei, offline</div>
+      <p>Ersatz für ein Papier- und Excel-System im Café des BBRZ Graz: läuft in jedem Browser, ohne Installation und ohne Internet.</p>
+      <ul>
+        <li>Schichtjournal, Kassasturz, Archiv und Datensicherung.</li>
+        <li>Excel-Export passend zu den bestehenden Arbeitsmappen.</li>
+        <li>Beim Nachbauen der Logik wurden vier Fehler in den bisherigen Tabellen entdeckt.</li>
+      </ul>
+      <div class="tags"><span class="tag">Vanilla JS</span><span class="tag">ohne Abhängigkeiten</span><span class="tag">Offline-first</span></div>
+    </article>
+
+  </div>
+</section>
+
+<section id="ki-workflows">
+  <h2>KI-Workflows &amp; Skills</h2>
+  <p class="sub">Wiederkehrende Abläufe, die ich als „Skills“ für Claude festgehalten habe: einmal sauber beschrieben, danach auf Zuruf wiederholbar, mit Prüfschritten und Bestätigung an den richtigen Stellen.</p>
+  <div class="grid">
+
+    <article class="card feature">
+      <h3>AI Trading Workbench</h3>
+      <div class="meta">Python · Claude mit Projektgedächtnis · geplante Aufgaben</div>
+      <p>Ein persönliches Forschungsprojekt, das regelbasiertes Swing-Trading als Engineering-Aufgabe behandelt. Drei Schichten mit klarer Arbeitsteilung:</p>
+      <ul>
+        <li><b>Deterministischer Code:</b> Watchlist-Scanner (Trendfilter, Relative Stärke, Volatilität, Marktregime), Echtzeitkurse über eine API, Backtests mit Out-of-Sample-Prüfung. Täglicher Lauf über die Windows-Aufgabenplanung.</li>
+        <li><b>Schriftliches Regelwerk:</b> Einstiegsbedingungen, risikobasierte Positionsgröße, Stops und Ausstiege, damit jede Entscheidung prüfbar ist.</li>
+        <li><b>KI-Workflow:</b> automatische Briefings, Session-Routinen, Selbst-Evaluation des Gedächtnisses mit festen Grenzen und Regeln für Schreibrechte je Datei.</li>
+      </ul>
+      <p><span class="label">Stand</span><br>Repository mit README, Methodik und Architektur ist vorbereitet und wird veröffentlicht. Keine Anlageberatung.</p>
+      <div class="tags"><span class="tag">Python</span><span class="tag">yfinance / Finnhub</span><span class="tag">Backtesting</span><span class="tag">Prompt- &amp; Memory-Architektur</span><span class="tag">Governance</span></div>
+    </article>
+
+    <article class="card">
+      <h3>Homepage-Pipeline auf GitHub Pages</h3>
+      <div class="meta">Claude-Skill · PowerShell · GitHub CLI</div>
+      <p>Von der Beschreibung zur Live-Seite ohne Handarbeit: Datenschutz-Check (Schriften lokal, keine privaten Daten im Code), Bestätigung vor dem Veröffentlichen, Commit mit neutraler Identität, Warten auf den Build und Prüfung, ob die Seite erreichbar ist. Diese Seite ist damit veröffentlicht.</p>
+      <div class="tags"><span class="tag">Git</span><span class="tag">GitHub Pages</span><span class="tag">Datenschutz</span></div>
+    </article>
+
+    <article class="card">
+      <h3>Produktfotos &amp; Inserate</h3>
+      <div class="meta">Claude-Skill · Python-Bildbearbeitung</div>
+      <p>Aus Handyfotos werden verkaufsfertige Inseratbilder: drehen, begradigen, einheitlich zuschneiden, Farben korrigieren, fremde Etiketten und Seriennummern entfernen. Dazu fertige Anzeigentexte und ein Paket je Produkt zum Weiterschicken.</p>
+      <div class="tags"><span class="tag">Pillow / NumPy</span><span class="tag">Stapelverarbeitung</span></div>
+    </article>
+
+    <article class="card">
+      <h3>Instagram-Karussell weitergeben</h3>
+      <div class="meta">Claude-Skill · Video- &amp; PDF-Verarbeitung</div>
+      <p>Aus einer Bildschirmaufnahme eines Instagram-Beitrags entstehen saubere Einzelfolien ohne Bedienelemente, daraus Video, PDF und Bilderalbum für Menschen ohne Instagram.</p>
+      <div class="tags"><span class="tag">Video zu Einzelbildern</span><span class="tag">PDF &amp; MP4</span></div>
+    </article>
+
+    <article class="card">
+      <h3>Projekte sichern &amp; umziehen</h3>
+      <div class="meta">Claude-Skill</div>
+      <p>Sichert ein komplettes KI-Projekt inklusive der Teile, die beim Gerätewechsel sonst verloren gehen (Gedächtnis, eigene Skills), trennt nach Wert in Cloud- und Offline-Sicherung, lässt sensible Dokumente bewusst weg und prüft die Vollständigkeit.</p>
+      <div class="tags"><span class="tag">Backup</span><span class="tag">Migration</span></div>
+    </article>
+
+  </div>
+</section>
+
+<section id="web">
+  <h2>Webseiten &amp; Web-Apps</h2>
+  <p class="sub">Veröffentlicht über GitHub Pages, ohne Tracking und ohne externe Schriften.</p>
+  <div class="grid">
+
+    <article class="card">
+      <h3>Sturm-Fakten</h3>
+      <div class="meta">Recherche-Seite · eigene Domain</div>
+      <p>Faktenanalyse dazu, was der SK Sturm Graz der Stadt Graz bringt: mit Zahlen, Quellen und Offenlegung, verständlich aufbereitet.</p>
+      <div class="tags"><span class="tag">Recherche</span><span class="tag">Datenaufbereitung</span><span class="tag">HTML/CSS</span></div>
+      <a class="link" href="https://sturm-fakten.at/" rel="noopener">sturm-fakten.at ansehen →</a>
+    </article>
+
+    <article class="card">
+      <h3>Wichtel-App für die Familie</h3>
+      <div class="meta">Web-App · Google-Tabelle als Speicher</div>
+      <p>Alle tragen sich selbst ein, zum Stichtag wird automatisch ausgelost, jede Person bekommt einen persönlichen Link per WhatsApp und kann ihre Wünsche danach noch bearbeiten. Läuft ohne Betreuung.</p>
+      <div class="tags"><span class="tag">JavaScript</span><span class="tag">Google Apps Script</span><span class="tag">Automatisierung</span></div>
+    </article>
+
+    <article class="card">
+      <h3>PC-Werkstatt</h3>
+      <div class="meta">Persönliche Lernseite</div>
+      <p>Schritt-für-Schritt-Lernseite, mit der eine Person ohne Vorkenntnisse den Umgang mit dem Computer lernt: Übungen mit Fortschritt, der nur im eigenen Browser gespeichert wird.</p>
+      <div class="tags"><span class="tag">Didaktik</span><span class="tag">localStorage</span></div>
+    </article>
+
+    <article class="card">
+      <h3>Kleine Werkzeuge</h3>
+      <div class="meta">HTML · JavaScript · React</div>
+      <ul>
+        <li>Punktezähler für ein Kartenspiel mit sechs Personen, mit Sprachausgabe</li>
+        <li>Abo-Verwaltung als installierbare Web-App (PWA)</li>
+        <li>Quiz zum SK Sturm Graz in React</li>
+        <li>Konverter, der Beiträge von X für Facebook umformatiert</li>
+      </ul>
+      <div class="tags"><span class="tag">PWA</span><span class="tag">React</span><span class="tag">Web Speech API</span></div>
+    </article>
+
+  </div>
+</section>
+
+<section id="werkzeuge">
+  <h2>Werkzeuge, mit denen ich arbeite</h2>
+  <div class="cols">
+    <div class="step"><h4>KI</h4><p>Claude (Chat, Code, Projekte mit Gedächtnis, eigene Skills, geplante Aufgaben), MCP-Anbindungen an Mail, Kalender, Drive und Browser</p></div>
+    <div class="step"><h4>Sprachen &amp; Formate</h4><p>Python, VBA, PowerShell, HTML, CSS, JavaScript, SQL-Grundlagen, Markdown</p></div>
+    <div class="step"><h4>Office &amp; Plattformen</h4><p>Word- und Excel-Automatisierung, Google Workspace, Git und GitHub, Windows-Aufgabenplanung</p></div>
+    <div class="step"><h4>Hintergrund</h4><p>IT-Techniker, Microsoft-Zertifizierungen, rund zehn Jahre Praxis in Endgeräte-Management und Werkstattbetrieb</p></div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Der Code der Projekte entstand mit KI-Unterstützung (Claude). Aufgabenstellung, Spezifikation, Tests und Betrieb liegen bei mir.</p>
+    <p>Diese Seite setzt keine Cookies, lädt keine externen Schriften und verwendet kein Tracking. Gehostet auf GitHub Pages; GitHub protokolliert laut eigener Dokumentation die IP-Adressen der Besucher.</p>
+    <p>Stand: 24.11.2026</p>
+  </div>
+</footer>
+
+</body>
+</html>
