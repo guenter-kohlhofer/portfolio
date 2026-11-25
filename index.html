@@ -54,6 +54,9 @@
   .step h4{margin:0 0 4px}
   .step p{margin:0;color:var(--muted);font-size:.95rem}
   .note{border-left:3px solid var(--accent);background:var(--panel);padding:14px 18px;border-radius:0 var(--radius) var(--radius) 0;color:var(--muted);margin-top:22px}
+  .shot{display:block;margin:4px 0 14px;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#0b0f13}
+  .shot img{display:block;width:100%;height:auto}
+  .card.feature .shot{max-width:760px}
   footer{margin-top:60px;border-top:1px solid var(--line);padding:30px 0 50px;color:var(--muted);font-size:.9rem}
   @media (max-width:560px){.grid{grid-template-columns:1fr}.card.feature{grid-column:auto}}
 </style>
@@ -106,6 +109,7 @@
     <article class="card feature">
       <h3>Café-Kassa</h3>
       <div class="meta">HTML + JavaScript, eine Datei, offline</div>
+      <a class="shot" href="demo/cafe-kassa.html" rel="noopener"><img src="img/cafe-kassa.jpg" alt="Verkaufsansicht der Café-Kassa mit Sortiment und Körberl" loading="lazy" width="1200" height="750"></a>
       <p>Ersatz für ein Papier- und Excel-System im Café des BBRZ Graz: läuft in jedem Browser, ohne Installation und ohne Internet.</p>
       <ul>
         <li>Schichtjournal, Kassasturz, Archiv und Datensicherung.</li>
@@ -113,6 +117,7 @@
         <li>Beim Nachbauen der Logik wurden vier Fehler in den bisherigen Tabellen entdeckt.</li>
       </ul>
       <div class="tags"><span class="tag">Vanilla JS</span><span class="tag">ohne Abhängigkeiten</span><span class="tag">Offline-first</span></div>
+      <a class="link" href="demo/cafe-kassa.html">Demo selbst ausprobieren →</a>
     </article>
 
     <article class="card feature">
@@ -321,6 +326,7 @@
     <article class="card feature">
       <h3>Die Eieruhranbeter: von der Idee zur Live-Seite in 18 Minuten</h3>
       <div class="meta">Satire-Homepage · Idee um 20:16 Uhr, online um 20:34 Uhr</div>
+      <a class="shot" href="https://traderadarat.github.io/eieruhranbeter/" rel="noopener"><img src="img/eieruhranbeter.jpg" alt="Startseite der Eieruhranbeter mit Sanduhr" loading="lazy" width="1200" height="750"></a>
       <p>Ein Spaß aus einem Chat wurde in unter 20 Minuten zu einer fertigen, veröffentlichten Website: funktionierende Eieruhr mit Glocke und Vibration, druckbarer Mitgliedsausweis, versteckter Gag, Vorschaubild für WhatsApp. Ohne Cookies und externe Schriften. Zeigt, wie schnell heute aus einer Idee etwas Vorzeigbares wird.</p>
       <div class="tags"><span class="tag">HTML/CSS/JS</span><span class="tag">GitHub Pages</span><span class="tag">Rapid Prototyping</span></div>
       <a class="link" href="https://traderadarat.github.io/eieruhranbeter/" rel="noopener">Seite ansehen →</a>
@@ -330,6 +336,7 @@
     <article class="card">
       <h3>Geli's Holzwerkstatt</h3>
       <div class="meta">Website eines Familienbetriebs</div>
+      <a class="shot" href="https://kohlhofer.net/" rel="noopener"><img src="img/holzwerkstatt.jpg" alt="Startseite von Geli's Holzwerkstatt" loading="lazy" width="1200" height="750"></a>
       <p>Auftritt für handgemachte Holzprodukte mit Produktseiten, Galerie, Impressum und Datenschutz. Dazu ein Skript, das Produktfotos automatisch für das Web verkleinert und optimiert.</p>
       <div class="tags"><span class="tag">HTML/CSS</span><span class="tag">Bildoptimierung</span></div>
       <a class="link" href="https://kohlhofer.net/" rel="noopener">kohlhofer.net ansehen →</a>
@@ -338,8 +345,10 @@
     <article class="card">
       <h3>PC-Werkstatt</h3>
       <div class="meta">Persönliche Lernseite · an einem Tag gebaut und veröffentlicht</div>
+      <a class="shot" href="https://traderadarat.github.io/harry/" rel="noopener"><img src="img/pc-werkstatt.jpg" alt="Startseite der PC-Werkstatt mit Lernschritten" loading="lazy" width="1200" height="750"></a>
       <p>Schritt-für-Schritt-Lernseite, mit der eine Person ohne Vorkenntnisse den Umgang mit dem Computer lernt: Zehnfingersystem als Spiel, Maus, Tastenkürzel, Übungs-Word und -Excel, Dateien und sichere E-Mails. Der Fortschritt wird nur im eigenen Browser gespeichert.</p>
       <div class="tags"><span class="tag">Didaktik</span><span class="tag">localStorage</span></div>
+      <a class="link" href="https://traderadarat.github.io/harry/" rel="noopener">Lernseite ansehen →</a>
     </article>
 
     <article class="card">

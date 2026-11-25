@@ -1,0 +1,1385 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#2C4770">
+<title>Café-Kassa (Demo)</title>
+<meta name="robots" content="noindex, nofollow">
+<style>
+:root{
+  --board:#2C4770; --board-dark:#22375A;
+  --paper:#FBFAF6; --ink:#1A1A1A; --line:#111; --muted:#6B6B6B;
+  --g-heiss:#BDD3E6; --g-saft:#EDE93A; --g-tetra:#A9D45E; --g-gebaeck:#F0A83D;
+  --g-suess:#C6A5D6; --g-schoko:#EC9BAD; --g-obst:#C6DC4E; --g-sonst:#8FA954;
+  --ok:#1E7A45; --warn:#B3261E;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;margin:0}
+body{font-family:"Segoe UI",system-ui,-apple-system,sans-serif;background:var(--board);color:var(--ink);overflow:hidden;user-select:none}
+.num{font-variant-numeric:tabular-nums;font-feature-settings:"tnum"}
+#app{height:100%;display:flex;flex-direction:column}
+
+/* ---------- Kopf ---------- */
+header{background:var(--board);color:#fff;padding:8px 14px;display:flex;align-items:center;gap:12px;flex:0 0 auto;border-bottom:3px solid var(--board-dark)}
+header .clip{width:46px;height:16px;background:#B9C0C8;border-radius:3px;box-shadow:inset 0 -2px 0 #8A9299;flex:0 0 auto}
+header .who{font-size:13px;line-height:1.3;min-width:0}
+header .who b{display:block;font-size:11px;letter-spacing:.09em;text-transform:uppercase;opacity:.7;font-weight:600}
+header .sp{flex:1}
+.iconbtn{width:38px;height:38px;border:2px solid rgba(255,255,255,.45);background:transparent;color:#fff;border-radius:6px;font:inherit;font-size:17px;font-weight:700;cursor:pointer;flex:0 0 auto}
+.iconbtn:active{background:rgba(255,255,255,.18)}
+.total{text-align:right;flex:0 0 auto}
+.total .lbl{font-size:11px;letter-spacing:.09em;text-transform:uppercase;opacity:.72}
+.total .val{font-size:29px;font-weight:700;line-height:1.05}
+
+nav{display:flex;flex:0 0 auto;background:var(--board-dark)}
+nav button{flex:1;padding:11px;border:0;background:transparent;color:rgba(255,255,255,.62);font:inherit;font-weight:700;font-size:13px;letter-spacing:.09em;text-transform:uppercase;cursor:pointer;border-bottom:3px solid transparent}
+nav button[aria-selected="true"]{background:var(--paper);color:var(--ink);border-bottom-color:var(--board)}
+
+main{flex:1;min-height:0;background:var(--paper);display:flex;overflow:hidden}
+.view{display:none;flex:1;min-height:0}
+.view.on{display:flex}
+
+/* ---------- 1. Dienst starten ---------- */
+#viewStart{align-items:center;justify-content:center;padding:20px;overflow-y:auto}
+.startcard{width:100%;max-width:440px;border:3px solid var(--line);border-radius:6px;background:#fff}
+.startcard h1{margin:0;padding:14px 18px;font-size:15px;letter-spacing:.11em;text-transform:uppercase;border-bottom:3px solid var(--line);background:var(--paper)}
+.startcard .body{padding:18px}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:11px;letter-spacing:.09em;text-transform:uppercase;font-weight:700;color:var(--muted);margin-bottom:5px}
+.field input{width:100%;padding:12px;border:2px solid var(--line);border-radius:5px;font:inherit;font-size:17px}
+.field .fixed{padding:12px;border:2px solid var(--line);border-radius:5px;font-size:17px;font-weight:700;background:#EFEDE6;color:var(--muted)}
+.field .hint{font-size:12px;color:var(--muted);margin-top:5px;line-height:1.45}
+#resume{margin-bottom:16px;padding:12px;border:2px dashed var(--board);border-radius:5px;background:#EEF2F8;font-size:13.5px;line-height:1.5;display:none}
+
+/* ---------- 2. Verkauf ---------- */
+#grid{flex:1;overflow-y:auto;padding:12px;display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:9px;align-content:start}
+.prod{position:relative;border:2px solid var(--line);border-radius:6px;padding:12px 11px 10px;text-align:left;font:inherit;cursor:pointer;min-height:86px;display:flex;flex-direction:column;justify-content:space-between;transition:transform .05s}
+.prod:active{transform:scale(.955)}
+.prod .n{font-weight:700;font-size:14px;line-height:1.22;text-transform:uppercase}
+.prod .p{font-size:13.5px;font-weight:700;opacity:.72;margin-top:5px}
+.prod .badge{position:absolute;top:-8px;right:-8px;min-width:26px;height:26px;padding:0 6px;border-radius:13px;background:var(--board);color:#fff;font-size:13px;font-weight:700;display:none;align-items:center;justify-content:center;border:2px solid var(--paper)}
+.prod[data-sold="1"] .badge{display:flex}
+.prod:focus-visible{outline:3px solid var(--board);outline-offset:2px}
+.g-heiss{background:var(--g-heiss)} .g-saft{background:var(--g-saft)} .g-tetra{background:var(--g-tetra)}
+.g-gebaeck{background:var(--g-gebaeck)} .g-suess{background:var(--g-suess)} .g-schoko{background:var(--g-schoko)}
+.g-obst{background:var(--g-obst)} .g-sonst{background:var(--g-sonst)}
+
+#cart{flex:0 0 360px;border-left:3px solid var(--line);background:#fff;display:flex;flex-direction:column;min-height:0}
+#cart h2{margin:0;padding:7px 12px;font-size:11px;letter-spacing:.11em;text-transform:uppercase;border-bottom:2px solid var(--line);background:var(--paper)}
+#cartItems{flex:1 1 auto;overflow-y:auto;padding:3px 0;min-height:clamp(80px,14vh,190px)}
+#cartEmpty{padding:22px 16px;color:var(--muted);font-size:13.5px;line-height:1.55}
+.ci{display:flex;align-items:center;gap:8px;padding:8px 12px;border-bottom:1px solid #E6E4DD}
+.ci .cn{flex:1;font-size:13px;font-weight:600;text-transform:uppercase;line-height:1.25}
+.ci .cs{font-size:13px;font-weight:700;width:52px;text-align:right}
+.ci button{width:30px;height:30px;border:2px solid var(--line);background:#fff;border-radius:4px;font:inherit;font-size:16px;font-weight:700;line-height:1;cursor:pointer;flex:0 0 auto}
+.ci .q{width:24px;text-align:center;font-weight:700;font-size:14px}
+
+#cartFoot{border-top:3px solid var(--line);padding:8px 11px;background:var(--paper);flex:0 0 auto}
+.sumline{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;padding:clamp(3px,.7vh,8px) 11px;background:#fff;border:2px solid var(--line);border-radius:8px}
+.sumline .l{font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.sumline .v{font-size:clamp(18px,2.5vh,28px);font-weight:800}
+.pay{display:flex;gap:7px;align-items:center;margin-bottom:6px}
+.pay .cur{font-size:11px;letter-spacing:.09em;text-transform:uppercase;font-weight:700;color:var(--muted)}
+.pay input{flex:1;min-width:0;padding:clamp(4px,.9vh,12px) 12px;border:2px solid var(--line);border-radius:8px;font:inherit;font-size:clamp(16px,2.2vh,22px);font-weight:800;text-align:right;background:#fff;color:var(--ink)}
+.pay input:focus{outline:2px solid var(--board);outline-offset:1px}
+.pay .gc{width:42px;height:clamp(34px,5vh,46px);border:2px solid var(--line);background:#fff;border-radius:8px;font:inherit;font-size:16px;font-weight:700;cursor:pointer;flex:0 0 auto;color:var(--muted)}
+.pay .gc:active{background:#EEE}
+.quickcash{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-bottom:6px}
+.quickcash .qc{padding:clamp(5px,1vh,12px) 4px;border:2px solid #9DB6D6;background:#EAF1F9;color:var(--board-dark);border-radius:8px;font:inherit;font-size:clamp(12px,1.5vh,15px);font-weight:800;cursor:pointer}
+.quickcash .qc:active{background:#D6E3F2;transform:translateY(1px)}
+.quickcash .qc.exact{background:var(--board);color:#fff;border-color:var(--board-dark);font-size:clamp(11px,1.4vh,14px)}
+.keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-bottom:6px;padding:5px;background:#EEF1F4;border-radius:10px}
+.keypad button{padding:clamp(4px,1.05vh,15px) 0;border:2px solid var(--line);background:#fff;border-radius:9px;font:inherit;font-size:clamp(15px,2.2vh,26px);font-weight:800;cursor:pointer;line-height:1}
+.keypad button:active{background:#E7EEF6;transform:translateY(1px)}
+.keypad button[data-k="del"]{color:var(--warn)}
+#change{visibility:hidden;padding:clamp(4px,.85vh,10px) 13px;border-radius:8px;background:#E7F3EC;border:2px solid var(--ok);margin-bottom:6px}
+#change .l{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--ok);font-weight:700}
+#change .v{font-size:clamp(17px,2.5vh,28px);font-weight:800;color:var(--ok);line-height:1.15}
+#change.neg{background:#FBEAE9;border-color:var(--warn)}
+#change.neg .l,#change.neg .v{color:var(--warn)}
+
+.btn{width:100%;padding:13px;border:2px solid var(--line);border-radius:5px;font:inherit;font-size:14px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;background:#fff}
+.btn:active{transform:translateY(1px)}
+.btn.primary{background:var(--board);color:#fff;border-color:var(--board-dark)}
+.btn.primary:disabled{opacity:.32;cursor:not-allowed}
+.btn.big{padding:clamp(8px,1.6vh,18px);font-size:clamp(14px,1.9vh,17px)}
+.btn.ghost{background:transparent;font-size:12px;padding:9px;margin-top:7px}
+.btn.undo{background:#FFF4CE;border-color:#8A6D1E;color:#5A470F;margin-top:7px}
+.btn.undo:disabled{opacity:.3}
+.cartfoot-row{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:6px}
+.btn.small{font-size:11.5px;padding:7px 6px;margin-top:0}
+.btn.small:disabled{opacity:.35}
+
+/* ---------- 3. Abschluss ---------- */
+#close{flex:1;overflow-y:auto;padding:16px}
+.wrap{max-width:900px;margin:0 auto}
+.step{border:2px solid var(--line);border-radius:5px;background:#fff;margin-bottom:14px;overflow:hidden}
+.step > h3{margin:0;padding:11px 14px;font-size:13px;font-weight:700;background:var(--paper);border-bottom:2px solid var(--line);display:flex;align-items:center;gap:10px}
+.step .no{width:24px;height:24px;border-radius:12px;background:var(--board);color:#fff;font-size:12px;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+.step.done > h3{background:#E7F3EC}
+.step.done .no{background:var(--ok)}
+.step.done .no::after{content:"✓"}
+.step.done .no span{display:none}
+.step .body{padding:14px}
+
+.denomgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.denom{display:flex;flex-direction:column;gap:5px;background:#fff;border:2px solid var(--line);border-radius:8px;padding:9px 11px}
+.denom .d{font-weight:700;font-size:15px}
+.denom input{width:100%;padding:13px 10px;border:2px solid var(--board);border-radius:7px;font:inherit;font-size:26px;text-align:center;font-weight:700;background:#fff}
+.denom input:focus{outline:3px solid var(--board);outline-offset:1px;background:#F4F7FB}
+.denom .s{font-size:12.5px;color:var(--ok);font-weight:700;min-height:16px;text-align:right}
+
+.kv{display:flex;justify-content:space-between;padding:7px 0;font-size:14px;border-bottom:1px solid #E6E4DD}
+.kv:last-of-type{border-bottom:0}
+.kv b{font-size:15px}
+#diffBox{margin-top:12px;padding:14px;border:2px solid var(--line);border-radius:5px;text-align:center}
+#diffBox .l{font-size:11px;letter-spacing:.09em;text-transform:uppercase;font-weight:700}
+#diffBox .v{font-size:31px;font-weight:700;line-height:1.15;margin-top:2px}
+#diffBox .todo{font-size:12.5px;margin-top:6px;line-height:1.45;font-weight:600}
+#diffBox.ok{background:#E7F3EC;border-color:var(--ok);color:var(--ok)}
+#diffBox.bad{background:#FBEAE9;border-color:var(--warn);color:var(--warn)}
+
+textarea{width:100%;min-height:70px;padding:9px;border:2px solid var(--line);border-radius:4px;font:inherit;font-size:13.5px;resize:vertical}
+.actions{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.note{font-size:12px;color:var(--muted);line-height:1.5;margin:9px 0 0}
+
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;padding:7px 10px;font-size:10px;letter-spacing:.09em;text-transform:uppercase;border-bottom:2px solid var(--line);color:var(--muted)}
+th.r,td.r{text-align:right}
+td{padding:6px 10px;border-bottom:1px solid #E6E4DD}
+tr.zero{opacity:.3}
+tfoot td{border-top:2px solid var(--line);font-weight:700;font-size:16px;padding-top:9px;border-bottom:0}
+.corr{width:28px;height:28px;border:1px solid var(--line);background:#fff;border-radius:3px;font:inherit;font-weight:700;cursor:pointer;line-height:1}
+
+/* ---------- Verlauf ---------- */
+.iconbtn.wide{width:auto;padding:0 13px;font-size:12px;letter-spacing:.07em;text-transform:uppercase}
+#viewHistory{flex-direction:column}
+.histbar{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--paper);border-bottom:3px solid var(--line);flex:0 0 auto}
+.histbar h2{margin:0;font-size:14px;letter-spacing:.09em;text-transform:uppercase;flex:1}
+.histbar .back{border:2px solid var(--line);background:#fff;border-radius:6px;padding:8px 12px;font:inherit;font-size:13px;font-weight:700;cursor:pointer}
+.histbar .mini{border:2px solid var(--line);background:#fff;border-radius:6px;padding:8px 11px;font:inherit;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;cursor:pointer}
+.histbar .mini:active,.histbar .back:active{background:#EEE}
+#histScroll{flex:1;overflow-y:auto;padding:14px;min-height:0}
+.histwrap{max-width:760px;margin:0 auto}
+.histempty{padding:40px 16px;text-align:center;color:var(--muted);font-size:14px;line-height:1.6}
+.hrow{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:2px solid var(--line);border-radius:6px;background:#fff;padding:12px 14px;margin-bottom:9px;font:inherit;cursor:pointer}
+.hrow:active{background:#F4F2EC}
+.hrow .hd{flex:1;min-width:0}
+.hrow .hdate{font-weight:700;font-size:15px}
+.hrow .hteam{font-size:12.5px;color:var(--muted);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hrow .hsum{text-align:right;flex:0 0 auto}
+.hrow .hsum .hu{font-weight:700;font-size:15px}
+.tag{display:inline-block;margin-top:3px;font-size:11px;font-weight:700;padding:2px 7px;border-radius:10px}
+.tag.ok{background:#E7F3EC;color:var(--ok)} .tag.tip{background:#E7F3EC;color:var(--ok)} .tag.bad{background:#FBEAE9;color:var(--warn)}
+.chev{flex:0 0 auto;color:var(--muted);font-size:20px;font-weight:700}
+
+#histDetail{max-width:760px;margin:0 auto;display:none}
+#histDetail .dhead{border:2px solid var(--line);border-radius:6px;background:#fff;padding:14px;margin-bottom:14px}
+#histDetail .dhead .dt{font-size:18px;font-weight:700}
+#histDetail .dhead .dm{font-size:13px;color:var(--muted);margin-top:3px}
+.backup-note{font-size:12px;color:var(--muted);line-height:1.5;margin:2px auto 14px;max-width:760px}
+
+/* ---------- Hilfe ---------- */
+#help,#ask{position:fixed;inset:0;background:rgba(20,28,44,.72);display:none;align-items:center;justify-content:center;padding:20px;z-index:80}
+#help.on,#ask.on{display:flex}
+#ask .box{background:#fff;border:3px solid var(--line);border-radius:6px;max-width:420px;width:100%}
+#ask h2{margin:0;padding:14px 18px;font-size:14px;letter-spacing:.1em;text-transform:uppercase;border-bottom:3px solid var(--line);background:var(--paper)}
+#ask .body{padding:18px}
+#ask p{margin:0 0 16px;font-size:14px;line-height:1.6}
+#ask p b{background:#FFF4CE;padding:0 3px}
+.askbtns{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+#help .box{background:#fff;border:3px solid var(--line);border-radius:6px;max-width:460px;width:100%;max-height:90%;overflow-y:auto}
+#help h2{margin:0;padding:14px 18px;font-size:14px;letter-spacing:.1em;text-transform:uppercase;border-bottom:3px solid var(--line);background:var(--paper)}
+#help .body{padding:18px}
+#help ol{margin:0 0 16px;padding-left:22px}
+#help li{font-size:14px;line-height:1.6;margin-bottom:9px}
+#help li b{background:#FFF4CE;padding:0 3px}
+
+#toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,90px);background:var(--board);color:#fff;padding:11px 20px;border-radius:6px;font-size:14px;font-weight:600;transition:transform .22s;z-index:99;pointer-events:none;box-shadow:0 6px 22px rgba(0,0,0,.3)}
+#toast.on{transform:translate(-50%,0)}
+#banner{background:#FFF4CE;border-bottom:2px solid #C7A32E;padding:6px 14px;font-size:12px;text-align:center;flex:0 0 auto}
+
+/* ---------- Kopf-Ergänzungen ---------- */
+#clock{font-variant-numeric:tabular-nums}
+#saved{font-size:12px;font-weight:700;color:#BFE3CC;white-space:nowrap;opacity:.9}
+.btn.danger{border-color:#8A2018;color:#8A2018}
+.btn.danger:active{background:#FBEAE9}
+
+/* ---------- Excel-Übertragung ---------- */
+.btn.huge{padding:20px;font-size:18px}
+#copyGuide{margin-top:14px;border:2px solid var(--board);border-radius:8px;background:#F4F7FB;padding:14px 16px}
+#copyGuide p{margin:0 0 11px;font-size:15px;line-height:1.55}
+#copyGuide p:last-child{margin-bottom:0}
+.cell{display:inline-block;background:var(--board);color:#fff;font-weight:700;padding:1px 9px;border-radius:5px;font-variant-numeric:tabular-nums}
+.key{display:inline-block;background:#fff;border:2px solid var(--line);border-radius:5px;padding:1px 8px;font-weight:700;font-size:13px}
+.verify{margin-top:14px;background:#fff;border:2px solid var(--ok);border-radius:8px;padding:14px;text-align:center}
+.verify .vl{font-size:13.5px;font-weight:700;line-height:1.4}
+.verify .vnum{font-size:38px;font-weight:800;color:var(--ok);line-height:1.1;margin:4px 0;transition:transform .2s}
+.verify .vhint{font-size:12.5px;color:var(--muted);line-height:1.45}
+.secondary-actions{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-top:14px}
+
+/* ---------- Bearbeiten ---------- */
+.elist{display:flex;flex-direction:column;gap:6px}
+.erow{display:flex;align-items:center;gap:10px;padding:7px 10px;border:1px solid #E0DED7;border-radius:6px}
+.erow .en{flex:1;font-weight:600;font-size:13.5px}
+.erow .ep{font-size:12.5px;color:var(--muted);width:56px;text-align:right}
+.estep{display:flex;align-items:center;gap:8px;flex:0 0 auto}
+.stp{width:40px;height:40px;border:2px solid var(--line);background:#fff;border-radius:7px;font:inherit;font-size:22px;font-weight:700;line-height:1;cursor:pointer}
+.stp:active{background:#EEE}
+.eq{min-width:30px;text-align:center;font-weight:700;font-size:18px}
+
+/* ---------- Sortiment-Editor ---------- */
+#viewSort{flex-direction:column}
+#sortScroll{flex:1;overflow-y:auto;padding:16px;min-height:0}
+.sortwrap{max-width:820px;margin:0 auto}
+.eprod{display:flex;align-items:center;gap:9px;border:2px solid var(--line);border-radius:8px;background:#fff;padding:9px 10px;margin-bottom:8px;flex-wrap:wrap}
+.eprod .swatch{width:20px;height:34px;border-radius:5px;border:1px solid rgba(0,0,0,.25);flex:0 0 auto}
+.eprod input.enm{flex:2;min-width:120px;padding:9px;border:2px solid var(--line);border-radius:6px;font:inherit;font-size:14px;font-weight:600}
+.eprod input.epr{width:74px;padding:9px;border:2px solid var(--line);border-radius:6px;font:inherit;font-size:14px;text-align:right}
+.eprod select.egr{flex:1;min-width:120px;padding:9px;border:2px solid var(--line);border-radius:6px;font:inherit;font-size:13px;background:#fff}
+.eprod .erow-num{display:flex;align-items:center;gap:4px;font-size:12px;color:var(--muted)}
+.eprod .erow-num input{width:52px;padding:7px;border:2px solid var(--line);border-radius:6px;font:inherit;font-size:13px;text-align:center}
+.eprod .ord{display:flex;flex-direction:column;gap:2px}
+.eprod .ordb{width:32px;height:22px;border:1px solid var(--line);background:#fff;border-radius:4px;font:inherit;font-size:12px;line-height:1;cursor:pointer;padding:0}
+.eprod .delb{width:36px;height:36px;border:2px solid #8A2018;color:#8A2018;background:#fff;border-radius:6px;font:inherit;font-size:16px;cursor:pointer;flex:0 0 auto}
+.eprod .delb:active{background:#FBEAE9}
+.egroup{display:flex;align-items:center;gap:9px;border:2px solid var(--line);border-radius:8px;background:#fff;padding:9px 10px;margin-bottom:8px}
+.egroup input.gnm{flex:1;padding:9px;border:2px solid var(--line);border-radius:6px;font:inherit;font-size:14px;font-weight:600}
+.egroup input[type=color]{width:46px;height:38px;border:2px solid var(--line);border-radius:6px;padding:2px;background:#fff;cursor:pointer;flex:0 0 auto}
+.sortsection{margin-bottom:22px}
+.sortsection > h3{font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin:0 0 10px;font-weight:700}
+.addbtn{width:100%;padding:12px;border:2px dashed var(--board);background:#F4F7FB;color:var(--board);border-radius:8px;font:inherit;font-weight:700;cursor:pointer;font-size:14px}
+.addbtn:active{background:#E9F0F8}
+.warnrow{background:#FBEAE9;border-color:var(--warn)}
+.excelnote{font-size:12.5px;color:var(--muted);line-height:1.5;background:#FFF7E6;border:1px solid #E0C56A;border-radius:8px;padding:11px 13px;margin-bottom:16px}
+
+@media print{
+  body{overflow:visible;background:#fff}
+  header,nav,#cart,.actions,#banner,.corr,.btn,#help,.step .no{display:none!important}
+  main,.view,#close{display:block!important;overflow:visible!important;height:auto!important}
+  .step{break-inside:avoid}
+  tr.zero{display:none}
+}
+@media(max-width:900px){ #cart{flex:0 0 300px} }
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="banner" hidden></div>
+
+  <header id="hdr" style="display:none">
+    <button class="iconbtn wide" id="btnMenu" title="Zum Hauptmenü — Dienst bleibt gespeichert">☰ Menü</button>
+    <div class="who"><b>Team</b><span id="hTeam">—</span></div>
+    <div class="who"><b>Datum</b><span class="num" id="hDate">—</span></div>
+    <div class="who"><b>Uhr</b><span class="num" id="clock">–:–</span></div>
+    <div class="sp"></div>
+    <span id="saved" title="Alles wird nach jeder Buchung automatisch gespeichert">✓ gespeichert</span>
+    <button class="iconbtn wide" id="btnHist" title="Verlauf & Backup">Verlauf</button>
+    <button class="iconbtn" id="btnHelp" title="Hilfe">?</button>
+    <div class="total"><div class="lbl">Tagesumsatz</div><div class="val num" id="dayTotal">0,00 €</div></div>
+  </header>
+
+  <nav role="tablist" id="nav" style="display:none">
+    <button role="tab" id="tabSale" aria-selected="true">Verkauf</button>
+    <button role="tab" id="tabClose" aria-selected="false">Dienst abschließen</button>
+  </nav>
+
+  <main>
+    <!-- 1 START -->
+    <section class="view on" id="viewStart">
+      <div class="startcard">
+        <h1>Dienst starten</h1>
+        <div class="body">
+          <div id="resume"></div>
+          <div class="field">
+            <label for="fDate">Datum</label>
+            <input id="fDate" type="date">
+          </div>
+          <div class="field">
+            <label for="fTeam">Team</label>
+            <input id="fTeam" type="text" placeholder="z. B. Anna & Bernd">
+          </div>
+          <div class="field">
+            <label>Anfangs-Kassastand</label>
+            <div class="fixed num">50,00 €</div>
+            <p class="hint">In der Kassa liegen immer <b>50 € Wechselgeld</b>. Vor dem Aufsperren nachzählen — stimmen die 50 € nicht, stimmt am Ende die Abrechnung nicht.</p>
+          </div>
+          <button class="btn primary big" id="btnStart">Dienst starten</button>
+          <button class="btn ghost" id="btnHist2">Verlauf &amp; Backup ansehen</button>
+          <button class="btn ghost" id="btnSort2">Sortiment verwalten</button>
+          <button class="btn ghost" id="btnHelp2">So funktioniert's</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2 VERKAUF -->
+    <section class="view" id="viewSale">
+      <div id="grid"></div>
+      <aside id="cart">
+        <h2>Körberl</h2>
+        <div id="cartItems"></div>
+        <div id="cartFoot">
+          <div class="sumline"><span class="l">Zu zahlen</span><span class="v num" id="cartSum">0,00 €</span></div>
+          <div class="pay">
+            <span class="cur">Gegeben</span>
+            <input id="given" type="text" inputmode="none" readonly placeholder="0,00">
+            <button class="gc" id="btnGivenClear" title="Löschen">✕</button>
+          </div>
+          <div class="quickcash">
+            <button class="qc" data-cash="5">5 €</button>
+            <button class="qc" data-cash="10">10 €</button>
+            <button class="qc" data-cash="20">20 €</button>
+            <button class="qc" data-cash="50">50 €</button>
+            <button class="qc exact" id="btnExact">Passend</button>
+          </div>
+          <div class="keypad" id="keypad">
+            <button data-k="1">1</button><button data-k="2">2</button><button data-k="3">3</button>
+            <button data-k="4">4</button><button data-k="5">5</button><button data-k="6">6</button>
+            <button data-k="7">7</button><button data-k="8">8</button><button data-k="9">9</button>
+            <button data-k=",">,</button><button data-k="0">0</button><button data-k="del">⌫</button>
+          </div>
+          <div id="change"><div class="l">Rückgeld</div><div class="v num" id="changeVal">0,00 €</div></div>
+          <button class="btn primary big" id="btnPay" disabled>Kassiert</button>
+          <div class="cartfoot-row">
+            <button class="btn ghost small" id="btnUndo" disabled>↶ Buchung zurück</button>
+            <button class="btn ghost small" id="btnClear">Körberl leeren</button>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <!-- 3 ABSCHLUSS -->
+    <section class="view" id="viewClose">
+      <div id="close"><div class="wrap">
+
+        <div class="step" id="st1">
+          <h3><span class="no"><span>1</span></span>Kassa zählen</h3>
+          <div class="body">
+            <div class="denomgrid" id="denoms"></div>
+            <p class="note">Alles zählen, was in der Kassa liegt — auch das Wechselgeld vom Anfang. Leere Felder = null Stück.</p>
+          </div>
+        </div>
+
+        <div class="step" id="st2">
+          <h3><span class="no"><span>2</span></span>Stimmt die Kassa?</h3>
+          <div class="body">
+            <div class="kv"><span>Anfangs-Kassastand</span><b class="num" id="kvStart">50,00 €</b></div>
+            <div class="kv"><span>+ Umsatz laut Stricherl</span><b class="num" id="kvSales">0,00 €</b></div>
+            <div class="kv"><span>= So viel muss mindestens drin sein</span><b class="num" id="kvTarget">50,00 €</b></div>
+            <div class="kv"><span>So viel habt ihr gezählt</span><b class="num" id="kvActual">0,00 €</b></div>
+            <div id="diffBox">
+              <div class="l">Differenz</div>
+              <div class="v num" id="kvDiff">0,00 €</div>
+              <div class="todo" id="kvTodo"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="step" id="st3">
+          <h3><span class="no"><span>3</span></span>Bemerkungen für das nächste Team</h3>
+          <div class="body">
+            <textarea id="notes" placeholder="Was geht aus, was ist zu erledigen, defekt, Probleme, Anregungen …"></textarea>
+          </div>
+        </div>
+
+        <div class="step" id="st4">
+          <h3><span class="no"><span>4</span></span>Zahlen nach Excel übertragen</h3>
+          <div class="body">
+            <button class="btn primary huge" id="btnCopy">① Zahlen kopieren</button>
+            <div id="copyGuide">
+              <p><b>② In Excel</b> das heutige Tagesblatt öffnen und einmal auf das leere Feld <span class="cell">E3</span> klicken — die Zeile ganz oben (<b>Espresso</b>).</p>
+              <p><b>③ Einfügen</b> mit <span class="key">Strg</span> + <span class="key">V</span>, oder Rechtsklick → „Einfügen".</p>
+              <div class="verify">
+                <div class="vl">④ Kontrolle: In Excel muss ganz unten dieselbe Gesamtsumme stehen wie hier:</div>
+                <div class="vnum num" id="verifySum">0,00 €</div>
+                <div class="vhint">Ist die Gesamtsumme in Excel (unten, Zelle F35) dieselbe Zahl? Dann hast du richtig eingefügt. Wenn nicht: nochmal auf E3 klicken und neu einfügen.</div>
+              </div>
+            </div>
+            <div class="secondary-actions">
+              <button class="btn" id="btnCsv">Beleg speichern (CSV)</button>
+              <button class="btn" id="btnPrint">Drucken / PDF</button>
+              <button class="btn danger" id="btnReset">Dienst beenden</button>
+            </div>
+            <p class="note"><b>Zuerst kopieren und in Excel einfügen</b>, dann erst beenden. <b>Beleg speichern (CSV)</b> legt zusätzlich den ganzen Dienst als Datei ab (für's Archiv). <b>Dienst beenden</b> schließt den Dienst ab — er wandert in den Verlauf und lässt sich dort weiter ansehen und bearbeiten.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <h3><span class="no"><span>✎</span></span>Stricherlliste — verkauft</h3>
+          <table>
+            <thead><tr><th>Produkt</th><th class="r">Preis</th><th class="r">Stück</th><th class="r">Summe</th><th></th></tr></thead>
+            <tbody id="sumBody"></tbody>
+            <tfoot><tr><td colspan="3">Gesamtsumme</td><td class="r num" id="sumTotal">0,00 €</td><td></td></tr></tfoot>
+          </table>
+        </div>
+
+      </div></div>
+    </section>
+
+    <!-- 4 VERLAUF -->
+    <section class="view" id="viewHistory">
+      <div class="histbar">
+        <button class="back" id="btnHistBack">← Zurück</button>
+        <h2 id="histTitle">Verlauf</h2>
+        <button class="mini" id="btnBackup" title="Alle Dienste in eine Datei sichern">Backup speichern</button>
+        <button class="mini" id="btnRestore" title="Backup-Datei einlesen">Wiederherstellen</button>
+      </div>
+      <div id="histScroll">
+        <p class="backup-note" id="backupNote"></p>
+        <div class="histwrap" id="histList"></div>
+        <div id="histDetail"></div>
+      </div>
+    </section>
+
+    <!-- 5 SORTIMENT -->
+    <section class="view" id="viewSort">
+      <div class="histbar">
+        <button class="back" id="btnSortBack">← Fertig</button>
+        <h2>Sortiment verwalten</h2>
+      </div>
+      <div id="sortScroll"><div class="sortwrap">
+        <p class="excelnote"><b>Wichtig zum Zusammenspiel mit Excel:</b> Die <b>Excel-Zeile</b> jedes Artikels ist der Anker für den Export. Name, Preis, Farbe und Reihenfolge darfst du frei ändern — die Zahlen landen trotzdem in der richtigen Excel-Zeile. <b>Neuer Artikel:</b> in Excel eine Zeile ergänzen und hier dieselbe Zeilennummer eintragen. <b>Artikel entfernt:</b> die Excel-Zeile einfach leer lassen, nicht löschen (sonst verschieben sich die Bezüge). <b>Preis geändert?</b> Auch in der Excel-Monatsabrechnung ändern, sonst rechnen beide unterschiedlich.</p>
+
+        <div class="sortsection">
+          <h3>Artikel</h3>
+          <div id="eprodList"></div>
+          <button class="addbtn" id="btnAddProd">+ Artikel hinzufügen</button>
+        </div>
+
+        <div class="sortsection">
+          <h3>Gruppen &amp; Farben</h3>
+          <div id="egroupList"></div>
+          <button class="addbtn" id="btnAddGroup">+ Gruppe hinzufügen</button>
+        </div>
+      </div></div>
+    </section>
+  </main>
+</div>
+
+<input type="file" id="restoreFile" accept="application/json,.json" style="display:none">
+
+<div id="help" role="dialog" aria-modal="true">
+  <div class="box">
+    <h2>So funktioniert's</h2>
+    <div class="body">
+      <ol>
+        <li>Produkt antippen. Es landet im <b>Körberl</b> rechts. Zweimal tippen = zwei Stück.</li>
+        <li>Kunde zahlt: Betrag bei <b>Gegeben</b> eintippen, das Rückgeld rechnet die App. Dann <b>Kassiert</b> drücken.</li>
+        <li>Verklickt? Im Körberl mit <b>−</b> ein Stück wegnehmen. Eine schon gebuchte Buchung nimmt <b>↶ Buchung zurück</b> wieder heraus (mit Rückfrage).</li>
+        <li>Am Ende oben auf <b>Dienst abschließen</b> und die vier Schritte abarbeiten. Bei Schritt 4 die Zahlen nach Excel kopieren und in Zelle <b>E3</b> einfügen.</li>
+        <li>Über <b>☰ Menü</b> kommst du jederzeit zurück zur Startseite — der Dienst bleibt gespeichert und lässt sich fortsetzen.</li>
+      </ol>
+      <p class="note" style="margin-bottom:16px">Alles wird nach jeder Buchung automatisch gespeichert. Wenn das Gerät streikt: Papierliste nehmen, weitermachen, nachher nachtragen. Die App ist eine Hilfe, kein Hindernis.</p>
+      <button class="btn primary" id="btnHelpClose">Verstanden</button>
+    </div>
+  </div>
+</div>
+
+<div id="ask" role="dialog" aria-modal="true">
+  <div class="box">
+    <h2 id="askTitle">Dienst beenden?</h2>
+    <div class="body">
+      <p id="askText"></p>
+      <div class="askbtns">
+        <button class="btn" id="askNo">Abbrechen</button>
+        <button class="btn primary" id="askYes">Ja, beenden</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+"use strict";
+
+/* Speicher: localStorage; fällt in Vorschau-Umgebungen auf In-Memory zurück */
+const Store = (() => {
+  let real = false;
+  try { localStorage.setItem("__t","1"); localStorage.removeItem("__t"); real = true; } catch(e){}
+  const mem = {};
+  return { persistent:real,
+    get:k => real ? localStorage.getItem(k) : (k in mem ? mem[k] : null),
+    set:(k,v) => { real ? localStorage.setItem(k,v) : (mem[k]=v); } };
+})();
+
+/* Standard-Sortiment (Startwerte). Ab dem ersten Start editierbar über „Sortiment verwalten".
+   row = Zeile im Excel-Tagesblatt „Verbrauch". Diese Zeile ist der Anker für den Export
+   und darf sich bei bestehenden Artikeln nicht ändern. */
+const DEFAULT_GROUPS = [
+  {id:"heiss",   name:"Heißgetränke",   color:"#BDD3E6"},
+  {id:"saft",    name:"Säfte gepresst", color:"#EDE93A"},
+  {id:"tetra",   name:"Säfte Tetra",    color:"#A9D45E"},
+  {id:"gebaeck", name:"Gebäck belegt",  color:"#F0A83D"},
+  {id:"suess",   name:"Süßes/Kuchen",   color:"#C6A5D6"},
+  {id:"schoko",  name:"Schoko/Riegel",  color:"#EC9BAD"},
+  {id:"obst",    name:"Obst",           color:"#C6DC4E"},
+  {id:"sonst",   name:"Sonstiges",      color:"#8FA954"}
+];
+const DEFAULT_PRODUCTS = [
+  {row:3,  group:"heiss",   n:"Espresso",            p:1.00},
+  {row:4,  group:"heiss",   n:"Verlängerter",        p:2.50},
+  {row:5,  group:"heiss",   n:"Cappuccino",          p:2.50},
+  {row:6,  group:"heiss",   n:"Caffè Macchiato",     p:3.00},
+  {row:7,  group:"heiss",   n:"Tee",                 p:1.00},
+  {row:8,  group:"heiss",   n:"Kakao",               p:3.00},
+  {row:9,  group:"saft",    n:"Saft groß gepresst",  p:2.50},
+  {row:10, group:"saft",    n:"Saft klein gepresst", p:1.50},
+  {row:11, group:"tetra",   n:"Saft Tetra groß",     p:1.00},
+  {row:12, group:"tetra",   n:"Saft Tetra klein",    p:0.50},
+  {row:13, group:"gebaeck", n:"Weckerl belegt",      p:2.50},
+  {row:14, group:"gebaeck", n:"Semmel belegt",       p:2.00},
+  {row:15, group:"gebaeck", n:"Weckerl leer",        p:1.00},
+  {row:16, group:"gebaeck", n:"Semmel leer",         p:0.50},
+  {row:17, group:"suess",   n:"Plundergebäck",       p:2.00},
+  {row:18, group:"suess",   n:"Kuchen",              p:2.00},
+  {row:19, group:"suess",   n:"Kuchen + Kaffee",     p:3.00},
+  {row:20, group:"schoko",  n:"Amicelli",            p:1.00},
+  {row:21, group:"schoko",  n:"Kaugummi",            p:1.00},
+  {row:22, group:"schoko",  n:"Duplo",               p:0.50},
+  {row:23, group:"schoko",  n:"Kinderriegel",        p:0.50},
+  {row:24, group:"schoko",  n:"Kinder Country",      p:1.00},
+  {row:25, group:"schoko",  n:"Mannerschnitte",      p:2.00},
+  {row:26, group:"schoko",  n:"Ritter Sport",        p:2.50},
+  {row:27, group:"obst",    n:"Obst",                p:0.50},
+  {row:28, group:"obst",    n:"Abverkauf Obst",      p:0.10},
+  {row:29, group:"sonst",   n:"Sonstiges",           p:1.00},
+  {row:30, group:"sonst",   n:"Extra",               p:0.50}
+];
+const DENOMS = [100,50,20,10,5,2,1,0.5,0.2,0.1,0.05,0.02,0.01];
+const KEY = "demo-cafe-kassa-v2";
+const START_CASH = 50;   // Wechselgeld in der Kassa. Ändert sich das, hier ändern.
+const AKEY = "demo-cafe-kassa-archiv-v1";   // Archiv abgeschlossener Dienste
+const SKEY = "demo-cafe-kassa-sortiment-v1";   // Bearbeitbares Sortiment
+
+const $ = id => document.getElementById(id);
+const eur = n => n.toLocaleString("de-AT",{minimumFractionDigits:2,maximumFractionDigits:2}) + " €";
+const today = () => { const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); };
+
+/* ---------- Sortiment (bearbeitbar) ---------- */
+function seedSort(){
+  // order = Anzeigereihenfolge in der App; row = Excel-Zeile (Anker)
+  return { groups: DEFAULT_GROUPS.map(g => Object.assign({}, g)),
+           products: DEFAULT_PRODUCTS.map((p,i) => ({ n:p.n, p:p.p, group:p.group, row:p.row, order:i })) };
+}
+function loadSort(){
+  try{ const r = Store.get(SKEY); if(r){ const s = JSON.parse(r); if(s && s.products && s.groups) return s; } }catch(e){}
+  return seedSort();
+}
+function saveSort(){ try{ Store.set(SKEY, JSON.stringify(SORT)); }catch(e){} }
+let SORT = loadSort();
+if(!Store.get(SKEY)) saveSort();   // Seed einmalig sichern
+let PRODUCTS = ordered(SORT.products);   // Anzeige-Reihenfolge
+let GROUPS = SORT.groups;
+function ordered(arr){ return arr.slice().sort((a,b) => (a.order??0) - (b.order??0)); }
+function refreshSort(){ PRODUCTS = ordered(SORT.products); GROUPS = SORT.groups; }
+const groupColor = id => { const g = GROUPS.find(x => x.id === id); return g ? g.color : "#DDD"; };
+const groupName  = id => { const g = GROUPS.find(x => x.id === id); return g ? g.name : "—"; };
+const maxRowOf = products => products.reduce((m,p) => Math.max(m, p.row||0), 30);
+
+function blank(){ return { active:false, date:today(), team:"", startCash:START_CASH, sold:{}, cart:{}, hist:[], cash:{}, notes:"", exported:false }; }
+function load(){ try{ const r=Store.get(KEY); return r ? Object.assign(blank(), JSON.parse(r)) : blank(); }catch(e){ return blank(); } }
+function save(){ try{ Store.set(KEY, JSON.stringify(S)); }catch(e){} flashSaved(); }
+let savedT;
+function flashSaved(){
+  const el = $("saved"); if(!el) return;
+  el.style.color = "#8FE3AB";
+  clearTimeout(savedT); savedT = setTimeout(() => { el.style.color = ""; }, 400);
+}
+let S = load();
+
+// Produktliste eines Diensts: archivierte Dienste tragen ihre eigene Momentaufnahme,
+// der laufende Dienst nutzt das aktuelle Sortiment.
+const productsOf = sh => (sh && sh.products) ? sh.products : PRODUCTS;
+
+// Summen für einen beliebigen Dienst (S oder ein archivierter Datensatz)
+const soldTotalOf = sh => productsOf(sh).reduce((s,p)=>s+((sh.sold||{})[p.row]||0)*p.p,0);
+const cashTotalOf = sh => DENOMS.reduce((s,v)=>s+v*((sh.cash||{})[v]||0),0);
+const diffOf      = sh => cashTotalOf(sh) - (sh.startCash||0) - soldTotalOf(sh);
+const cashCountedOf = sh => Object.values(sh.cash||{}).some(q => q > 0);
+
+// Export-Spalte in EXCEL-ZEILEN-Reihenfolge (unabhängig von der Anzeige-Reihenfolge!)
+// blanksForZero: true -> leere Zelle bei 0 (Stick/Datei); false -> 0 ausgeben (Zwischenablage)
+function columnByRow(sh, blanksForZero){
+  const prods = productsOf(sh);
+  const byRow = {};
+  prods.forEach(p => { byRow[p.row] = (sh.sold||{})[p.row]||0; });
+  const out = [];
+  for(let r = 3; r <= maxRowOf(prods); r++){
+    if(!(r in byRow)){ out.push(""); continue; }         // keine Zuordnung -> Zelle leer lassen
+    const q = byRow[r];
+    out.push(blanksForZero ? (q ? String(q) : "") : String(q));
+  }
+  return out;
+}
+
+const salesTotal = () => soldTotalOf(S);
+const cashTotal  = () => cashTotalOf(S);
+const cartTotal  = () => PRODUCTS.reduce((s,p)=>s+(S.cart[p.row]||0)*p.p,0);
+
+// Archiv laden/speichern
+function loadArchive(){ try{ const r=Store.get(AKEY); return r ? JSON.parse(r) : []; }catch(e){ return []; } }
+function saveArchive(arr){ try{ Store.set(AKEY, JSON.stringify(arr)); return true; }catch(e){ return false; } }
+const ddmmyyyy = iso => (iso||"").split("-").reverse().join(".");
+
+/* ---------- Aufbau ---------- */
+function buildGrid(){
+  const grid = $("grid");
+  grid.innerHTML = "";
+  PRODUCTS.forEach(pr => {
+    const b = document.createElement("button");
+    b.className = "prod";
+    b.style.background = groupColor(pr.group);
+    b.dataset.row = pr.row;
+    b.innerHTML = `<span class="badge num" data-badge></span><span class="n">${escH(pr.n)}</span><span class="p num">${eur(pr.p)}</span>`;
+    b.addEventListener("click", () => { S.cart[pr.row]=(S.cart[pr.row]||0)+1; save(); renderCart(); });
+    grid.appendChild(b);
+  });
+}
+const escH = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+buildGrid();
+
+DENOMS.forEach(v => {
+  const row = document.createElement("div");
+  row.className = "denom";
+  row.innerHTML = `<span class="d num">${v>=1 ? v+" €" : (v*100).toFixed(0)+" ct"}</span>
+    <input type="number" min="0" step="1" inputmode="numeric" data-den="${v}" placeholder="0">
+    <span class="s num" data-dsum="${v}">—</span>`;
+  $("denoms").appendChild(row);
+});
+document.querySelectorAll("[data-den]").forEach(i => i.addEventListener("input", () => {
+  const v = parseFloat(i.dataset.den), q = parseInt(i.value,10);
+  S.cash[v] = (isNaN(q)||q<0) ? 0 : q;
+  save(); renderClose();
+}));
+
+/* ---------- Verkauf ---------- */
+function renderCart(){
+  const box = $("cartItems");
+  const items = PRODUCTS.filter(p => S.cart[p.row] > 0);
+  if(!items.length){
+    box.innerHTML = `<div id="cartEmpty">Produkt antippen.<br>Mehrfach tippen = mehrere Stück.</div>`;
+  } else {
+    box.innerHTML = "";
+    items.forEach(p => {
+      const q = S.cart[p.row];
+      const el = document.createElement("div");
+      el.className = "ci";
+      el.innerHTML = `<button data-m="${p.row}" aria-label="Ein Stück weniger">−</button>
+        <span class="q num">${q}</span><span class="cn">${p.n}</span><span class="cs num">${eur(q*p.p)}</span>`;
+      box.appendChild(el);
+    });
+    box.querySelectorAll("[data-m]").forEach(b => b.addEventListener("click", () => {
+      const r = b.dataset.m;
+      if(--S.cart[r] <= 0) delete S.cart[r];
+      save(); renderCart();
+    }));
+  }
+  const t = cartTotal();
+  $("cartSum").textContent = eur(t);
+  $("btnPay").disabled = t <= 0;
+  renderChange();
+}
+/* Gegeben-Betrag: eigenes Eingabemodell, keine OS-Tastatur.
+   givenStr = getippter Text (z. B. "6,50"); givenFresh = nächste Ziffer beginnt neu. */
+let givenStr = "";
+let givenFresh = true;
+function setGiven(str){ givenStr = str; givenFresh = true; showGiven(); }
+function clearGiven(){ givenStr = ""; givenFresh = true; showGiven(); }
+function keypad(k){
+  if(k === "del"){ givenStr = givenStr.slice(0, -1); givenFresh = false; showGiven(); return; }
+  if(givenFresh){ givenStr = ""; givenFresh = false; }
+  if(k === ","){ if(!givenStr.includes(",")) givenStr = (givenStr || "0") + ","; }
+  else {
+    // max 2 Nachkommastellen
+    const parts = givenStr.split(",");
+    if(parts[1] && parts[1].length >= 2) return;
+    givenStr += k;
+  }
+  showGiven();
+}
+function givenValue(){ const v = parseFloat(givenStr.replace(",", ".")); return isNaN(v) ? NaN : v; }
+function showGiven(){
+  $("given").value = givenStr;
+  renderChange();
+}
+function renderChange(){
+  const g = givenValue();
+  const t = cartTotal(), box = $("change");
+  if(isNaN(g) || t <= 0){ box.style.visibility = "hidden"; return; }
+  const c = g - t;
+  box.style.visibility = "visible";
+  box.classList.toggle("neg", c < 0);
+  box.querySelector(".l").textContent = c < 0 ? "Es fehlt noch" : "Rückgeld";
+  $("changeVal").textContent = eur(Math.abs(c));
+}
+function pay(){
+  if(cartTotal() <= 0) return;
+  const snap = Object.assign({}, S.cart);
+  for(const r in snap) S.sold[r] = (S.sold[r]||0) + snap[r];
+  S.hist.push(snap);
+  if(S.hist.length > 60) S.hist.shift();
+  S.cart = {}; clearGiven();
+  save(); renderCart(); renderTop(); renderClose();
+  toast("Gebucht");
+}
+const describeSnap = snap => PRODUCTS.filter(p => snap[p.row] > 0).map(p => snap[p.row] + "× " + escH(p.n)).join(", ");
+function undo(){
+  if(!S.hist.length) return;
+  const snap = S.hist[S.hist.length - 1];
+  ask("Letzte Buchung zurücknehmen?<br><br><b>" + (describeSnap(snap) || "—") + "</b><br><br>Diese Stück werden wieder ausgebucht.", "Zurücknehmen", doUndo);
+}
+function doUndo(){
+  const last = S.hist.pop();
+  if(!last) return;
+  for(const r in last){
+    S.sold[r] = (S.sold[r]||0) - last[r];
+    if(S.sold[r] <= 0) delete S.sold[r];
+  }
+  save(); renderTop(); renderClose(); renderCart();
+  toast("Buchung zurückgenommen");
+}
+function renderTop(){
+  document.querySelectorAll(".prod").forEach(b => {
+    const q = S.sold[b.dataset.row] || 0;
+    b.dataset.sold = q > 0 ? "1" : "0";
+    b.querySelector("[data-badge]").textContent = q;
+  });
+  $("dayTotal").textContent = eur(salesTotal());
+  $("btnUndo").disabled = S.hist.length === 0;
+}
+
+/* ---------- Abschluss ---------- */
+function renderClose(){
+  const tb = $("sumBody");
+  tb.innerHTML = "";
+  PRODUCTS.forEach(p => {
+    const q = S.sold[p.row] || 0;
+    const tr = document.createElement("tr");
+    if(!q) tr.className = "zero";
+    tr.innerHTML = `<td>${escH(p.n)}</td><td class="r num">${eur(p.p)}</td><td class="r num"><b>${q}</b></td>
+      <td class="r num">${eur(q*p.p)}</td>
+      <td class="r">${q ? `<button class="corr" data-fix="${p.row}" title="Ein Stück zurücknehmen">−</button>` : ""}</td>`;
+    tb.appendChild(tr);
+  });
+  tb.querySelectorAll("[data-fix]").forEach(b => b.addEventListener("click", () => {
+    const r = b.dataset.fix;
+    if(--S.sold[r] <= 0) delete S.sold[r];
+    save(); renderTop(); renderClose();
+    toast("Ein Stück zurückgenommen");
+  }));
+
+  DENOMS.forEach(v => {
+    const el = document.querySelector(`[data-dsum="${v}"]`);
+    const q = S.cash[v] || 0;
+    if(el) el.textContent = q ? eur(v*q) : "";
+  });
+
+  const sales = salesTotal(), start = S.startCash || 0, actual = cashTotal();
+  const target = start + sales, diff = actual - target;
+  const counted = Object.values(S.cash).some(q => q > 0);
+
+  $("sumTotal").textContent = eur(sales);
+  const vs = $("verifySum"); if(vs) vs.textContent = eur(sales);
+  $("kvStart").textContent  = eur(start);
+  $("kvSales").textContent  = eur(sales);
+  $("kvTarget").textContent = eur(target);
+  $("kvActual").textContent = eur(actual);
+  $("kvDiff").textContent   = (diff>0?"+":diff<0?"−":"") + eur(Math.abs(diff));
+
+  // Überschuss = Trinkgeld, das ist in Ordnung. Nur ein Fehlbetrag ist ein Problem.
+  const exact = Math.abs(diff) < 0.005;
+  const tip   = diff >=  0.005;
+  const short = diff <= -0.005;
+
+  const box = $("diffBox");
+  box.className = !counted ? "" : (short ? "bad" : "ok");
+  box.querySelector(".l").textContent =
+      !counted ? "Kassa noch nicht gezählt"
+    : exact    ? "Kassa stimmt genau"
+    : tip      ? "Trinkgeld"
+    :            "Fehlbetrag in der Kassa";
+  $("kvTodo").textContent =
+      !counted ? ""
+    : exact    ? "Passt. Weiter zu Schritt 3."
+    : tip      ? "Mehr in der Kassa als verkauft wurde — das ist Trinkgeld. Passt, weiter zu Schritt 3."
+    :            "Nochmal nachzählen. Bleibt der Fehlbetrag, in Schritt 3 notieren — nicht schönrechnen.";
+
+  $("st1").classList.toggle("done", counted);
+  $("st2").classList.toggle("done", counted && !short);
+  $("st3").classList.toggle("done", (S.notes||"").trim().length > 0);
+}
+
+/* ---------- Übergabe ---------- */
+function copyCounts(sh, onDone){
+  const txt = columnByRow(sh, false).join("\n");   // Excel-Zeilen-Reihenfolge, 0 für unverkauft
+  if(navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(txt).then(onDone, () => fb(txt,onDone));
+  else fb(txt,onDone);
+}
+function copyForExcel(){
+  copyCounts(S, () => {
+    $("st4").classList.add("done");
+    S.exported = true; save();
+    const g = $("verifySum");
+    if(g){ g.style.transform = "scale(1.12)"; setTimeout(() => { g.style.transform = ""; }, 260); }
+    toast("Kopiert — jetzt in Excel auf E3 klicken und einfügen");
+  });
+}
+function fb(txt,done){
+  const ta = document.createElement("textarea");
+  ta.value = txt; ta.style.position="fixed"; ta.style.opacity="0";
+  document.body.appendChild(ta); ta.select();
+  try{ document.execCommand("copy"); done(); }catch(e){ toast("Kopieren nicht möglich — CSV verwenden"); }
+  document.body.removeChild(ta);
+}
+function csvShift(sh){
+  const prods = ordered(productsOf(sh));
+  const rows = [["Datum","Team","Produkt","Preis","Stueck","Summe"]];
+  prods.forEach(p => { const q=(sh.sold||{})[p.row]||0; rows.push([sh.date,sh.team,p.n,p.p.toFixed(2),q,(q*p.p).toFixed(2)]); });
+  const d = diffOf(sh);
+  rows.push([], ["Umsatz laut Stricherl","","","","",soldTotalOf(sh).toFixed(2)],
+    ["Anfangs-Kassastand","","","","",(sh.startCash||0).toFixed(2)],
+    ["Ist-Kassastand gezaehlt","","","","",cashTotalOf(sh).toFixed(2)],
+    [d >= 0.005 ? "Trinkgeld" : d <= -0.005 ? "Fehlbetrag" : "Differenz","","","","",Math.abs(d).toFixed(2)],
+    ["Bemerkungen","","","","",(sh.notes||"").replace(/[\r\n;]/g," ")]);
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob(["\uFEFF"+rows.map(r=>r.join(";")).join("\r\n")], {type:"text/csv;charset=utf-8"}));
+  a.download = "Kassa_"+(sh.date||"export")+".csv";
+  a.click(); URL.revokeObjectURL(a.href);
+}
+function columnFile(sh){
+  // Zahlen in Excel-Zeilen-Reihenfolge; Null-Verkäufe/Lücken = Leerzeile.
+  const lines = columnByRow(sh, true);
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob(["\uFEFF"+lines.join("\r\n")], {type:"text/csv;charset=utf-8"}));
+  a.download = "Verbrauch_Spalte-E_"+(sh.date||"export")+".csv";
+  a.click(); URL.revokeObjectURL(a.href);
+}
+function downloadColumn(){
+  columnFile(S);
+  $("st4").classList.add("done");
+  S.exported = true; save();
+  toast("Zahlen-Spalte gespeichert — auf den Stick");
+}
+function downloadCsv(){
+  csvShift(S);
+  $("st4").classList.add("done");
+  S.exported = true; save();
+  toast("CSV gespeichert");
+}
+/* Eigener Dialog statt confirm() — Browser-Dialoge sind in eingebetteten Seiten blockiert */
+let askCb = null;
+function ask(text, okLabel, cb){
+  $("askText").innerHTML = text;
+  $("askYes").textContent = okLabel;
+  askCb = cb;
+  $("ask").classList.add("on");
+}
+$("askNo").addEventListener("click", () => { askCb = null; $("ask").classList.remove("on"); });
+$("askYes").addEventListener("click", () => {
+  const cb = askCb; askCb = null;
+  $("ask").classList.remove("on");
+  if(cb) cb();
+});
+$("ask").addEventListener("click", e => { if(e.target.id === "ask"){ askCb = null; $("ask").classList.remove("on"); } });
+
+function endShift(){
+  if(salesTotal() > 0 && !S.exported){
+    ask("Die Zahlen dieses Dienstes sind noch <b>nicht übergeben</b>.<br><br>Mit „Beenden“ werden sie gelöscht. Vorher kopieren, speichern oder drucken.",
+        "Trotzdem beenden", wipe);
+    return;
+  }
+  if(salesTotal() > 0){
+    ask("Dienst wirklich beenden?<br><br>Die Zahlen sind übergeben und werden jetzt gelöscht.", "Ja, beenden", wipe);
+    return;
+  }
+  wipe();
+}
+function archiveCurrent(){
+  // Leeren Dienst (nichts verkauft, nichts gezählt, keine Notiz) nicht archivieren
+  if(salesTotal() <= 0 && !cashCountedOf(S) && !(S.notes||"").trim()) return;
+  const rec = {
+    id: Date.now(),
+    endedAt: new Date().toISOString(),
+    date: S.date, team: S.team, startCash: S.startCash,
+    sold: Object.assign({}, S.sold),
+    cash: Object.assign({}, S.cash),
+    notes: S.notes || "",
+    // Momentaufnahme des Sortiments: so bleibt der Dienst korrekt lesbar,
+    // auch wenn Artikel/Preise später geändert werden.
+    products: PRODUCTS.map(p => ({ n:p.n, p:p.p, group:p.group, row:p.row, order:p.order }))
+  };
+  const arr = loadArchive();
+  arr.push(rec);
+  if(!saveArchive(arr)) toast("Archiv-Speicher voll — Backup erstellen und alte Dienste löschen");
+}
+function wipe(){
+  archiveCurrent();
+  S = blank(); save();
+  document.querySelectorAll("[data-den]").forEach(i => i.value = "");
+  $("notes").value = ""; clearGiven();
+  $("fDate").value = S.date; $("fTeam").value = "";
+  ["st1","st2","st3","st4"].forEach(id => $(id).classList.remove("done"));
+  screen("start"); renderCart(); renderTop(); renderClose();
+  toast("Dienst beendet");
+}
+
+/* ---------- Navigation ---------- */
+let currentScreen = "start";
+function screen(name){
+  currentScreen = name;
+  const chrome = (name === "sale" || name === "close");   // Kopf + Reiter nur im Dienst
+  $("hdr").style.display = chrome ? "flex" : "none";
+  $("nav").style.display = chrome ? "flex" : "none";
+  $("viewStart").classList.toggle("on",   name === "start");
+  $("viewSale").classList.toggle("on",    name === "sale");
+  $("viewClose").classList.toggle("on",   name === "close");
+  $("viewHistory").classList.toggle("on", name === "history");
+  $("viewSort").classList.toggle("on", name === "sort");
+  $("tabSale").setAttribute("aria-selected", name === "sale");
+  $("tabClose").setAttribute("aria-selected", name === "close");
+  if(name === "close") renderClose();
+  if(name === "history") renderHistory();
+  if(name === "start") renderStart();
+  if(name === "sort") renderSortEditor();
+}
+function renderStart(){
+  const r = $("resume");
+  if(S.active){
+    r.style.display = "block";
+    r.innerHTML = `<b>Es läuft noch ein Dienst</b><br>${S.team||"ohne Team"} · ${ddmmyyyy(S.date)} · ${eur(salesTotal())} Umsatz
+      <button class="btn primary" style="margin-top:10px" id="btnResume">Diesen Dienst fortsetzen</button>`;
+    $("btnResume").addEventListener("click", () => {
+      $("hTeam").textContent = S.team || "—";
+      $("hDate").textContent = ddmmyyyy(S.date);
+      screen("sale");
+    });
+  } else {
+    r.style.display = "none";
+    r.innerHTML = "";
+  }
+}
+
+/* ---------- Verlauf ---------- */
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+let histReturn = "start";
+function openHistory(){
+  histReturn = (currentScreen === "sale" || currentScreen === "close") ? currentScreen : "start";
+  screen("history");
+}
+function closeHistory(){ screen(histReturn); }
+
+function renderHistory(){ showList(); }
+
+function showList(){
+  $("histDetail").style.display = "none";
+  $("histList").style.display = "block";
+  $("histTitle").textContent = "Verlauf";
+  const arr = loadArchive().slice().sort((a,b) => b.id - a.id);   // neueste zuerst
+  const note = $("backupNote"), list = $("histList");
+  if(!arr.length){
+    note.textContent = "";
+    list.innerHTML = `<div class="histempty">Noch keine abgeschlossenen Dienste.<br>Sobald ein Dienst über „Dienst beenden“ abgeschlossen wird, erscheint er hier.</div>`;
+    return;
+  }
+  note.textContent = arr.length === 1
+    ? "1 abgeschlossener Dienst gespeichert. „Backup speichern“ legt ihn als Datei außerhalb des Geräts ab."
+    : arr.length + " abgeschlossene Dienste gespeichert. „Backup speichern“ legt sie als Datei außerhalb des Geräts ab.";
+  list.innerHTML = "";
+  arr.forEach(sh => {
+    const u = soldTotalOf(sh), d = diffOf(sh), counted = cashCountedOf(sh);
+    const cls = !counted ? "" : d <= -0.005 ? "bad" : "ok";
+    const label = !counted ? "nicht gezählt"
+      : d >= 0.005 ? "Trinkgeld " + eur(Math.abs(d))
+      : d <= -0.005 ? "Fehlbetrag " + eur(Math.abs(d))
+      : "Kassa stimmt";
+    const b = document.createElement("button");
+    b.className = "hrow";
+    b.innerHTML = `<div class="hd">
+        <div class="hdate">${ddmmyyyy(sh.date)}</div>
+        <div class="hteam">${sh.team ? esc(sh.team) : "ohne Team"}</div>
+      </div>
+      <div class="hsum"><div class="hu num">${eur(u)}</div><span class="tag ${cls}">${label}</span></div>
+      <span class="chev">›</span>`;
+    b.addEventListener("click", () => showShift(sh.id));
+    list.appendChild(b);
+  });
+}
+
+function showShift(id){
+  const sh = loadArchive().find(x => x.id === id);
+  if(!sh){ showList(); return; }
+  $("histList").style.display = "none";
+  const det = $("histDetail");
+  det.style.display = "block";
+  $("histTitle").textContent = ddmmyyyy(sh.date);
+
+  const u = soldTotalOf(sh), start = sh.startCash||0, counted = cashTotalOf(sh),
+        d = diffOf(sh), isCounted = cashCountedOf(sh);
+  const dlabel = !isCounted ? "Kassa nicht gezählt"
+    : d >= 0.005 ? "Trinkgeld" : d <= -0.005 ? "Fehlbetrag" : "Kassa stimmt genau";
+
+  let rowsHtml = "";
+  ordered(productsOf(sh)).forEach(p => {
+    const q = (sh.sold||{})[p.row]||0;
+    if(q) rowsHtml += `<tr><td>${escH(p.n)}</td><td class="r num">${eur(p.p)}</td><td class="r num"><b>${q}</b></td><td class="r num">${eur(q*p.p)}</td></tr>`;
+  });
+  if(!rowsHtml) rowsHtml = `<tr><td colspan="4" style="color:var(--muted)">Keine Verkäufe erfasst.</td></tr>`;
+
+  let endedStr = "";
+  try{ endedStr = " · abgeschlossen " + new Date(sh.endedAt).toLocaleString("de-AT"); }catch(e){}
+
+  det.innerHTML = `
+    <div class="dhead">
+      <div class="dt">${ddmmyyyy(sh.date)}</div>
+      <div class="dm">${sh.team ? esc(sh.team) : "ohne Team"}${endedStr}</div>
+    </div>
+    <div class="step"><h3><span class="no"><span>✎</span></span>Stricherlliste — verkauft</h3>
+      <table>
+        <thead><tr><th>Produkt</th><th class="r">Preis</th><th class="r">Stück</th><th class="r">Summe</th></tr></thead>
+        <tbody>${rowsHtml}</tbody>
+        <tfoot><tr><td colspan="3">Gesamtsumme</td><td class="r num">${eur(u)}</td></tr></tfoot>
+      </table>
+    </div>
+    <div class="step"><h3><span class="no"><span>€</span></span>Kassensturz</h3>
+      <div class="body">
+        <div class="kv"><span>Anfangs-Kassastand</span><b class="num">${eur(start)}</b></div>
+        <div class="kv"><span>+ Umsatz laut Stricherl</span><b class="num">${eur(u)}</b></div>
+        <div class="kv"><span>= Soll mindestens</span><b class="num">${eur(start+u)}</b></div>
+        <div class="kv"><span>Ist gezählt</span><b class="num">${isCounted ? eur(counted) : "—"}</b></div>
+        <div class="kv"><span>${dlabel}</span><b class="num">${isCounted ? eur(Math.abs(d)) : "—"}</b></div>
+      </div>
+    </div>
+    ${(sh.notes||"").trim() ? `<div class="step"><h3><span class="no"><span>✎</span></span>Bemerkungen</h3><div class="body" style="font-size:13.5px;line-height:1.55;white-space:pre-wrap">${esc(sh.notes)}</div></div>` : ""}
+    <div class="actions" style="margin-bottom:14px">
+      <button class="btn primary" id="dEdit">✎ Bearbeiten</button>
+      <button class="btn" id="dCopy">Für Excel kopieren</button>
+      <button class="btn" id="dCsv">Beleg (CSV)</button>
+      <button class="btn danger" id="dDel">Löschen</button>
+    </div>
+    <button class="btn ghost" id="dBack">← Zurück zur Liste</button>`;
+
+  $("dEdit").addEventListener("click", () => editShift(id));
+  $("dCopy").addEventListener("click", () => copyCounts(sh, () => toast("28 Zahlen kopiert — in Excel bei E3 einfügen")));
+  $("dCsv").addEventListener("click", () => { csvShift(sh); toast("Beleg gespeichert"); });
+  $("dDel").addEventListener("click", () => ask(
+    "Diesen Dienst aus dem Verlauf löschen?<br><br>Das lässt sich nicht rückgängig machen. Ein <b>Backup</b> sichert vorher alles.",
+    "Löschen", () => { saveArchive(loadArchive().filter(x => x.id !== id)); showList(); toast("Dienst gelöscht"); }));
+  $("dBack").addEventListener("click", showList);
+}
+
+/* ---------- Vergangenen Dienst bearbeiten ---------- */
+let editState = null;
+function editShift(id){
+  const sh = loadArchive().find(x => x.id === id);
+  if(!sh){ showList(); return; }
+  editState = { id, date:sh.date, team:sh.team||"", startCash:sh.startCash, endedAt:sh.endedAt,
+                sold:Object.assign({}, sh.sold||{}), cash:Object.assign({}, sh.cash||{}), notes:sh.notes||"",
+                products: sh.products ? sh.products.map(p => Object.assign({}, p)) : PRODUCTS.map(p => Object.assign({}, p)) };
+  renderEdit();
+}
+function renderEdit(){
+  const e = editState;
+  $("histTitle").textContent = "Bearbeiten";
+  $("histList").style.display = "none";
+  const det = $("histDetail");
+  det.style.display = "block";
+
+  const prodRows = ordered(e.products).map(p => {
+    const q = e.sold[p.row] || 0;
+    return `<div class="erow"><span class="en">${escH(p.n)}</span><span class="ep num">${eur(p.p)}</span>
+      <div class="estep"><button class="stp" data-em="${p.row}">−</button><span class="eq num" data-eq="${p.row}">${q}</span><button class="stp" data-ep="${p.row}">+</button></div></div>`;
+  }).join("");
+  const denomRows = DENOMS.map(v => `<div class="denom"><span class="d num">${v>=1 ? v+" €" : (v*100).toFixed(0)+" ct"}</span>
+      <input type="number" min="0" step="1" inputmode="numeric" data-eden="${v}" value="${e.cash[v]||""}" placeholder="0"></div>`).join("");
+
+  det.innerHTML = `
+    <div class="dhead"><div class="dt">Dienst bearbeiten</div><div class="dm">Die Änderungen überschreiben den gespeicherten Dienst.</div></div>
+    <div class="step"><h3><span class="no"><span>✎</span></span>Datum &amp; Team</h3><div class="body">
+      <div class="field"><label>Datum</label><input id="eDate" type="date" value="${e.date}"></div>
+      <div class="field" style="margin-bottom:0"><label>Team</label><input id="eTeam" type="text" value="${esc(e.team)}"></div>
+    </div></div>
+    <div class="step"><h3><span class="no"><span>✎</span></span>Verkaufte Stück</h3><div class="body"><div class="elist">${prodRows}</div></div></div>
+    <div class="step"><h3><span class="no"><span>€</span></span>Kassa gezählt</h3><div class="body"><div class="denomgrid">${denomRows}</div></div></div>
+    <div class="step"><h3><span class="no"><span>✎</span></span>Bemerkungen</h3><div class="body"><textarea id="eNotes">${esc(e.notes)}</textarea></div></div>
+    <div class="actions" style="margin-bottom:14px">
+      <button class="btn primary" id="eSave">Speichern</button>
+      <button class="btn" id="eCancel">Abbrechen</button>
+    </div>`;
+
+  det.querySelectorAll("[data-ep]").forEach(b => b.addEventListener("click", () => {
+    const r = b.dataset.ep; e.sold[r] = (e.sold[r]||0) + 1;
+    det.querySelector(`[data-eq="${r}"]`).textContent = e.sold[r];
+  }));
+  det.querySelectorAll("[data-em]").forEach(b => b.addEventListener("click", () => {
+    const r = b.dataset.em; e.sold[r] = Math.max(0, (e.sold[r]||0) - 1);
+    det.querySelector(`[data-eq="${r}"]`).textContent = e.sold[r];
+    if(e.sold[r] === 0) delete e.sold[r];
+  }));
+  $("eSave").addEventListener("click", saveEdit);
+  $("eCancel").addEventListener("click", () => showShift(e.id));
+}
+function saveEdit(){
+  const e = editState;
+  e.date = $("eDate").value || e.date;
+  e.team = $("eTeam").value.trim();
+  e.notes = $("eNotes").value;
+  const cash = {};
+  document.querySelectorAll("[data-eden]").forEach(i => {
+    const v = parseFloat(i.dataset.eden), q = parseInt(i.value, 10);
+    if(q > 0) cash[v] = q;
+  });
+  const arr = loadArchive();
+  const idx = arr.findIndex(x => x.id === e.id);
+  if(idx >= 0){
+    arr[idx] = { id:e.id, date:e.date, team:e.team, startCash:e.startCash, endedAt:e.endedAt,
+                 editedAt:new Date().toISOString(), sold:e.sold, cash, notes:e.notes, products:e.products };
+    saveArchive(arr);
+  }
+  toast("Änderungen gespeichert");
+  showShift(e.id);
+}
+
+function doBackup(){
+  const data = { app:"cafe-kassa", version:1, exportedAt:new Date().toISOString(), archive:loadArchive() };
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([JSON.stringify(data,null,2)], {type:"application/json"}));
+  a.download = "Kassa-Backup_" + today() + ".json";
+  a.click(); URL.revokeObjectURL(a.href);
+  toast("Backup gespeichert");
+}
+function doRestore(file){
+  const reader = new FileReader();
+  reader.onload = () => {
+    let data;
+    try{ data = JSON.parse(reader.result); }catch(e){ toast("Datei nicht lesbar"); return; }
+    const incoming = Array.isArray(data) ? data : (data && Array.isArray(data.archive) ? data.archive : null);
+    if(!incoming){ toast("Keine Backup-Daten in der Datei"); return; }
+    ask(`Backup einlesen? <b>${incoming.length}</b> Dienste werden mit dem vorhandenen Verlauf zusammengeführt (Doppelte werden erkannt).`,
+      "Einlesen", () => {
+        const byId = {};
+        [...loadArchive(), ...incoming].forEach(sh => { if(sh && sh.id != null) byId[sh.id] = sh; });
+        saveArchive(Object.values(byId).sort((a,b) => a.id - b.id));
+        showList();
+        toast(incoming.length + " Dienste eingelesen");
+      });
+  };
+  reader.readAsText(file);
+}
+/* ---------- Sortiment-Editor ---------- */
+function openSort(){ sortReturn = (currentScreen === "sale" || currentScreen === "close") ? currentScreen : "start"; screen("sort"); }
+let sortReturn = "start";
+
+function renderSortEditor(){
+  const list = $("eprodList");
+  list.innerHTML = "";
+  const groupOpts = () => GROUPS.map(g => `<option value="${g.id}">${escH(g.name)}</option>`).join("");
+  // Doppelte Excel-Zeilen erkennen
+  const rowCount = {};
+  SORT.products.forEach(p => { rowCount[p.row] = (rowCount[p.row]||0) + 1; });
+
+  ordered(SORT.products).forEach(p => {
+    const dup = rowCount[p.row] > 1;
+    const el = document.createElement("div");
+    el.className = "eprod" + (dup ? " warnrow" : "");
+    el.innerHTML = `
+      <div class="swatch" style="background:${groupColor(p.group)}"></div>
+      <input class="enm" type="text" value="${escH(p.n)}" data-pid="${p.row}" data-f="n">
+      <input class="epr" type="number" step="0.10" min="0" value="${p.p}" data-pid="${p.row}" data-f="p">
+      <select class="egr" data-pid="${p.row}" data-f="group">${groupOpts()}</select>
+      <span class="erow-num" title="${dup ? "Achtung: Zeile doppelt vergeben!" : "Excel-Zeile"}">Zeile <input type="number" min="3" value="${p.row}" data-pid="${p.row}" data-f="row"></span>
+      <span class="ord"><button class="ordb" data-up="${p.row}">▲</button><button class="ordb" data-down="${p.row}">▼</button></span>
+      <button class="delb" data-del="${p.row}" title="Artikel löschen">🗑</button>`;
+    list.appendChild(el);
+    el.querySelector("select.egr").value = p.group;
+  });
+
+  // Textfelder: bei Änderung ins Sortiment schreiben
+  list.querySelectorAll("[data-f]").forEach(inp => {
+    inp.addEventListener("change", () => {
+      const row = parseInt(inp.dataset.pid, 10);
+      const prod = SORT.products.find(x => x.row === row);
+      if(!prod) return;
+      const f = inp.dataset.f;
+      if(f === "n") prod.n = inp.value.trim() || prod.n;
+      else if(f === "p") prod.p = Math.max(0, parseFloat(inp.value) || 0);
+      else if(f === "group") prod.group = inp.value;
+      else if(f === "row"){
+        const nr = parseInt(inp.value, 10);
+        if(nr >= 3){ prod.row = nr; }
+      }
+      commitSort();
+      if(f === "group" || f === "row") renderSortEditor();   // Farbe/Warnung neu zeichnen
+    });
+  });
+  // Reihenfolge
+  list.querySelectorAll("[data-up]").forEach(b => b.addEventListener("click", () => moveProd(parseInt(b.dataset.up,10), -1)));
+  list.querySelectorAll("[data-down]").forEach(b => b.addEventListener("click", () => moveProd(parseInt(b.dataset.down,10), +1)));
+  // Löschen
+  list.querySelectorAll("[data-del]").forEach(b => b.addEventListener("click", () => {
+    const row = parseInt(b.dataset.del, 10);
+    const prod = SORT.products.find(x => x.row === row);
+    ask(`Artikel <b>${escH(prod ? prod.n : "")}</b> aus dem Sortiment entfernen?<br><br>Tipp: In Excel die Zeile ${row} einfach leer lassen, nicht löschen.`,
+      "Entfernen", () => {
+        SORT.products = SORT.products.filter(x => x.row !== row);
+        commitSort(); renderSortEditor(); toast("Artikel entfernt");
+      });
+  }));
+
+  // Gruppen
+  const gl = $("egroupList");
+  gl.innerHTML = "";
+  GROUPS.forEach(g => {
+    const el = document.createElement("div");
+    el.className = "egroup";
+    el.innerHTML = `<input type="color" value="${g.color}" data-gid="${g.id}" data-gf="color">
+      <input class="gnm" type="text" value="${escH(g.name)}" data-gid="${g.id}" data-gf="name">
+      <button class="delb" data-gdel="${g.id}" title="Gruppe löschen">🗑</button>`;
+    gl.appendChild(el);
+  });
+  gl.querySelectorAll("[data-gf]").forEach(inp => inp.addEventListener("change", () => {
+    const g = GROUPS.find(x => x.id === inp.dataset.gid); if(!g) return;
+    if(inp.dataset.gf === "color") g.color = inp.value;
+    else g.name = inp.value.trim() || g.name;
+    commitSort();
+    if(inp.dataset.gf === "color"){ renderSortEditor(); }
+  }));
+  gl.querySelectorAll("[data-gdel]").forEach(b => b.addEventListener("click", () => {
+    const gid = b.dataset.gdel;
+    const used = SORT.products.some(p => p.group === gid);
+    if(used){ toast("Gruppe wird noch von Artikeln benutzt"); return; }
+    if(GROUPS.length <= 1){ toast("Mindestens eine Gruppe muss bleiben"); return; }
+    ask("Diese Gruppe löschen?", "Löschen", () => {
+      SORT.groups = SORT.groups.filter(x => x.id !== gid);
+      commitSort(); renderSortEditor(); toast("Gruppe gelöscht");
+    });
+  }));
+}
+function moveProd(row, dir){
+  const arr = ordered(SORT.products);
+  const i = arr.findIndex(p => p.row === row);
+  const j = i + dir;
+  if(i < 0 || j < 0 || j >= arr.length) return;
+  const a = arr[i], b = arr[j];
+  const ao = a.order, bo = b.order;
+  a.order = bo; b.order = ao;
+  commitSort(); renderSortEditor();
+}
+function commitSort(){
+  // order-Werte normalisieren
+  ordered(SORT.products).forEach((p,i) => p.order = i);
+  saveSort(); refreshSort(); buildGrid(); renderTop();
+}
+function addProduct(){
+  const nextRow = maxRowOf(SORT.products) + 1;
+  const nextOrder = SORT.products.length;
+  SORT.products.push({ n:"Neuer Artikel", p:1.00, group:(GROUPS[0]&&GROUPS[0].id)||"sonst", row:nextRow, order:nextOrder });
+  commitSort(); renderSortEditor();
+  toast("Artikel hinzugefügt — Name, Preis und Excel-Zeile anpassen");
+}
+function addGroup(){
+  const id = "g" + Date.now();
+  SORT.groups.push({ id, name:"Neue Gruppe", color:"#CFE3B4" });
+  commitSort(); renderSortEditor();
+}
+
+let tid;
+function toast(m){
+  const t = $("toast");
+  t.textContent = m; t.classList.add("on");
+  clearTimeout(tid); tid = setTimeout(() => t.classList.remove("on"), 1700);
+}
+
+/* ---------- Events ---------- */
+$("btnStart").addEventListener("click", () => {
+  S.date = $("fDate").value || today();
+  S.team = $("fTeam").value.trim();
+  S.startCash = START_CASH;
+  S.active = true;
+  save();
+  $("hTeam").textContent = S.team || "—";
+  $("hDate").textContent = S.date.split("-").reverse().join(".");
+  screen("sale");
+  if(!Store.get("cafe-kassa-seen")){ $("help").classList.add("on"); Store.set("cafe-kassa-seen","1"); }
+});
+$("btnPay").addEventListener("click", pay);
+$("btnUndo").addEventListener("click", undo);
+$("btnClear").addEventListener("click", () => { S.cart={}; clearGiven(); save(); renderCart(); });
+// Eigener Ziffernblock statt OS-Tastatur
+$("keypad").addEventListener("click", e => { const b = e.target.closest("[data-k]"); if(b) keypad(b.dataset.k); });
+document.querySelectorAll(".quickcash [data-cash]").forEach(b => b.addEventListener("click", () => setGiven(b.dataset.cash)));
+$("btnExact").addEventListener("click", () => { const t = cartTotal(); if(t > 0) setGiven(String(t.toFixed(2)).replace(".", ",")); });
+$("btnGivenClear").addEventListener("click", clearGiven);
+// Windows-Touch-Tastatur nie aufpoppen lassen: Feld nicht fokussierbar per Tap
+$("given").addEventListener("focus", e => e.target.blur());
+$("given").addEventListener("mousedown", e => e.preventDefault());
+// Wer eine echte Tastatur hat (Type Cover), darf trotzdem Ziffern tippen
+document.addEventListener("keydown", e => {
+  if(currentScreen !== "sale") return;
+  const tag = (e.target.tagName || "").toLowerCase();
+  if(tag === "input" || tag === "textarea" || tag === "select") return;
+  if(e.key >= "0" && e.key <= "9") keypad(e.key);
+  else if(e.key === "," || e.key === ".") keypad(",");
+  else if(e.key === "Backspace"){ keypad("del"); e.preventDefault(); }
+  else if(e.key === "Enter" && !$("btnPay").disabled) pay();
+});
+$("notes").addEventListener("input", e => { S.notes = e.target.value; save(); renderClose(); });
+$("btnCopy").addEventListener("click", copyForExcel);
+$("btnCsv").addEventListener("click", downloadCsv);
+$("btnPrint").addEventListener("click", () => { $("st4").classList.add("done"); S.exported = true; save(); window.print(); });
+$("btnReset").addEventListener("click", endShift);
+$("btnMenu").addEventListener("click", () => screen("start"));
+$("tabSale").addEventListener("click", () => screen("sale"));
+$("tabClose").addEventListener("click", () => screen("close"));
+$("btnHist").addEventListener("click", openHistory);
+$("btnHist2").addEventListener("click", openHistory);
+$("btnHistBack").addEventListener("click", () => {
+  if($("histDetail").style.display === "block") showList();
+  else closeHistory();
+});
+$("btnBackup").addEventListener("click", doBackup);
+$("btnRestore").addEventListener("click", () => $("restoreFile").click());
+$("restoreFile").addEventListener("change", e => { if(e.target.files[0]) doRestore(e.target.files[0]); e.target.value = ""; });
+$("btnHelp").addEventListener("click", () => $("help").classList.add("on"));
+$("btnHelp2").addEventListener("click", () => $("help").classList.add("on"));
+$("btnSortBack").addEventListener("click", () => screen(sortReturn));
+$("btnSort2").addEventListener("click", openSort);
+$("btnAddProd").addEventListener("click", addProduct);
+$("btnAddGroup").addEventListener("click", addGroup);
+$("btnHelpClose").addEventListener("click", () => $("help").classList.remove("on"));
+$("help").addEventListener("click", e => { if(e.target.id === "help") $("help").classList.remove("on"); });
+
+/* ---------- Start ---------- */
+$("fDate").value  = S.date;
+$("fTeam").value  = S.team || "";
+document.querySelectorAll("[data-den]").forEach(i => { const v=i.dataset.den; if(S.cash[v]) i.value = S.cash[v]; });
+$("notes").value = S.notes || "";
+
+if(S.active){
+  $("hTeam").textContent = S.team || "—";
+  $("hDate").textContent = ddmmyyyy(S.date);
+}
+
+// Uhr
+function updateClock(){
+  const el = $("clock"); if(!el) return;
+  const d = new Date();
+  el.textContent = String(d.getHours()).padStart(2,"0") + ":" + String(d.getMinutes()).padStart(2,"0");
+}
+updateClock(); setInterval(updateClock, 15000);
+
+if(!Store.persistent){
+  $("banner").hidden = false;
+  $("banner").textContent = "Vorschau-Modus: nichts wird gespeichert. Die heruntergeladene Datei speichert lokal nach jeder Buchung.";
+}
+
+renderCart();
+renderTop();
+renderClose();
+screen("start");
+</script>
+<div style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#1A1A1A;color:#fff;font:14px/1.4 system-ui,sans-serif;padding:8px 14px;text-align:center">Demo-Version zum Ausprobieren: Beispielsortiment, alle Eingaben bleiben nur in diesem Browser. <a href="../" style="color:#d4a853">Zurück zum Portfolio</a></div>
+</body>
+</html>
