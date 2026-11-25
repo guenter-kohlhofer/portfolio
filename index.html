@@ -64,7 +64,7 @@
   <div class="wrap">
     <div class="kicker" id="kicker">Günter Kohlhofer · Portfolio · Graz</div>
     <h1>Abläufe verstehen.<br>Mit KI automatisieren.<br>Im Alltag einsetzen.</h1>
-    <p class="lead">IT-Techniker mit rund zehn Jahren Praxis in Geräteverwaltung und Werkstattbetrieb. Seit 2026 baue ich mit KI (vor allem Claude) Werkzeuge, die echte Arbeit abnehmen: von der Kassa für ein Café bis zur automatischen Aufbereitung von Produktfotos. Diese Seite zeigt, was dabei entstanden ist.</p>
+    <p class="lead">IT-Techniker mit rund zehn Jahren Praxis in Geräteverwaltung und Werkstattbetrieb. Seit 2026 baue ich mit KI (vor allem Claude) Werkzeuge, die echte Arbeit abnehmen: von der Kassa für ein Café über verkaufsfertige Inserate aus Handyfotos bis zum regelbasierten Trading-System. Diese Seite zeigt, was dabei entstanden ist.</p>
     <div class="stats">
       <div class="stat"><b>20+</b><span>Projekte seit 2026</span></div>
       <div class="stat"><b>8</b><span>eigene KI-Skills (wiederverwendbare Abläufe)</span></div>
@@ -75,10 +75,11 @@
 
 <nav class="toc"><div class="wrap">
   <a href="#arbeitsweise">Arbeitsweise</a>
-  <a href="#automatisierung">Praxisprojekt</a>
+  <a href="#automatisierung">Praxis</a>
   <a href="#trading">Trading-System</a>
   <a href="#ki-workflows">KI-Skills</a>
   <a href="#konzepte">Konzepte</a>
+  <a href="#tra">Trading Radar Austria</a>
   <a href="#web">Webseiten &amp; Web-Apps</a>
   <a href="#werkzeuge">Werkzeuge</a>
 </div></nav>
@@ -98,8 +99,8 @@
 </section>
 
 <section id="automatisierung">
-  <h2>Praxisprojekt</h2>
-  <p class="sub">Ein echter Ablauf mit echten Nutzern, gelöst mit dem, was vor Ort ohnehin vorhanden ist: ein Browser und die bestehenden Excel-Mappen.</p>
+  <h2>Praxis &amp; Automatisierung</h2>
+  <p class="sub">Echte Abläufe mit echten Nutzern: vom Café über den Verkauf gebrauchter Ware bis zur eigenen Datenablage.</p>
   <div class="grid">
 
     <article class="card feature">
@@ -112,6 +113,37 @@
         <li>Beim Nachbauen der Logik wurden vier Fehler in den bisherigen Tabellen entdeckt.</li>
       </ul>
       <div class="tags"><span class="tag">Vanilla JS</span><span class="tag">ohne Abhängigkeiten</span><span class="tag">Offline-first</span></div>
+    </article>
+
+    <article class="card feature">
+      <h3>Inserate aus Handyfotos: Willhaben-Skill</h3>
+      <div class="meta">Claude-Skill · Python-Bildbearbeitung · Stapelverarbeitung</div>
+      <p>Man fotografiert ein Produkt mit dem Handy, lädt die Bilder hoch und bekommt fertige Inserate zurück. Das Projekt, das im persönlichen Gespräch bisher am meisten Eindruck gemacht hat.</p>
+      <ul>
+        <li>Bilder werden automatisch gedreht, begradigt, einheitlich im 4:3-Format zugeschnitten und farblich korrigiert.</li>
+        <li>Fremde Etiketten und Seriennummern werden wegretuschiert.</li>
+        <li>Dazu fertige Anzeigentexte und eine Preisempfehlung, gebündelt als Paket mit einem Ordner je Produkt zum Weiterschicken per WhatsApp.</li>
+        <li>Einmal als Skill beschrieben, danach für jedes neue Produkt mit einem Satz wiederholbar.</li>
+      </ul>
+      <div class="tags"><span class="tag">Pillow / NumPy</span><span class="tag">Bildbearbeitung</span><span class="tag">Texterstellung</span><span class="tag">E-Commerce</span></div>
+    </article>
+
+    <article class="card">
+      <h3>Ordnung in Cloud und Laptop</h3>
+      <div class="meta">Datenmigration · Google Drive · Google Fotos</div>
+      <p>Über Jahre verstreute Daten aus mehreren Clouds, Laptops und externen Datenträgern werden zusammengeführt: eine einheitliche Ordnerstruktur mit nummerierten Themenordnern in Drive, dieselbe Nummerierung in den Fotoalben, Laptop-Dateien direkt in die synchronisierte Ablage.</p>
+      <ul>
+        <li>Grundregel: nichts löschen, Duplikate und Unklares wandern ins Archiv.</li>
+        <li>Große Aufräumaktionen in kleinen, prüfbaren Schritten mit Protokoll.</li>
+      </ul>
+      <div class="tags"><span class="tag">Datenmigration</span><span class="tag">Dateiorganisation</span><span class="tag">PowerShell</span></div>
+    </article>
+
+    <article class="card">
+      <h3>Persönliche Gesundheitsakte digitalisiert</h3>
+      <div class="meta">Dokumentenerfassung · Auswertung (hier ohne Daten)</div>
+      <p>Belege und Befunde aus mehr als einem Jahrzehnt eingescannt, geordnet und ausgewertet: Ausgaben und Rückerstattungen über alle Jahre berechnet, daraus Übersichten für unterschiedliche Leser erstellt, etwa für Ärzte, Behörden und Angehörige.</p>
+      <div class="tags"><span class="tag">Scannen &amp; Ablage</span><span class="tag">Tabellen</span><span class="tag">Zielgruppengerechte Texte</span></div>
     </article>
 
   </div>
@@ -179,13 +211,6 @@
     </article>
 
     <article class="card">
-      <h3>Produktfotos &amp; Inserate</h3>
-      <div class="meta">Claude-Skill · Python-Bildbearbeitung</div>
-      <p>Aus Handyfotos werden verkaufsfertige Inseratbilder: drehen, begradigen, einheitlich zuschneiden, Farben korrigieren, fremde Etiketten und Seriennummern entfernen. Dazu fertige Anzeigentexte und ein Paket je Produkt zum Weiterschicken.</p>
-      <div class="tags"><span class="tag">Pillow / NumPy</span><span class="tag">Stapelverarbeitung</span></div>
-    </article>
-
-    <article class="card">
       <h3>Instagram-Karussell weitergeben</h3>
       <div class="meta">Claude-Skill · Video- &amp; PDF-Verarbeitung</div>
       <p>Aus einer Bildschirmaufnahme eines Instagram-Beitrags entstehen saubere Einzelfolien ohne Bedienelemente, daraus Video, PDF und Bilderalbum für Menschen ohne Instagram.</p>
@@ -250,10 +275,56 @@
   </div>
 </section>
 
+<section id="tra">
+  <h2>Trading Radar Austria &amp; Reichweite</h2>
+  <p class="sub">Eigene Analysemarke für Geopolitik und Märkte („Wo Geopolitik auf Märkte trifft“). Recherchiert, faktengeprüft und mit Quellen, KI-gestützt in Recherche, Gestaltung und Ablauf.</p>
+  <div class="grid">
+
+    <article class="card feature">
+      <h3>Beitrag mit großer Reichweite: Alterskontrolle im Netz</h3>
+      <div class="meta">Facebook · Juli 2026 · 846 Reaktionen · 94 Kommentare · 255 Mal geteilt</div>
+      <p>Technische Analyse, warum ein Social-Media-Verbot unter 14 kaum durchsetzbar ist: sechs Gründe von manipulierbaren Endgeräten über die Ungenauigkeit von Altersschätzung bis zu VPNs, belegt mit Studien und Herstellerangaben, ergänzt um einen Faktencheck aus Australien. Dazu eine eigene Infografik im einheitlichen Stil.</p>
+      <div class="tags"><span class="tag">Recherche</span><span class="tag">Technik verständlich erklärt</span><span class="tag">Infografik</span><span class="tag">Reichweite</span></div>
+    </article>
+
+    <article class="card">
+      <h3>Marke &amp; Design-System</h3>
+      <div class="meta">Corporate Design · Grafikvorlagen</div>
+      <p>Einheitlicher Auftritt über Facebook, X und Instagram: Farben, Typografie und Vorlagen als Design-System festgehalten, daraus Grafiken, Karussells und Szenario-Darstellungen für Marktthemen.</p>
+      <div class="tags"><span class="tag">Design-System</span><span class="tag">Social Media</span></div>
+    </article>
+
+    <article class="card">
+      <h3>Faktenchecks &amp; Analysen</h3>
+      <div class="meta">Quellenarbeit</div>
+      <p>Faktenchecks zu Statistiken und viralen Behauptungen, Analysen zu Energie, Verteidigung und Wahlen, Wahrscheinlichkeitsmodelle für Fußballmeisterschaften (Monte Carlo, Poisson). Grundsatz: nur Aussagen, die sich belegen lassen.</p>
+      <div class="tags"><span class="tag">Quellenkritik</span><span class="tag">Statistik</span></div>
+    </article>
+
+    <article class="card">
+      <h3>Werkzeuge für den Redaktionsalltag</h3>
+      <div class="meta">HTML · Claude-Skills</div>
+      <p>Ein Konverter formatiert Beiträge von X für Facebook um, ein Archiv-Skill sichert Quellen dauerhaft als Beleg, ein Export-Skill macht Instagram-Karussells für WhatsApp nutzbar.</p>
+      <div class="tags"><span class="tag">Automatisierung</span><span class="tag">Content-Workflow</span></div>
+      <a class="link" href="https://x.com/TradeRadarAT" rel="noopener">@TradeRadarAT auf X →</a>
+    </article>
+
+  </div>
+</section>
+
 <section id="web">
   <h2>Webseiten &amp; Web-Apps</h2>
-  <p class="sub">Veröffentlicht über GitHub Pages, ohne Tracking und ohne externe Schriften.</p>
+  <p class="sub">Veröffentlicht ohne Tracking und ohne externe Schriften.</p>
   <div class="grid">
+
+    <article class="card feature">
+      <h3>Die Eieruhranbeter: von der Idee zur Live-Seite in 18 Minuten</h3>
+      <div class="meta">Satire-Homepage · Idee um 20:16 Uhr, online um 20:34 Uhr</div>
+      <p>Ein Spaß aus einem Chat wurde in unter 20 Minuten zu einer fertigen, veröffentlichten Website: funktionierende Eieruhr mit Glocke und Vibration, druckbarer Mitgliedsausweis, versteckter Gag, Vorschaubild für WhatsApp. Ohne Cookies und externe Schriften. Zeigt, wie schnell heute aus einer Idee etwas Vorzeigbares wird.</p>
+      <div class="tags"><span class="tag">HTML/CSS/JS</span><span class="tag">GitHub Pages</span><span class="tag">Rapid Prototyping</span></div>
+      <a class="link" href="https://traderadarat.github.io/eieruhranbeter/" rel="noopener">Seite ansehen →</a>
+    </article>
+
 
     <article class="card">
       <h3>Geli's Holzwerkstatt</h3>
@@ -261,21 +332,6 @@
       <p>Auftritt für handgemachte Holzprodukte mit Produktseiten, Galerie, Impressum und Datenschutz. Dazu ein Skript, das Produktfotos automatisch für das Web verkleinert und optimiert.</p>
       <div class="tags"><span class="tag">HTML/CSS</span><span class="tag">Bildoptimierung</span></div>
       <a class="link" href="https://kohlhofer.net/" rel="noopener">kohlhofer.net ansehen →</a>
-    </article>
-
-    <article class="card">
-      <h3>Sturm-Fakten</h3>
-      <div class="meta">Recherche-Seite · eigene Domain</div>
-      <p>Faktenanalyse dazu, was der SK Sturm Graz der Stadt Graz bringt: mit Zahlen, Quellen und Offenlegung, verständlich aufbereitet. Umbauten laufen über eigene Skripte, die Quellen werden als Kopie gesichert, falls sie offline gehen.</p>
-      <div class="tags"><span class="tag">Recherche</span><span class="tag">Datenaufbereitung</span><span class="tag">HTML/CSS</span></div>
-      <a class="link" href="https://sturm-fakten.at/" rel="noopener">sturm-fakten.at ansehen →</a>
-    </article>
-
-    <article class="card">
-      <h3>Wichtel-App für die Familie</h3>
-      <div class="meta">Web-App · Google-Tabelle als Speicher</div>
-      <p>Alle tragen sich selbst ein, zum Stichtag wird automatisch ausgelost, jede Person bekommt einen persönlichen Link per WhatsApp und kann ihre Wünsche danach noch bearbeiten. Läuft ohne Betreuung.</p>
-      <div class="tags"><span class="tag">JavaScript</span><span class="tag">Google Apps Script</span><span class="tag">Automatisierung</span></div>
     </article>
 
     <article class="card">
@@ -308,7 +364,7 @@
     <div class="step"><h4>KI</h4><p>Claude (Chat, Code, Cowork, Projekte mit Gedächtnis, eigene Skills, geplante Aufgaben), MCP-Anbindungen an Mail, Kalender, Drive und Browser</p></div>
     <div class="step"><h4>Sprachen &amp; Formate</h4><p>Python, VBA, PowerShell, Batch, HTML, CSS, JavaScript, SQL-Grundlagen, Markdown</p></div>
     <div class="step"><h4>Office &amp; Plattformen</h4><p>Word- und Excel-Automatisierung, Google Workspace, Git und GitHub, Windows-Aufgabenplanung</p></div>
-    <div class="step"><h4>Hintergrund</h4><p>IT-Techniker, Microsoft-Zertifizierungen, rund zehn Jahre Praxis in Endgeräte-Management und Werkstattbetrieb</p></div>
+    <div class="step"><h4>Hintergrund &amp; Hardware</h4><p>IT-Techniker, Microsoft-Zertifizierungen, rund zehn Jahre Praxis in Endgeräte-Management und Werkstattbetrieb. Reparaturen bis ins Gerät, zuletzt ein erfolgreicher Akkutausch an einem Microsoft Surface 3.</p></div>
   </div>
 </section>
 
