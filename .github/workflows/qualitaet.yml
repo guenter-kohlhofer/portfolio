@@ -1,0 +1,60 @@
+# Qualitätsprüfung: läuft bei jedem Push, bei Pull Requests,
+# jeden Montag (tote Links fallen so auch ohne Änderung auf) und auf Knopfdruck.
+name: Qualitätsprüfung
+
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  html:
+    name: HTML-Validierung
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: HTML prüfen (html-validate, Regeln in .htmlvalidate.json)
+        run: npx --yes html-validate@9 "**/*.html"
+
+  links:
+    name: Link-Prüfung
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Interne und externe Links prüfen (lychee)
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: >-
+            --no-progress
+            --root-dir "${{ github.workspace }}"
+            --accept 200,206,429
+            --max-retries 3
+            --timeout 20
+            "./**/*.html" "README.md"
+          fail: true
+
+  lighthouse:
+    name: Barrierefreiheit & Lighthouse
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Lighthouse CI (Schwellenwerte in lighthouserc.json)
+        run: npx --yes @lhci/cli@0.14 autorun
+      - name: Berichte als Download ablegen
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-berichte
+          path: .lighthouseci-reports/
+          if-no-files-found: ignore
