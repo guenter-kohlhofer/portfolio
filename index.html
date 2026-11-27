@@ -407,6 +407,19 @@
       </ul>
       <ul class="marken"><li>Videoaufbereitung</li><li>Fehlersuche am Gerät</li></ul>
     </article>
+    <article class="eintrag">
+      <h3>Wetter und Unwetterwarnungen entlang einer Route</h3>
+      <p class="art">Python, Open-Meteo-API, MeteoAlarm</p>
+      <p>Für eine Autoreise wurden mehrere Wettermodelle über eine offene Schnittstelle abgefragt und die amtlichen Unwetterwarnungen eingelesen. Jeder Punkt der Route wird geprüft: Liegt er in einem Warngebiet? So ließen sich Zeitpunkt und Strecke abwägen.</p>
+      <p>Ein Fehler in der Vorhersage wurde dabei erkannt und offen benannt, statt ihn zu übergehen.</p>
+      <ul class="marken"><li>APIs</li><li>Geodaten</li><li>Datenabgleich</li></ul>
+    </article>
+    <article class="eintrag">
+      <h3>Video- und Bildaufbereitung</h3>
+      <p class="art">ffmpeg, Python mit OpenCV und LaMa</p>
+      <p>Videos, die für WhatsApp zu groß oder nicht abspielbar waren, wurden umgewandelt und verbessert, etwa von 27 MB auf 11 MB in 720p. Störender Text in einem Bild wurde mit einem KI-Modell zur Bildreparatur sauber entfernt.</p>
+      <ul class="marken"><li>Video</li><li>Bildretusche mit KI</li></ul>
+    </article>
   </div>
 </section>
 
@@ -462,8 +475,8 @@
       <h3>Drei Skills für den Trading-Alltag</h3>
       <p class="art">Claude-Skills mit Projektgedächtnis</p>
       <ul>
-        <li><b>Start:</b> liest den letzten Stand, prüft Nachrichten, Kurse und Sektoren und stellt daraus Signaltabelle und Aufgaben zusammen.</li>
-        <li><b>Selbst-Check:</b> sucht im Projektgedächtnis nach veralteten Verweisen und Widersprüchen und behebt sie, ohne eine funktionierende Regel zu verschlechtern.</li>
+        <li><b>Start:</b> zehn feste Schritte, vom letzten Stand über Nachrichten, Kurse und Sektoren bis zu Signaltabelle und Aufgaben.</li>
+        <li><b>Selbst-Check:</b> sucht im Projektgedächtnis nach veralteten Verweisen und Widersprüchen und behebt sie, ohne eine funktionierende Regel zu verschlechtern. Seit Version 3 mit harten Größenlimits, etwa höchstens 25 Regeln, damit das Gedächtnis nicht unkontrolliert wächst.</li>
         <li><b>Abschluss:</b> sichert vor dem Ende alles, was die nächste Sitzung wissen muss.</li>
       </ul>
       <ul class="marken"><li>Routinen</li><li>Qualitätssicherung</li></ul>
@@ -472,8 +485,8 @@
       <h3>Instagram-Karussell weitergeben</h3>
       <p class="art">Claude-Skill, Video- und PDF-Verarbeitung</p>
       <p>Viele Menschen haben kein Instagram, bekommen Beiträge aber per WhatsApp geschickt. Der Skill nimmt eine Bildschirmaufnahme oder Screenshots eines Karussells und schneidet daraus saubere Einzelfolien. Folienzähler, Ton-Symbol und der Rand des Handys werden automatisch entfernt.</p>
-      <p>Daraus entstehen ein Slideshow-Video, ein PDF zum Durchblättern, Bilder fürs WhatsApp-Album und auf Wunsch eine Fassung im Hochformat für den WhatsApp-Status.</p>
-      <ul class="marken"><li>Video zu Einzelbildern</li><li>PDF und MP4</li></ul>
+      <p>Daraus entstehen ein Slideshow-Video, ein PDF zum Durchblättern, Bilder fürs WhatsApp-Album und auf Wunsch eine Fassung im Hochformat für den WhatsApp-Status. Im Praxistest wurde eine Aufnahme von 69 MB auf 5,9 MB verkleinert, die Folien einheitlich auf 1080 × 1440 Pixel zugeschnitten.</p>
+      <ul class="marken"><li>ffmpeg</li><li>Bildverarbeitung</li><li>PDF und MP4</li></ul>
     </article>
     <article class="eintrag">
       <h3>Projekte sichern und umziehen</h3>
@@ -483,8 +496,8 @@
     </article>
     <article class="eintrag">
       <h3>Artikel-Archiv</h3>
-      <p class="art">Claude-Skill, Google Drive</p>
-      <p>Artikel verschwinden aus dem Netz oder werden still geändert. Wer sich in Beiträgen auf Quellen stützt, braucht deshalb eine eigene Kopie. Der Skill legt Quellen und Artikel als dauerhafte Belege in Google Drive ab, mit einheitlicher Benennung nach Datum und Thema.</p>
+      <p class="art">Claude-Skill, Python, Google-Drive-Connector</p>
+      <p>Artikel verschwinden aus dem Netz oder werden still geändert. Wer sich in Beiträgen auf Quellen stützt, braucht deshalb eine eigene Kopie. Der Skill löst aus einer Webadresse den reinen Artikeltext heraus, ohne Werbung und Menüs, und legt ihn in Google Drive ab: als eigenständige Datei und zusätzlich als bearbeitbares Google-Dokument, einheitlich benannt nach Datum und Thema.</p>
       <p>So lässt sich jede Aussage auch Monate später noch nachweisen.</p>
       <ul class="marken"><li>Wissensmanagement</li><li>Drive</li></ul>
     </article>
@@ -604,8 +617,10 @@
         <li>Konverter, der Beiträge von X für Facebook umformatiert</li>
         <li>Fahrtenbuch, das die Kosten eines geteilten Autos fair aufteilt</li>
         <li>Trainingspläne als persönliche Webseiten</li>
+        <li>Finanzübersicht als Excel-Vorlage mit vier verknüpften, selbst rechnenden Blättern, erzeugt mit Python</li>
+        <li>Posteingangs-Analyse über den Gmail-Connector: rund 85 % der ungelesenen Mails als Newsletter oder Werbung erkannt, aufbereitet als Dashboard mit Aufgabenliste</li>
       </ul>
-      <ul class="marken"><li>PWA</li><li>Web Speech API</li></ul>
+      <ul class="marken"><li>PWA</li><li>Web Speech API</li><li>openpyxl</li><li>Gmail-Connector</li></ul>
     </article>
   </div>
 </section>
