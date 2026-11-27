@@ -9,12 +9,12 @@
 | Bereich | Beispiele |
 |---|---|
 | Vier Projekte zum Einstieg | Willhaben-Inserate aus Handyfotos, lokale KI-Box für Kleinbetriebe, [AI Trading Workbench](https://github.com/guenter-kohlhofer/ai-trading-workbench), Café-Kassa (mit Demo) |
-| Praxis & Automatisierung | Ordnung in Cloud und Laptop, digitalisierte Gesundheitsakte (ohne Daten), Angebotsbildschirm fürs Café |
-| Trading-System im Detail | Tägliche Aufrufkette mit rund 50 Python-Skripten, geplante KI-Aufgaben, Studien mit Gegenproben, Dashboards |
+| Praxis & Automatisierung | Ordnung in Cloud und Laptop, digitalisierte Gesundheitsakte (ohne Daten) |
+| Trading-System im Detail | Tägliche Aufrufkette mit rund 50 Python-Skripten, geplante KI-Aufgaben, Studien mit Gegenproben |
 | KI-Skills | Homepage-Pipeline auf GitHub Pages, drei Skills für den Trading-Alltag, Instagram-Export, Projektsicherung, Artikel-Archiv |
 | Konzepte & Analysen | Arbeitsmarkt IT & KI Steiermark, M365 & KI-Governance, Website-Sicherheitscheck |
 | Social Media | Beitrag mit großer Reichweite, Trading Radar Austria: Design-System, Faktenchecks |
-| Webseiten | Die Eieruhranbeter (in 18 Minuten online), Geli's Holzwerkstatt, PC-Lernseite, kleine Werkzeuge |
+| Webseiten | Die Eieruhranbeter (in 18 Minuten online), Geli's Holzwerkstatt, PC-Lernseite |
 | Werdegang & Kontakt | Kurz-Lebenslauf, Werkzeuge, Kontakt per E-Mail |
 
 ## Technik

@@ -378,9 +378,9 @@
 <section class="abschnitt wrap" id="praxis">
   <div class="kopf">
     <h2>Weitere Praxis und Automatisierung</h2>
-    <p>Echte Abläufe mit echten Nutzern, vom Café bis zur eigenen Datenablage.</p>
+    <p>Große, über Jahre gewachsene Datenbestände geordnet und ausgewertet.</p>
   </div>
-  <div class="liste drei">
+  <div class="liste">
     <article class="eintrag">
       <h3>Ordnung in Cloud und Laptop</h3>
       <p class="art">Datenmigration, Google Drive, Google Fotos</p>
@@ -397,29 +397,6 @@
       <p>Belege und Befunde aus mehr als einem Jahrzehnt eingescannt, geordnet und ausgewertet: Ausgaben und Rückerstattungen über alle Jahre berechnet, daraus Übersichten für unterschiedliche Leser erstellt, etwa für Ärzte, Behörden und Angehörige.</p>
       <ul class="marken"><li>Scannen und Ablage</li><li>Tabellen</li><li>Zielgruppengerechte Texte</li></ul>
     </article>
-    <article class="eintrag">
-      <h3>Angebotsbildschirm fürs Café</h3>
-      <p class="art">Präsentation als Dauerschleife auf einem älteren Fernseher</p>
-      <p>Der Fernseher im Café spielt nur vom USB-Stick und kann keine PowerPoint-Dateien öffnen. Aus der Präsentation wurde deshalb ein Full-HD-Video mit weichen Überblendungen. Eine lange Schleife sorgt dafür, dass das sichtbare Neuladen nur selten vorkommt.</p>
-      <ul>
-        <li>Diashow als Ausweichlösung, falls das Video nicht läuft.</li>
-        <li>Aufgeräumter Stick mit nummerierten Ordnern und Anleitung.</li>
-      </ul>
-      <ul class="marken"><li>Videoaufbereitung</li><li>Fehlersuche am Gerät</li></ul>
-    </article>
-    <article class="eintrag">
-      <h3>Wetter und Unwetterwarnungen entlang einer Route</h3>
-      <p class="art">Python, Open-Meteo-API, MeteoAlarm</p>
-      <p>Für eine Autoreise wurden mehrere Wettermodelle über eine offene Schnittstelle abgefragt und die amtlichen Unwetterwarnungen eingelesen. Jeder Punkt der Route wird geprüft: Liegt er in einem Warngebiet? So ließen sich Zeitpunkt und Strecke abwägen.</p>
-      <p>Ein Fehler in der Vorhersage wurde dabei erkannt und offen benannt, statt ihn zu übergehen.</p>
-      <ul class="marken"><li>APIs</li><li>Geodaten</li><li>Datenabgleich</li></ul>
-    </article>
-    <article class="eintrag">
-      <h3>Video- und Bildaufbereitung</h3>
-      <p class="art">ffmpeg, Python mit OpenCV und LaMa</p>
-      <p>Videos, die für WhatsApp zu groß oder nicht abspielbar waren, wurden umgewandelt und verbessert, etwa von 27 MB auf 11 MB in 720p. Störender Text in einem Bild wurde mit einem KI-Modell zur Bildreparatur sauber entfernt.</p>
-      <ul class="marken"><li>Video</li><li>Bildretusche mit KI</li></ul>
-    </article>
   </div>
 </section>
 
@@ -431,7 +408,7 @@
   <ol class="kette" aria-label="Tägliche Aufrufkette">
     <li>Lagebild</li><li>Einstiegs-Check</li><li>Risiko-Check</li><li>Stop-Vorschläge</li><li>Trailing-Wächter</li><li>Nachrichten-Scan</li><li>Wochenschluss</li><li class="pruef">Prüfung aller Statusdateien</li>
   </ol>
-  <div class="liste">
+  <div class="liste drei">
     <article class="eintrag">
       <h3>Tägliche Aufrufkette</h3>
       <p class="art">Rund 50 Python-Skripte</p>
@@ -449,12 +426,6 @@
       <p class="art">Walk-Forward, Bootstrap, Gegenproben</p>
       <p>Jede neue Regel muss sich in einer eigenen Studie beweisen, inklusive eines bewussten Widerlegungsversuchs. Beispiele: optimale Haltedauer, Alter der Kursdaten, Kapitalumschlag, Kosten und Steuern aus den echten Abrechnungen, Token-Verbrauch der KI.</p>
       <ul class="marken"><li>Statistik</li><li>Reproduzierbarkeit</li><li>PowerShell</li></ul>
-    </article>
-    <article class="eintrag">
-      <h3>Dashboards</h3>
-      <p class="art">HTML, über 30 Versionen</p>
-      <p>Ein Pipeline-Dashboard zeigt alle Kandidaten mit Stufe, Auslöser und Verfallsdatum auf einen Blick, dazu ein Aufgaben-Dashboard und ein Morgenbriefing. Laufend aus der Praxis weiterentwickelt.</p>
-      <ul class="marken"><li>Visualisierung</li><li>Iteration</li></ul>
     </article>
   </div>
 </section>
@@ -591,7 +562,7 @@
     </div>
     <a class="schau" href="https://traderadarat.github.io/eieruhranbeter/" rel="noopener"><img src="img/eieruhranbeter.jpg" alt="Startseite der Eieruhranbeter mit Sanduhr" loading="lazy" width="1200" height="750"></a>
   </article>
-  <div class="liste drei">
+  <div class="liste">
     <article class="eintrag">
       <h3>Geli's Holzwerkstatt</h3>
       <p class="art">Website eines Familienbetriebs</p>
@@ -607,20 +578,6 @@
       <p>Schritt-für-Schritt-Lernseite, mit der eine Person ohne Vorkenntnisse den Umgang mit dem Computer lernt: Zehnfingersystem als Spiel, Maus, Tastenkürzel, Übungs-Word und -Excel, Dateien und sichere E-Mails. Der Fortschritt wird nur im eigenen Browser gespeichert.</p>
       <ul class="marken"><li>Didaktik</li><li>localStorage</li></ul>
       <p class="mehr"><a href="https://traderadarat.github.io/harry/" rel="noopener">Lernseite ansehen</a></p>
-    </article>
-    <article class="eintrag">
-      <h3>Kleine Werkzeuge</h3>
-      <p class="art">HTML, JavaScript</p>
-      <ul>
-        <li>Punktezähler für ein Kartenspiel mit sechs Personen, mit Sprachausgabe</li>
-        <li>Abo-Verwaltung als installierbare Web-App (PWA)</li>
-        <li>Konverter, der Beiträge von X für Facebook umformatiert</li>
-        <li>Fahrtenbuch, das die Kosten eines geteilten Autos fair aufteilt</li>
-        <li>Trainingspläne als persönliche Webseiten</li>
-        <li>Finanzübersicht als Excel-Vorlage mit vier verknüpften, selbst rechnenden Blättern, erzeugt mit Python</li>
-        <li>Posteingangs-Analyse über den Gmail-Connector: rund 85 % der ungelesenen Mails als Newsletter oder Werbung erkannt, aufbereitet als Dashboard mit Aufgabenliste</li>
-      </ul>
-      <ul class="marken"><li>PWA</li><li>Web Speech API</li><li>openpyxl</li><li>Gmail-Connector</li></ul>
     </article>
   </div>
 </section>
