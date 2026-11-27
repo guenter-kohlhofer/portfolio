@@ -7,353 +7,580 @@
 <title>Günter Kohlhofer – Projekte mit KI</title>
 <meta name="description" content="Übersicht über Projekte, die mit KI (Claude) spezifiziert, gebaut und im Alltag eingesetzt wurden.">
 <style>
+  @font-face{font-family:"Archivo";src:url("fonts/archivo-latin-wdth-normal.woff2") format("woff2");
+    font-weight:100 900;font-stretch:62% 125%;font-display:swap}
+  @font-face{font-family:"Plex";src:url("fonts/ibm-plex-sans-latin-400-normal.woff2") format("woff2");
+    font-weight:400;font-display:swap}
+  @font-face{font-family:"Plex";src:url("fonts/ibm-plex-sans-latin-600-normal.woff2") format("woff2");
+    font-weight:600;font-display:swap}
+
   :root{
-    --bg:#0f1419; --panel:#161d25; --panel2:#1c2530; --line:#2a3542;
-    --text:#e6edf3; --muted:#9aa7b4; --accent:#d4a853; --accent2:#5fb3a1;
-    --radius:14px;
+    --papier:#f2f4f3;      /* Werkbank, kühles Hellgrau */
+    --blatt:#ffffff;       /* Auftragsblatt */
+    --tinte:#14202b;       /* Text */
+    --blau:#1c4a78;        /* Werkstattblau */
+    --blau-tief:#12314f;
+    --gelb:#f2b705;        /* Maßband-Gelb, nur als Markierung */
+    --gruen:#256b4f;       /* geprüft */
+    --grau:#55636e;        /* Nebentext */
+    --linie:#cdd5d7;
+    --display:"Archivo","Arial Narrow",Arial,sans-serif;
+    --text:"Plex","Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+    --breit:1120px;
   }
   *{box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  body{margin:0;background:var(--bg);color:var(--text);
-    font:16px/1.6 "Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif}
-  a{color:var(--accent);text-decoration:none}
-  a:hover{text-decoration:underline}
-  .wrap{max-width:1100px;margin:0 auto;padding:0 22px}
-  header.hero{padding:72px 0 40px;border-bottom:1px solid var(--line);
-    background:radial-gradient(1200px 400px at 80% -10%,rgba(212,168,83,.14),transparent 60%),
-               radial-gradient(900px 400px at -10% 120%,rgba(95,179,161,.10),transparent 60%)}
-  .kicker{color:var(--accent);font-weight:600;letter-spacing:.12em;text-transform:uppercase;font-size:.8rem}
-  h1{font-size:clamp(2rem,4.6vw,3.2rem);line-height:1.15;margin:.35em 0 .4em}
-  .lead{font-size:1.15rem;color:var(--muted);max-width:760px}
-  .stats{display:flex;flex-wrap:wrap;gap:14px;margin-top:28px}
-  .stat{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:14px 18px;min-width:150px}
-  .stat b{display:block;font-size:1.6rem;color:var(--accent)}
-  .stat span{color:var(--muted);font-size:.9rem}
-  nav.toc{position:sticky;top:0;z-index:5;background:rgba(15,20,25,.92);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
-  nav.toc .wrap{display:flex;gap:18px;overflow-x:auto;padding-top:12px;padding-bottom:12px;white-space:nowrap}
-  nav.toc a{color:var(--muted);font-size:.95rem}
-  nav.toc a:hover{color:var(--text)}
-  section{padding:56px 0 8px}
-  h2{font-size:1.7rem;margin:0 0 6px}
-  .sub{color:var(--muted);margin:0 0 26px;max-width:780px}
-  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px}
-  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:22px;display:flex;flex-direction:column}
-  .card.feature{grid-column:1/-1;background:linear-gradient(135deg,var(--panel2),var(--panel))}
-  .card h3{margin:0 0 4px;font-size:1.2rem}
-  .meta{color:var(--accent2);font-size:.85rem;font-weight:600;margin-bottom:12px}
-  .card p{margin:.3em 0 .7em}
-  .card ul{margin:.2em 0 .9em;padding-left:1.15em}
-  .card li{margin:.2em 0}
-  .label{font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:700;margin-top:6px}
-  .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto;padding-top:10px}
-  .tag{font-size:.78rem;background:#0f1419;border:1px solid var(--line);border-radius:999px;padding:3px 10px;color:var(--muted)}
-  .link{margin-top:10px;font-weight:600}
-  .cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
-  .step{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
-  .step .n{display:inline-block;width:30px;height:30px;border-radius:50%;background:var(--accent);color:#111;font-weight:800;text-align:center;line-height:30px;margin-bottom:8px}
-  .step h4{margin:0 0 4px}
-  .step p{margin:0;color:var(--muted);font-size:.95rem}
-  .note{border-left:3px solid var(--accent);background:var(--panel);padding:14px 18px;border-radius:0 var(--radius) var(--radius) 0;color:var(--muted);margin-top:22px}
-  .shot{display:block;margin:4px 0 14px;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#0b0f13}
-  .shot img{display:block;width:100%;height:auto}
-  .card.feature .shot{max-width:760px}
-  footer{margin-top:60px;border-top:1px solid var(--line);padding:30px 0 50px;color:var(--muted);font-size:.9rem}
-  @media (max-width:560px){.grid{grid-template-columns:1fr}.card.feature{grid-column:auto}}
+  html{scroll-behavior:smooth;scroll-padding-top:70px}
+  body{margin:0;background:var(--papier);color:var(--tinte);font:400 17px/1.6 var(--text)}
+  img{max-width:100%;height:auto;display:block}
+  a{color:var(--blau);text-underline-offset:3px}
+  a:hover{color:var(--blau-tief)}
+  a:focus-visible,summary:focus-visible{outline:3px solid var(--gelb);outline-offset:3px;border-radius:2px}
+  .wrap{max-width:var(--breit);margin:0 auto;padding:0 24px}
+  h1,h2,h3,h4{font-family:var(--display);margin:0;line-height:1.1}
+  p{margin:0 0 .8em}
+  ul{margin:0 0 .8em;padding-left:1.15em}
+  li{margin:.25em 0}
+
+  /* Kopfleiste */
+  .leiste{position:sticky;top:0;z-index:10;background:var(--blau-tief);color:#fff}
+  .leiste .wrap{display:flex;align-items:center;gap:28px;min-height:54px}
+  .leiste .name{font:700 1.02rem/1 var(--display);font-stretch:110%;white-space:nowrap;color:#fff;text-decoration:none}
+  .leiste nav{display:flex;gap:22px;overflow-x:auto;white-space:nowrap;scrollbar-width:none;padding:6px 0}
+  .leiste nav::-webkit-scrollbar{display:none}
+  .leiste nav a{color:#c9d8e6;text-decoration:none;font-size:.93rem}
+  .leiste nav a:hover{color:#fff;text-decoration:underline;text-decoration-color:var(--gelb);text-decoration-thickness:2px}
+
+  /* Einstieg */
+  .einstieg{background:var(--blatt);border-bottom:1px solid var(--linie)}
+  .einstieg .wrap{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.9fr);gap:52px;align-items:center;padding-top:72px;padding-bottom:72px}
+  h1{font-weight:800;font-stretch:118%;font-size:clamp(1.9rem,3.55vw,3rem);letter-spacing:-.015em;line-height:1.08}
+  h1 span{display:block}
+  @media (min-width:901px){h1 span{white-space:nowrap}}
+  .einstieg .wer{font:600 1rem/1.4 var(--text);color:var(--blau);margin-bottom:18px}
+  .einstieg .kurz{font-size:1.12rem;max-width:34em;margin:24px 0 0}
+  .einstieg .zahlen{color:var(--grau);margin:14px 0 0;max-width:34em}
+  .knoepfe{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+  .knopf{display:inline-block;font:600 1rem/1 var(--text);padding:14px 20px;border-radius:4px;text-decoration:none;border:2px solid var(--blau-tief)}
+  .knopf.voll{background:var(--blau-tief);color:#fff}
+  .knopf.voll:hover{background:var(--blau);border-color:var(--blau);color:#fff}
+  .knopf.rand{color:var(--blau-tief);background:transparent}
+  .knopf.rand:hover{background:var(--papier)}
+  .buehne{margin:0}
+  .buehne a{display:block;border:1px solid var(--tinte);border-radius:6px;overflow:hidden;box-shadow:10px 10px 0 var(--gelb);background:#fff}
+  .buehne figcaption{margin-top:22px;color:var(--grau);font-size:.93rem}
+
+  /* Abschnitte */
+  .abschnitt{padding-top:76px;padding-bottom:12px}
+  .abschnitt > h2, .kopf h2{font-weight:750;font-stretch:112%;font-size:clamp(1.6rem,3vw,2.3rem);letter-spacing:-.01em}
+  .kopf{margin-bottom:34px;max-width:46em}
+  .kopf p{color:var(--grau);margin:12px 0 0;font-size:1.05rem}
+
+  /* Die drei großen Projekte */
+  .gross{background:var(--blatt);border:1px solid var(--linie);border-radius:6px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);margin-bottom:26px;overflow:hidden}
+  .gross .bild{background:#e7ecec;display:flex;align-items:center;justify-content:center;padding:30px;border-right:1px solid var(--linie)}
+  .gross:nth-of-type(even) .bild{order:2;border-right:0;border-left:1px solid var(--linie)}
+  .gross .bild a{display:block;border:1px solid var(--tinte);border-radius:4px;overflow:hidden;max-width:300px}
+  .gross .bild svg{width:100%;height:auto;max-width:460px}
+  .gross .inhalt{padding:34px 36px}
+  .gross h3{font-weight:750;font-stretch:108%;font-size:1.6rem}
+  .art{color:var(--grau);font-size:.93rem;margin:6px 0 20px}
+  dl.karte{margin:0;display:grid;grid-template-columns:7.2em 1fr;row-gap:12px;column-gap:16px}
+  dl.karte dt{font:600 .93rem/1.6 var(--text);color:var(--blau)}
+  dl.karte dd{margin:0}
+  dl.karte dd.geprueft{color:var(--tinte)}
+  .mehr{margin:22px 0 0;font-weight:600}
+  .marken{display:flex;flex-wrap:wrap;gap:6px;margin:18px 0 0;padding:0;list-style:none}
+  .marken li{margin:0;font-size:.82rem;color:var(--grau);border:1px solid var(--linie);border-radius:3px;padding:2px 8px;background:var(--papier)}
+
+  /* Arbeitsweise */
+  .weise{background:var(--blau-tief);color:#fff;margin-top:64px;padding:68px 0 72px}
+  .weise h2{font-weight:750;font-stretch:112%;font-size:clamp(1.6rem,3vw,2.3rem)}
+  .weise .kopf p{color:#c9d8e6}
+  ol.schritte{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:0;counter-reset:s}
+  ol.schritte li{margin:0;padding:0 22px 0 0;counter-increment:s;border-top:3px solid var(--gelb);padding-top:16px;margin-right:14px}
+  ol.schritte li::before{content:counter(s);font:800 2.4rem/1 var(--display);font-stretch:118%;color:var(--gelb);display:block;margin-bottom:10px}
+  ol.schritte h4{font-weight:700;font-size:1.12rem;margin-bottom:6px}
+  ol.schritte p{color:#d5e0ea;font-size:.97rem;margin:0}
+  .grundsatz{margin:44px 0 0;max-width:40em;font:600 1.25rem/1.4 var(--display);font-stretch:105%}
+  .grundsatz span{display:block;font:400 .93rem/1.5 var(--text);color:#c9d8e6;margin-bottom:8px}
+
+  /* Projektlisten */
+  .liste{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:48px}
+  .liste.drei{grid-template-columns:repeat(3,minmax(0,1fr));column-gap:36px}
+  .eintrag{border-top:2px solid var(--tinte);padding:18px 0 30px}
+  .eintrag h3{font-weight:700;font-size:1.22rem;font-stretch:104%}
+  .eintrag .art{margin-bottom:10px}
+  .eintrag p:last-of-type{margin-bottom:0}
+  .eintrag .schau{border:1px solid var(--tinte);border-radius:4px;overflow:hidden;display:block;margin:4px 0 14px}
+  .eintrag .mehr{margin-top:12px}
+
+  /* breiter Eintrag mit Bild oder Zahlen */
+  .breit{background:var(--blatt);border:1px solid var(--linie);border-radius:6px;padding:32px 36px;margin-bottom:34px;display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:40px;align-items:center}
+  .breit.einspaltig{display:block}
+  .breit h3{font-weight:750;font-stretch:108%;font-size:1.5rem}
+  .breit .schau{border:1px solid var(--tinte);border-radius:4px;overflow:hidden;display:block}
+
+  /* Ablaufkette */
+  ol.kette{list-style:none;margin:6px 0 34px;padding:0;display:flex;flex-wrap:wrap;gap:10px 26px}
+  ol.kette li{margin:0;background:var(--blatt);border:1px solid var(--tinte);border-radius:3px;padding:9px 14px;font:600 .93rem/1.2 var(--text);position:relative}
+  ol.kette li + li::before{content:"";position:absolute;left:-21px;top:50%;width:16px;border-top:2px solid var(--blau)}
+  ol.kette li.pruef{background:var(--gelb)}
+
+  /* Rollen im Trading-System */
+  .rollen{list-style:none;margin:0;padding:0;width:100%;max-width:400px}
+  .rollen li{margin:0;display:grid;grid-template-columns:8.5em 1fr;align-items:stretch;border:1px solid var(--tinte);background:#fff;border-bottom-width:0}
+  .rollen li:last-child{border-bottom-width:1px;background:var(--gelb)}
+  .rollen b{font:700 1rem/1 var(--display);padding:16px;border-right:1px solid var(--tinte);display:flex;align-items:center}
+  .rollen span{padding:12px 16px;font-size:.95rem;display:flex;align-items:center}
+
+  /* Reichweite */
+  .zahlenreihe{display:grid;grid-template-columns:1fr;gap:14px}
+  .zahlenreihe div{border-left:6px solid var(--gelb);padding:2px 0 2px 16px}
+  .zahlenreihe b{display:block;font:800 2.5rem/1 var(--display);font-stretch:118%;color:var(--blau-tief)}
+  .zahlenreihe span{color:var(--grau);font-size:.95rem}
+
+  /* Werkzeuge */
+  table.werkzeug{width:100%;border-collapse:collapse}
+  table.werkzeug th,table.werkzeug td{text-align:left;vertical-align:top;padding:16px 0;border-top:1px solid var(--linie)}
+  table.werkzeug tr:first-child th,table.werkzeug tr:first-child td{border-top:2px solid var(--tinte)}
+  table.werkzeug th{font:700 1.05rem/1.4 var(--display);width:14em;padding-right:24px}
+
+  table.zeitleiste th{font:600 .95rem/1.6 var(--text);color:var(--blau);width:11em}
+  table.zeitleiste b{font-weight:600}
+  .kontakt{background:var(--blau-tief);color:#fff;margin-top:76px;padding:64px 0 68px}
+  .kontakt h2{font-weight:750;font-stretch:112%;font-size:clamp(1.6rem,3vw,2.3rem);margin-bottom:14px}
+  .kontakt p{color:#d5e0ea;max-width:40em}
+  .kontakt .adresse{margin:22px 0 14px}
+  .kontakt .adresse a{color:#fff;font:700 clamp(1.25rem,3vw,1.9rem)/1.2 var(--display);font-stretch:105%;text-decoration-color:var(--gelb);text-decoration-thickness:3px;text-underline-offset:6px;word-break:break-word}
+  .kontakt .weitere a{color:#fff}
+  .kontakt .weitere span{color:var(--gelb);margin:0 8px}
+  footer{margin-top:0;background:var(--blatt);border-top:1px solid var(--linie);padding:34px 0 50px;color:var(--grau);font-size:.92rem}
+  footer p{max-width:60em}
+
+  @media (max-width:900px){
+    .einstieg .wrap{grid-template-columns:1fr;gap:40px;padding-top:48px;padding-bottom:56px}
+    .gross{grid-template-columns:1fr}
+    .gross .bild,.gross:nth-of-type(even) .bild{order:0;border:0;border-bottom:1px solid var(--linie)}
+    ol.schritte{grid-template-columns:1fr 1fr;row-gap:30px}
+    .liste.drei{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .breit{grid-template-columns:1fr;gap:24px}
+  }
+  @media (max-width:620px){
+    body{font-size:16px}
+    .wrap{padding:0 18px}
+    .leiste .name{display:none}
+    .liste,.liste.drei{grid-template-columns:1fr}
+    .gross .inhalt{padding:24px 20px}
+    .gross .bild{padding:18px}
+    .breit{padding:24px 20px}
+    dl.karte{grid-template-columns:1fr;row-gap:2px}
+    dl.karte dd{margin-bottom:10px}
+    ol.schritte{grid-template-columns:1fr}
+    .buehne a{box-shadow:6px 6px 0 var(--gelb)}
+    table.werkzeug th,table.werkzeug td{display:block;width:auto;padding:0}
+    table.werkzeug th{padding-top:14px}
+    table.werkzeug td{border-top:0;padding-bottom:14px}
+    table.werkzeug tr:first-child td{border-top:0}
+    .abschnitt{padding-top:56px}
+  }
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  @media print{
+    body{background:#fff;font-size:11pt}
+    .leiste{position:static;background:#fff;color:#000}
+    .leiste nav,.knoepfe{display:none}
+    .leiste .name{color:#000;display:block}
+    .weise,.kontakt{background:#fff;color:#000;padding:20px 0}
+    .kontakt p,.kontakt .adresse a,.kontakt .weitere a{color:#000}
+    .weise .kopf p,ol.schritte p,.grundsatz span{color:#333}
+    ol.schritte li::before{color:#000}
+    .einstieg .wrap{padding-top:20px;padding-bottom:20px}
+    .abschnitt{padding-top:28px}
+    .gross,.breit,.eintrag{break-inside:avoid}
+    .buehne a{box-shadow:none}
+    a{color:#000}
+  }
 </style>
 </head>
 <body>
 
-<header class="hero">
+<div class="leiste">
   <div class="wrap">
-    <div class="kicker" id="kicker">Günter Kohlhofer · Portfolio · Graz</div>
-    <h1>Abläufe verstehen.<br>Mit KI automatisieren.<br>Im Alltag einsetzen.</h1>
-    <p class="lead">IT-Techniker mit rund zehn Jahren Praxis in Geräteverwaltung und Werkstattbetrieb. Seit mehreren Monaten baue ich mit KI (vor allem Claude) Werkzeuge, die echte Arbeit abnehmen: von der Kassa für ein Café über verkaufsfertige Inserate aus Handyfotos bis zum regelbasierten Trading-System. Diese Seite zeigt, was dabei entstanden ist.</p>
-    <div class="stats">
-      <div class="stat"><b>20+</b><span>eigene Projekte</span></div>
-      <div class="stat"><b>8</b><span>eigene KI-Skills (wiederverwendbare Abläufe)</span></div>
-      <div class="stat"><b>50</b><span>Python-Skripte im täglichen Trading-System</span></div>
+    <a class="name" href="#oben">Günter Kohlhofer</a>
+    <nav aria-label="Abschnitte">
+      <a href="#projekte">Projekte</a>
+      <a href="#arbeitsweise">Arbeitsweise</a>
+      <a href="#praxis">Praxis</a>
+      <a href="#trading">Trading-System</a>
+      <a href="#skills">KI-Skills</a>
+      <a href="#konzepte">Konzepte</a>
+      <a href="#tra">Trading Radar</a>
+      <a href="#web">Webseiten</a>
+      <a href="#werdegang">Werdegang</a>
+      <a href="#kontakt">Kontakt</a>
+    </nav>
+  </div>
+</div>
+
+<header class="einstieg" id="oben">
+  <div class="wrap">
+    <div>
+      <p class="wer">Günter Kohlhofer, IT-Techniker aus Graz</p>
+      <h1><span>Abläufe verstehen.</span><span>Mit KI automatisieren.</span><span>Im Alltag einsetzen.</span></h1>
+      <p class="kurz">Rund zehn Jahre Praxis in Geräteverwaltung und Werkstattbetrieb. Seit mehreren Monaten baue ich mit KI, vor allem mit Claude, Werkzeuge, die echte Arbeit abnehmen: von der Kassa für ein Café über verkaufsfertige Inserate aus Handyfotos bis zum regelbasierten Trading-System.</p>
+      <p class="zahlen">Entstanden sind bisher über 20 eigene Projekte, 8 eigene KI-Skills und ein Trading-System mit rund 50 Python-Skripten im täglichen Betrieb.</p>
+      <div class="knoepfe">
+        <a class="knopf voll" href="demo/cafe-kassa.html">Café-Kassa ausprobieren</a>
+        <a class="knopf rand" href="https://github.com/guenter-kohlhofer/ai-trading-workbench" rel="noopener">Code auf GitHub ansehen</a>
+        <a class="knopf rand" href="#kontakt">Kontakt</a>
+      </div>
     </div>
+    <figure class="buehne">
+      <a href="demo/cafe-kassa.html"><img src="img/cafe-kassa.jpg" alt="Verkaufsansicht der Café-Kassa mit Sortiment und Körberl" width="1200" height="750"></a>
+      <figcaption>Die Café-Kassa läuft als Demo direkt im Browser. Ein Klick auf das Bild öffnet sie.</figcaption>
+    </figure>
   </div>
 </header>
 
-<nav class="toc"><div class="wrap">
-  <a href="#arbeitsweise">Arbeitsweise</a>
-  <a href="#automatisierung">Praxis</a>
-  <a href="#trading">Trading-System</a>
-  <a href="#ki-workflows">KI-Skills</a>
-  <a href="#konzepte">Konzepte</a>
-  <a href="#tra">Trading Radar Austria</a>
-  <a href="#web">Webseiten &amp; Web-Apps</a>
-  <a href="#werkzeuge">Werkzeuge</a>
-</div></nav>
+<main>
 
-<main class="wrap">
-
-<section id="arbeitsweise">
-  <h2>So arbeite ich mit KI</h2>
-  <p class="sub">Ich schreibe nicht jede Zeile Code selbst. Meine Stärke liegt davor und danach: den Ablauf verstehen, die Lösung genau beschreiben, das Ergebnis prüfen und im Betrieb verantworten.</p>
-  <div class="cols">
-    <div class="step"><span class="n">1</span><h4>Ablauf aufnehmen</h4><p>Wie wird heute gearbeitet, wo geht Zeit verloren, wo passieren Fehler?</p></div>
-    <div class="step"><span class="n">2</span><h4>Genau spezifizieren</h4><p>Regeln, Formate und Grenzfälle so beschreiben, dass die KI das Richtige baut.</p></div>
-    <div class="step"><span class="n">3</span><h4>Bauen lassen &amp; prüfen</h4><p>Code entsteht mit Claude, ich teste mit echten Daten und lasse nachbessern.</p></div>
-    <div class="step"><span class="n">4</span><h4>Übergeben &amp; dokumentieren</h4><p>Anleitung, Versionsstand und Grenzen schriftlich, damit es auch ohne mich läuft.</p></div>
+<section class="abschnitt wrap" id="projekte">
+  <div class="kopf">
+    <h2>Drei Projekte zum Einstieg</h2>
+    <p>Wer nur zwei Minuten Zeit hat, sieht hier am schnellsten, wie ich arbeite.</p>
   </div>
-  <div class="note">Grundsatz in allen Projekten: Zahlen rechnet der Code, nicht das Sprachmodell. Die KI analysiert und dokumentiert, entschieden wird vom Menschen.</div>
+
+  <article class="gross">
+    <div class="bild">
+      <a href="demo/cafe-kassa.html"><img src="img/cafe-kassa-detail.jpg" alt="Ausschnitt der Café-Kassa: Körberl mit vier Posten, zu zahlender Betrag und Zahlenfeld" loading="lazy" width="380" height="614"></a>
+    </div>
+    <div class="inhalt">
+      <h3>Café-Kassa</h3>
+      <p class="art">HTML und JavaScript in einer Datei, läuft offline</p>
+      <dl class="karte">
+        <dt>Ausgangslage</dt><dd>Im Café des BBRZ Graz wurde mit Papier und Excel abgerechnet.</dd>
+        <dt>Lösung</dt><dd>Eine Kassa, die in jedem Browser läuft, ohne Installation und ohne Internet. Mit Schichtjournal, Kassasturz, Archiv und Datensicherung. Der Excel-Export passt zu den bestehenden Arbeitsmappen.</dd>
+        <dt>Ergebnis</dt><dd class="geprueft">Beim Nachbauen der Logik wurden vier Fehler in den bisherigen Tabellen entdeckt.</dd>
+      </dl>
+      <ul class="marken"><li>Vanilla JS</li><li>ohne Abhängigkeiten</li><li>Offline-first</li></ul>
+      <p class="mehr"><a href="demo/cafe-kassa.html">Demo selbst ausprobieren</a></p>
+    </div>
+  </article>
+
+  <article class="gross">
+    <div class="bild">
+      <svg viewBox="0 0 460 300" role="img" aria-label="Schema: Aus einem schiefen Handyfoto mit Etikett wird ein gerades Bild im Format 4:3 und daraus ein fertiges Inserat mit Text und Preis">
+        <g font-family="Plex,Segoe UI,Arial,sans-serif" font-size="13" fill="#14202b">
+          <!-- Handyfoto -->
+          <g transform="rotate(-9 78 120)">
+            <rect x="28" y="52" width="100" height="136" fill="#fff" stroke="#14202b" stroke-width="1.5"/>
+            <rect x="46" y="92" width="64" height="62" fill="#b9c6cc" stroke="#14202b" stroke-width="1.5"/>
+            <rect x="80" y="136" width="36" height="14" fill="#fff" stroke="#14202b" stroke-width="1.2"/>
+            <path d="M85 141h26M85 146h18" stroke="#14202b" stroke-width="1"/>
+          </g>
+          <text x="78" y="228" text-anchor="middle" font-weight="600">Handyfoto</text>
+          <text x="78" y="246" text-anchor="middle" fill="#55636e">schief, mit Etikett</text>
+          <path d="M142 120h28m-8-7 8 7-8 7" fill="none" stroke="#1c4a78" stroke-width="2.5"/>
+          <!-- aufbereitet -->
+          <rect x="180" y="72" width="128" height="96" fill="#fff" stroke="#14202b" stroke-width="1.5"/>
+          <rect x="212" y="88" width="64" height="62" fill="#b9c6cc" stroke="#14202b" stroke-width="1.5"/>
+          <path d="M180 60v-8h128v8" fill="none" stroke="#f2b705" stroke-width="3"/>
+          <text x="244" y="46" text-anchor="middle" font-size="12" fill="#55636e">4:3</text>
+          <text x="244" y="228" text-anchor="middle" font-weight="600">Aufbereitet</text>
+          <text x="244" y="246" text-anchor="middle" fill="#55636e">gerade, Etikett entfernt</text>
+          <path d="M318 120h28m-8-7 8 7-8 7" fill="none" stroke="#1c4a78" stroke-width="2.5"/>
+          <!-- Inserat -->
+          <rect x="356" y="46" width="90" height="148" fill="#fff" stroke="#14202b" stroke-width="1.5"/>
+          <rect x="364" y="54" width="74" height="54" fill="#b9c6cc" stroke="#14202b" stroke-width="1.2"/>
+          <path d="M364 120h74M364 131h74M364 142h52" stroke="#14202b" stroke-width="2"/>
+          <rect x="364" y="160" width="46" height="22" fill="#f2b705" stroke="#14202b" stroke-width="1.2"/>
+          <text x="387" y="176" text-anchor="middle" font-weight="600" font-size="13">€</text>
+          <text x="401" y="228" text-anchor="middle" font-weight="600">Inserat</text>
+          <text x="401" y="246" text-anchor="middle" fill="#55636e">Text und Preis</text>
+        </g>
+      </svg>
+    </div>
+    <div class="inhalt">
+      <h3>Inserate aus Handyfotos</h3>
+      <p class="art">Claude-Skill für Willhaben, Bildbearbeitung mit Python, Stapelverarbeitung</p>
+      <dl class="karte">
+        <dt>Ausgangslage</dt><dd>Gebrauchte Ware zu inserieren heißt: jedes Foto zuschneiden, jeden Text einzeln schreiben.</dd>
+        <dt>Lösung</dt><dd>Man fotografiert ein Produkt mit dem Handy und lädt die Bilder hoch. Sie werden automatisch gedreht, begradigt, einheitlich im Format 4:3 zugeschnitten und farblich korrigiert. Fremde Etiketten und Seriennummern werden wegretuschiert.</dd>
+        <dt>Ergebnis</dt><dd class="geprueft">Fertige Anzeigentexte mit Preisempfehlung, gebündelt als Paket mit einem Ordner je Produkt, zum Weiterschicken per WhatsApp. Einmal als Skill beschrieben, danach für jedes neue Produkt mit einem Satz wiederholbar.</dd>
+      </dl>
+      <ul class="marken"><li>Pillow / NumPy</li><li>Bildbearbeitung</li><li>Texterstellung</li><li>E-Commerce</li></ul>
+    </div>
+  </article>
+
+  <article class="gross">
+    <div class="bild">
+      <ul class="rollen" aria-label="Wer im Trading-System was macht">
+        <li><b>Code</b><span>rechnet alle Zahlen</span></li>
+        <li><b>Regelwerk</b><span>entscheidet, schriftlich festgelegt</span></li>
+        <li><b>Claude</b><span>analysiert und dokumentiert</span></li>
+        <li><b>Mensch</b><span>gibt die Order selbst auf</span></li>
+      </ul>
+    </div>
+    <div class="inhalt">
+      <h3>AI Trading Workbench</h3>
+      <p class="art">Öffentliches Repository: Python, Backtesting, Claude mit Projektgedächtnis</p>
+      <dl class="karte">
+        <dt>Ausgangslage</dt><dd>Swing-Trading nach festen Regeln statt nach Bauchgefühl. Keine Anlageberatung.</dd>
+        <dt>Lösung</dt><dd>Ein Watchlist-Scanner fasst Trendfilter, Relative Stärke, Volatilität, Volumen-Gate, Marktregime und Sektor-Heatmap in einer Tabelle zusammen und läuft täglich über die Windows-Aufgabenplanung. Regelwerk und KI-Workflow sind eigene Dokumente: wer was darf, was die KI nie schätzt, wo der Mensch entscheidet.</dd>
+        <dt>Ergebnis</dt><dd class="geprueft">Backtest in sechs Iterationen mit Out-of-Sample-Prüfung auf getrennten Zeitfenstern und einem zurückgehaltenen Aktien-Set. Die Schwächen sind offen dokumentiert. Veröffentlicht mit Beispielkonfiguration statt echter Depotdaten.</dd>
+      </dl>
+      <ul class="marken"><li>Python</li><li>yfinance / Finnhub</li><li>Backtesting</li><li>Governance</li></ul>
+      <p class="mehr"><a href="https://github.com/guenter-kohlhofer/ai-trading-workbench" rel="noopener">Repository auf GitHub ansehen</a></p>
+    </div>
+  </article>
 </section>
 
-<section id="automatisierung">
-  <h2>Praxis &amp; Automatisierung</h2>
-  <p class="sub">Echte Abläufe mit echten Nutzern: vom Café über den Verkauf gebrauchter Ware bis zur eigenen Datenablage.</p>
-  <div class="grid">
+<section class="weise" id="arbeitsweise">
+  <div class="wrap">
+    <div class="kopf">
+      <h2>So arbeite ich mit KI</h2>
+      <p>Ich schreibe nicht jede Zeile Code selbst. Meine Stärke liegt davor und danach: den Ablauf verstehen, die Lösung genau beschreiben, das Ergebnis prüfen und im Betrieb verantworten.</p>
+    </div>
+    <ol class="schritte">
+      <li><h4>Ablauf aufnehmen</h4><p>Wie wird heute gearbeitet, wo geht Zeit verloren, wo passieren Fehler?</p></li>
+      <li><h4>Genau spezifizieren</h4><p>Regeln, Formate und Grenzfälle so beschreiben, dass die KI das Richtige baut.</p></li>
+      <li><h4>Bauen lassen und prüfen</h4><p>Code entsteht mit Claude, ich teste mit echten Daten und lasse nachbessern.</p></li>
+      <li><h4>Übergeben und dokumentieren</h4><p>Anleitung, Versionsstand und Grenzen schriftlich, damit es auch ohne mich läuft.</p></li>
+    </ol>
+    <p class="grundsatz"><span>Grundsatz in allen Projekten</span>Zahlen rechnet der Code, nicht das Sprachmodell. Die KI analysiert und dokumentiert, entschieden wird vom Menschen.</p>
+  </div>
+</section>
 
-    <article class="card feature">
-      <h3>Café-Kassa</h3>
-      <div class="meta">HTML + JavaScript, eine Datei, offline</div>
-      <a class="shot" href="demo/cafe-kassa.html" rel="noopener"><img src="img/cafe-kassa.jpg" alt="Verkaufsansicht der Café-Kassa mit Sortiment und Körberl" loading="lazy" width="1200" height="750"></a>
-      <p>Ersatz für ein Papier- und Excel-System im Café des BBRZ Graz: läuft in jedem Browser, ohne Installation und ohne Internet.</p>
-      <ul>
-        <li>Schichtjournal, Kassasturz, Archiv und Datensicherung.</li>
-        <li>Excel-Export passend zu den bestehenden Arbeitsmappen.</li>
-        <li>Beim Nachbauen der Logik wurden vier Fehler in den bisherigen Tabellen entdeckt.</li>
-      </ul>
-      <div class="tags"><span class="tag">Vanilla JS</span><span class="tag">ohne Abhängigkeiten</span><span class="tag">Offline-first</span></div>
-      <a class="link" href="demo/cafe-kassa.html">Demo selbst ausprobieren →</a>
-    </article>
-
-    <article class="card feature">
-      <h3>Inserate aus Handyfotos: Willhaben-Skill</h3>
-      <div class="meta">Claude-Skill · Python-Bildbearbeitung · Stapelverarbeitung</div>
-      <p>Man fotografiert ein Produkt mit dem Handy, lädt die Bilder hoch und bekommt fertige Inserate zurück.</p>
-      <ul>
-        <li>Bilder werden automatisch gedreht, begradigt, einheitlich im 4:3-Format zugeschnitten und farblich korrigiert.</li>
-        <li>Fremde Etiketten und Seriennummern werden wegretuschiert.</li>
-        <li>Dazu fertige Anzeigentexte und eine Preisempfehlung, gebündelt als Paket mit einem Ordner je Produkt zum Weiterschicken per WhatsApp.</li>
-        <li>Einmal als Skill beschrieben, danach für jedes neue Produkt mit einem Satz wiederholbar.</li>
-      </ul>
-      <div class="tags"><span class="tag">Pillow / NumPy</span><span class="tag">Bildbearbeitung</span><span class="tag">Texterstellung</span><span class="tag">E-Commerce</span></div>
-    </article>
-
-    <article class="card">
+<section class="abschnitt wrap" id="praxis">
+  <div class="kopf">
+    <h2>Weitere Praxis und Automatisierung</h2>
+    <p>Echte Abläufe mit echten Nutzern, vom Café bis zur eigenen Datenablage.</p>
+  </div>
+  <div class="liste drei">
+    <article class="eintrag">
       <h3>Ordnung in Cloud und Laptop</h3>
-      <div class="meta">Datenmigration · Google Drive · Google Fotos</div>
+      <p class="art">Datenmigration, Google Drive, Google Fotos</p>
       <p>Über Jahre verstreute Daten aus mehreren Clouds, Laptops und externen Datenträgern werden zusammengeführt: eine einheitliche Ordnerstruktur mit nummerierten Themenordnern in Drive, dieselbe Nummerierung in den Fotoalben, Laptop-Dateien direkt in die synchronisierte Ablage.</p>
       <ul>
         <li>Grundregel: nichts löschen, Duplikate und Unklares wandern ins Archiv.</li>
         <li>Große Aufräumaktionen in kleinen, prüfbaren Schritten mit Protokoll.</li>
       </ul>
-      <div class="tags"><span class="tag">Datenmigration</span><span class="tag">Dateiorganisation</span><span class="tag">PowerShell</span></div>
+      <ul class="marken"><li>Datenmigration</li><li>Dateiorganisation</li><li>PowerShell</li></ul>
     </article>
-
-    <article class="card">
+    <article class="eintrag">
       <h3>Persönliche Gesundheitsakte digitalisiert</h3>
-      <div class="meta">Dokumentenerfassung · Auswertung (hier ohne Daten)</div>
+      <p class="art">Dokumentenerfassung und Auswertung, hier ohne Daten</p>
       <p>Belege und Befunde aus mehr als einem Jahrzehnt eingescannt, geordnet und ausgewertet: Ausgaben und Rückerstattungen über alle Jahre berechnet, daraus Übersichten für unterschiedliche Leser erstellt, etwa für Ärzte, Behörden und Angehörige.</p>
-      <div class="tags"><span class="tag">Scannen &amp; Ablage</span><span class="tag">Tabellen</span><span class="tag">Zielgruppengerechte Texte</span></div>
+      <ul class="marken"><li>Scannen und Ablage</li><li>Tabellen</li><li>Zielgruppengerechte Texte</li></ul>
     </article>
-
+    <article class="eintrag">
+      <h3>Angebotsbildschirm fürs Café</h3>
+      <p class="art">Präsentation als Dauerschleife auf einem älteren Fernseher</p>
+      <p>Der Fernseher im Café spielt nur vom USB-Stick und kann keine PowerPoint-Dateien öffnen. Aus der Präsentation wurde deshalb ein Full-HD-Video mit weichen Überblendungen. Eine lange Schleife sorgt dafür, dass das sichtbare Neuladen nur selten vorkommt.</p>
+      <ul>
+        <li>Diashow als Ausweichlösung, falls das Video nicht läuft.</li>
+        <li>Aufgeräumter Stick mit nummerierten Ordnern und Anleitung.</li>
+      </ul>
+      <ul class="marken"><li>Videoaufbereitung</li><li>Fehlersuche am Gerät</li></ul>
+    </article>
   </div>
 </section>
 
-<section id="trading">
-  <h2>Trading-System mit KI</h2>
-  <p class="sub">Ein regelbasiertes System für Swing-Trading, das seit Monaten täglich läuft. Code rechnet, ein schriftliches Regelwerk entscheidet, Claude analysiert und dokumentiert, die Order gebe ich selbst auf. Keine Anlageberatung.</p>
-  <div class="grid">
-
-    <article class="card feature">
-      <h3>AI Trading Workbench (öffentliches Repository)</h3>
-      <div class="meta">Python · Backtesting · Claude mit Projektgedächtnis</div>
-      <p>Der veröffentlichte Kern des Systems mit Beispielkonfiguration statt echter Depotdaten:</p>
-      <ul>
-        <li><b>Watchlist-Scanner:</b> Trendfilter, Relative Stärke, Volatilität, Volumen-Gate, Marktregime und Sektor-Heatmap in einer Tabelle, täglicher Lauf über die Windows-Aufgabenplanung.</li>
-        <li><b>Backtest in sechs Iterationen:</b> Out-of-Sample-Prüfung auf getrennten Zeitfenstern und einem zurückgehaltenen Aktien-Set, mit offen dokumentierten Schwächen.</li>
-        <li><b>Regelwerk und KI-Workflow</b> als eigene Dokumente: wer was darf, was die KI nie schätzt, wo der Mensch entscheidet.</li>
-      </ul>
-      <div class="tags"><span class="tag">Python</span><span class="tag">yfinance / Finnhub</span><span class="tag">Backtesting</span><span class="tag">Governance</span></div>
-      <a class="link" href="https://github.com/guenter-kohlhofer/ai-trading-workbench" rel="noopener">Repository auf GitHub ansehen →</a>
-    </article>
-
-    <article class="card">
+<section class="abschnitt wrap" id="trading">
+  <div class="kopf">
+    <h2>Das Trading-System im Detail</h2>
+    <p>Ein regelbasiertes System für Swing-Trading, das seit Monaten täglich läuft. Die AI Trading Workbench oben ist der veröffentlichte Kern davon. Keine Anlageberatung.</p>
+  </div>
+  <ol class="kette" aria-label="Tägliche Aufrufkette">
+    <li>Lagebild</li><li>Einstiegs-Check</li><li>Risiko-Check</li><li>Stop-Vorschläge</li><li>Trailing-Wächter</li><li>Nachrichten-Scan</li><li>Wochenschluss</li><li class="pruef">Prüfung aller Statusdateien</li>
+  </ol>
+  <div class="liste">
+    <article class="eintrag">
       <h3>Tägliche Aufrufkette</h3>
-      <div class="meta">rund 50 Python-Skripte</div>
+      <p class="art">Rund 50 Python-Skripte</p>
       <p>Lagebild, Einstiegs-Check, Risiko-Check, Stop-Vorschläge, Trailing-Wächter, Nachrichten-Scan und Wochenschluss laufen in fester Reihenfolge. Das Lagebild prüft am Ende Alter, tote Verweise und Widersprüche aller Statusdateien. Grundsatz: lieber keine Zahl als eine veraltete.</p>
-      <div class="tags"><span class="tag">Automatisierung</span><span class="tag">Datenqualität</span><span class="tag">Fehlerlogik</span></div>
+      <ul class="marken"><li>Automatisierung</li><li>Datenqualität</li><li>Fehlerlogik</li></ul>
     </article>
-
-    <article class="card">
+    <article class="eintrag">
       <h3>Geplante KI-Aufgaben</h3>
-      <div class="meta">Claude · zeitgesteuert</div>
+      <p class="art">Claude, zeitgesteuert</p>
       <p>Wiederkehrende Abläufe ohne Zutun: Pre-Trade-Prüfung gegen impulsive Käufe, Nachrichten-Scan vor dem Handel, Kontrollen nach Zinsentscheiden und Wirtschaftsdaten, Wochenmemo, Handelsjournal und eine wöchentliche Sicherung des KI-Gedächtnisses in die Cloud.</p>
-      <div class="tags"><span class="tag">Scheduling</span><span class="tag">Prozessdisziplin</span></div>
+      <ul class="marken"><li>Scheduling</li><li>Prozessdisziplin</li></ul>
     </article>
-
-    <article class="card">
+    <article class="eintrag">
       <h3>Studien statt Bauchgefühl</h3>
-      <div class="meta">Walk-Forward · Bootstrap · Gegenproben</div>
+      <p class="art">Walk-Forward, Bootstrap, Gegenproben</p>
       <p>Jede neue Regel muss sich in einer eigenen Studie beweisen, inklusive eines bewussten Widerlegungsversuchs. Beispiele: optimale Haltedauer, Alter der Kursdaten, Kapitalumschlag, Kosten und Steuern aus den echten Abrechnungen, Token-Verbrauch der KI.</p>
-      <div class="tags"><span class="tag">Statistik</span><span class="tag">Reproduzierbarkeit</span><span class="tag">PowerShell</span></div>
+      <ul class="marken"><li>Statistik</li><li>Reproduzierbarkeit</li><li>PowerShell</li></ul>
     </article>
-
-    <article class="card">
+    <article class="eintrag">
       <h3>Dashboards</h3>
-      <div class="meta">HTML · über 30 Versionen</div>
+      <p class="art">HTML, über 30 Versionen</p>
       <p>Ein Pipeline-Dashboard zeigt alle Kandidaten mit Stufe, Auslöser und Verfallsdatum auf einen Blick, dazu ein Aufgaben-Dashboard und ein Morgenbriefing. Laufend aus der Praxis weiterentwickelt.</p>
-      <div class="tags"><span class="tag">Visualisierung</span><span class="tag">Iteration</span></div>
+      <ul class="marken"><li>Visualisierung</li><li>Iteration</li></ul>
     </article>
-
   </div>
 </section>
 
-<section id="ki-workflows">
-  <h2>KI-Skills: wiederverwendbare Abläufe</h2>
-  <p class="sub">Wiederkehrende Abläufe, die ich als „Skills“ für Claude festgehalten habe: einmal sauber beschrieben, danach auf Zuruf wiederholbar, mit Prüfschritten und Bestätigung an den richtigen Stellen.</p>
-  <div class="grid">
-
-    <article class="card">
+<section class="abschnitt wrap" id="skills">
+  <div class="kopf">
+    <h2>KI-Skills: wiederverwendbare Abläufe</h2>
+    <p>Wiederkehrende Abläufe, die ich als „Skills“ für Claude festgehalten habe: einmal sauber beschrieben, danach auf Zuruf wiederholbar, mit Prüfschritten und Bestätigung an den richtigen Stellen. Der Willhaben-Skill oben ist einer davon.</p>
+  </div>
+  <div class="liste">
+    <article class="eintrag">
       <h3>Homepage-Pipeline auf GitHub Pages</h3>
-      <div class="meta">Claude-Skill · PowerShell · GitHub CLI</div>
+      <p class="art">Claude-Skill, PowerShell, GitHub CLI</p>
       <p>Von der Beschreibung zur Live-Seite ohne Handarbeit: Datenschutz-Check (Schriften lokal, keine privaten Daten im Code), Bestätigung vor dem Veröffentlichen, Commit mit neutraler Identität, Warten auf den Build und Prüfung, ob die Seite erreichbar ist. Diese Seite ist damit veröffentlicht.</p>
-      <div class="tags"><span class="tag">Git</span><span class="tag">GitHub Pages</span><span class="tag">Datenschutz</span></div>
+      <ul class="marken"><li>Git</li><li>GitHub Pages</li><li>Datenschutz</li></ul>
     </article>
-
-    <article class="card">
-      <h3>Instagram-Karussell weitergeben</h3>
-      <div class="meta">Claude-Skill · Video- &amp; PDF-Verarbeitung</div>
-      <p>Aus einer Bildschirmaufnahme eines Instagram-Beitrags entstehen saubere Einzelfolien ohne Bedienelemente, daraus Video, PDF und Bilderalbum für Menschen ohne Instagram.</p>
-      <div class="tags"><span class="tag">Video zu Einzelbildern</span><span class="tag">PDF &amp; MP4</span></div>
-    </article>
-
-    <article class="card">
-      <h3>Artikel-Archiv</h3>
-      <div class="meta">Claude-Skill · Google Drive</div>
-      <p>Legt Quellen und Artikel als dauerhafte Belege mit einheitlicher Benennung in Google Drive ab, damit Aussagen auch später noch nachweisbar sind.</p>
-      <div class="tags"><span class="tag">Wissensmanagement</span><span class="tag">Drive</span></div>
-    </article>
-
-    <article class="card">
-      <h3>Projekte sichern &amp; umziehen</h3>
-      <div class="meta">Claude-Skill</div>
-      <p>Sichert ein komplettes KI-Projekt inklusive der Teile, die beim Gerätewechsel sonst verloren gehen (Gedächtnis, eigene Skills), trennt nach Wert in Cloud- und Offline-Sicherung, lässt sensible Dokumente bewusst weg und prüft die Vollständigkeit.</p>
-      <div class="tags"><span class="tag">Backup</span><span class="tag">Migration</span></div>
-    </article>
-
-  </div>
-</section>
-
-<section id="konzepte">
-  <h2>Konzepte &amp; Analysen</h2>
-  <p class="sub">Bevor gebaut wird, wird geprüft: Markt, Recht, Kosten, Risiken. Mit Quellen, damit jede Aussage nachprüfbar ist.</p>
-  <div class="grid">
-
-    <article class="card feature">
-      <h3>Lokale KI-Box für Kleinbetriebe</h3>
-      <div class="meta">Produktkonzept · Machbarkeitsprüfung</div>
-      <p>Idee: Ein Mini-PC im Netzwerk von Kanzleien und Praxen erledigt Büroarbeit mit einem offenen Sprachmodell, ohne dass Daten das Haus verlassen. Rechnungen auslesen, mit dem Angebot abgleichen, als Vorerfassung an die Buchhaltung übergeben, Fristen in den Kalender. Gebucht wird nie automatisch, der Mensch gibt frei.</p>
+    <article class="eintrag">
+      <h3>Drei Skills für den Trading-Alltag</h3>
+      <p class="art">Claude-Skills mit Projektgedächtnis</p>
       <ul>
-        <li>Marktlücke, Preise der Mitbewerber in Graz, Lizenzlage der Automatisierungsplattform (n8n) und Schnittstelle zur Buchhaltungssoftware recherchiert.</li>
-        <li>Rechtlicher Rahmen: EU-KI-Verordnung, neue Produkthaftung für Software ab Dezember 2026.</li>
-        <li>Risiken offen benannt, mit hartem Go/No-Go-Test vor jeder Investition.</li>
+        <li><b>Start:</b> liest den letzten Stand, prüft Nachrichten, Kurse und Sektoren und stellt daraus Signaltabelle und Aufgaben zusammen.</li>
+        <li><b>Selbst-Check:</b> sucht im Projektgedächtnis nach veralteten Verweisen und Widersprüchen und behebt sie, ohne eine funktionierende Regel zu verschlechtern.</li>
+        <li><b>Abschluss:</b> sichert vor dem Ende alles, was die nächste Sitzung wissen muss.</li>
       </ul>
-      <div class="tags"><span class="tag">Lokale LLMs</span><span class="tag">n8n</span><span class="tag">Datenschutz</span><span class="tag">Business Case</span></div>
+      <ul class="marken"><li>Routinen</li><li>Qualitätssicherung</li></ul>
     </article>
+    <article class="eintrag">
+      <h3>Instagram-Karussell weitergeben</h3>
+      <p class="art">Claude-Skill, Video- und PDF-Verarbeitung</p>
+      <p>Viele Menschen haben kein Instagram, bekommen Beiträge aber per WhatsApp geschickt. Der Skill nimmt eine Bildschirmaufnahme oder Screenshots eines Karussells und schneidet daraus saubere Einzelfolien. Folienzähler, Ton-Symbol und der Rand des Handys werden automatisch entfernt.</p>
+      <p>Daraus entstehen ein Slideshow-Video, ein PDF zum Durchblättern, Bilder fürs WhatsApp-Album und auf Wunsch eine Fassung im Hochformat für den WhatsApp-Status.</p>
+      <ul class="marken"><li>Video zu Einzelbildern</li><li>PDF und MP4</li></ul>
+    </article>
+    <article class="eintrag">
+      <h3>Projekte sichern und umziehen</h3>
+      <p class="art">Claude-Skill</p>
+      <p>Sichert ein komplettes KI-Projekt inklusive der Teile, die beim Gerätewechsel sonst verloren gehen (Gedächtnis, eigene Skills), trennt nach Wert in Cloud- und Offline-Sicherung, lässt sensible Dokumente bewusst weg und prüft die Vollständigkeit.</p>
+      <ul class="marken"><li>Backup</li><li>Migration</li></ul>
+    </article>
+    <article class="eintrag">
+      <h3>Artikel-Archiv</h3>
+      <p class="art">Claude-Skill, Google Drive</p>
+      <p>Artikel verschwinden aus dem Netz oder werden still geändert. Wer sich in Beiträgen auf Quellen stützt, braucht deshalb eine eigene Kopie. Der Skill legt Quellen und Artikel als dauerhafte Belege in Google Drive ab, mit einheitlicher Benennung nach Datum und Thema.</p>
+      <p>So lässt sich jede Aussage auch Monate später noch nachweisen.</p>
+      <ul class="marken"><li>Wissensmanagement</li><li>Drive</li></ul>
+    </article>
+  </div>
+</section>
 
-    <article class="card">
-      <h3>Arbeitsmarkt IT &amp; KI Steiermark</h3>
-      <div class="meta">Datenrecherche</div>
+<section class="abschnitt wrap" id="konzepte">
+  <div class="kopf">
+    <h2>Konzepte und Analysen</h2>
+    <p>Bevor gebaut wird, wird geprüft: Markt, Recht, Kosten, Risiken. Mit Quellen, damit jede Aussage nachprüfbar ist.</p>
+  </div>
+  <article class="breit einspaltig">
+    <h3>Lokale KI-Box für Kleinbetriebe</h3>
+    <p class="art">Produktkonzept mit Machbarkeitsprüfung</p>
+    <p>Idee: Ein Mini-PC im Netzwerk von Kanzleien und Praxen erledigt Büroarbeit mit einem offenen Sprachmodell, ohne dass Daten das Haus verlassen. Rechnungen auslesen, mit dem Angebot abgleichen, als Vorerfassung an die Buchhaltung übergeben, Fristen in den Kalender. Gebucht wird nie automatisch, der Mensch gibt frei.</p>
+    <ul>
+      <li>Marktlücke, Preise der Mitbewerber in Graz, Lizenzlage der Automatisierungsplattform (n8n) und Schnittstelle zur Buchhaltungssoftware recherchiert.</li>
+      <li>Rechtlicher Rahmen: EU-KI-Verordnung, neue Produkthaftung für Software ab Dezember 2026.</li>
+      <li>Risiken offen benannt, mit hartem Go/No-Go-Test vor jeder Investition.</li>
+    </ul>
+    <ul class="marken"><li>Lokale LLMs</li><li>n8n</li><li>Datenschutz</li><li>Business Case</li></ul>
+  </article>
+  <div class="liste drei">
+    <article class="eintrag">
+      <h3>Arbeitsmarkt IT und KI Steiermark</h3>
+      <p class="art">Datenrecherche</p>
       <p>Auswertung von Stelleninseraten auf drei Jobportalen nach Technologien, Einstiegsstellen und Titeln, ergänzt um offizielle Statistiken. Eigene Zählungen wurden nachgezählt und korrigiert, wo sie nicht hielten.</p>
-      <div class="tags"><span class="tag">Datenauswertung</span><span class="tag">Quellenkritik</span></div>
+      <ul class="marken"><li>Datenauswertung</li><li>Quellenkritik</li></ul>
     </article>
-
-    <article class="card">
-      <h3>Microsoft 365 &amp; KI-Governance</h3>
-      <div class="meta">Konzept</div>
+    <article class="eintrag">
+      <h3>Microsoft 365 und KI-Governance</h3>
+      <p class="art">Konzept</p>
       <p>Wie ein Betrieb KI im Microsoft-Umfeld einführt und verwaltet: Rollen, Berechtigungen, Datenschutz und Schulungspflicht nach der EU-KI-Verordnung.</p>
-      <div class="tags"><span class="tag">M365</span><span class="tag">Governance</span></div>
+      <ul class="marken"><li>M365</li><li>Governance</li></ul>
     </article>
-
-    <article class="card">
+    <article class="eintrag">
       <h3>Sicherheits-Check einer Firmenwebsite</h3>
-      <div class="meta">Audit · PDF-Bericht</div>
+      <p class="art">Audit mit PDF-Bericht</p>
       <p>Prüfung einer bestehenden Unternehmensseite auf Sicherheits- und Datenschutzmängel, mit verständlichem Bericht und priorisierten Empfehlungen für den Betreiber.</p>
-      <div class="tags"><span class="tag">Websicherheit</span><span class="tag">DSGVO</span></div>
+      <ul class="marken"><li>Websicherheit</li><li>DSGVO</li></ul>
     </article>
-
   </div>
 </section>
 
-<section id="tra">
-  <h2>Trading Radar Austria &amp; Reichweite</h2>
-  <p class="sub">Eigene Analysemarke für Geopolitik und Märkte („Wo Geopolitik auf Märkte trifft“). Recherchiert, faktengeprüft und mit Quellen, KI-gestützt in Recherche, Gestaltung und Ablauf.</p>
-  <div class="grid">
-
-    <article class="card feature">
+<section class="abschnitt wrap" id="tra">
+  <div class="kopf">
+    <h2>Trading Radar Austria und Reichweite</h2>
+    <p>Eigene Analysemarke für Geopolitik und Märkte („Wo Geopolitik auf Märkte trifft“). Recherchiert, faktengeprüft und mit Quellen, KI-gestützt in Recherche, Gestaltung und Ablauf.</p>
+  </div>
+  <article class="breit">
+    <div>
       <h3>Beitrag mit großer Reichweite: Alterskontrolle im Netz</h3>
-      <div class="meta">Facebook · Juli 2026 · über 46.000 Aufrufe · knapp 5.000 Interaktionen · 259 Mal geteilt</div>
+      <p class="art">Facebook, Juli 2026</p>
       <p>Technische Analyse, warum ein Social-Media-Verbot unter 14 kaum durchsetzbar ist: sechs Gründe von manipulierbaren Endgeräten über die Ungenauigkeit von Altersschätzung bis zu VPNs, belegt mit Studien und Herstellerangaben, ergänzt um einen Faktencheck aus Australien. Dazu eine eigene Infografik im einheitlichen Stil.</p>
-      <div class="tags"><span class="tag">Recherche</span><span class="tag">Technik verständlich erklärt</span><span class="tag">Infografik</span><span class="tag">Reichweite</span></div>
-      <a class="link" href="https://www.facebook.com/guenta9/posts/pfbid0Z27yNLLskWwhQk2DAxM13Ds7DtMXJwaTc82QeGzwQ5eXcFNgxmHaJvLPWWgWta2rl" rel="noopener">Beitrag auf Facebook ansehen →</a>
-    </article>
-
-    <article class="card">
-      <h3>Marke &amp; Design-System</h3>
-      <div class="meta">Corporate Design · Grafikvorlagen</div>
+      <ul class="marken"><li>Recherche</li><li>Technik verständlich erklärt</li><li>Infografik</li></ul>
+      <p class="mehr"><a href="https://www.facebook.com/guenta9/posts/pfbid0Z27yNLLskWwhQk2DAxM13Ds7DtMXJwaTc82QeGzwQ5eXcFNgxmHaJvLPWWgWta2rl" rel="noopener">Beitrag auf Facebook ansehen</a></p>
+    </div>
+    <div class="zahlenreihe">
+      <div><b>über 46.000</b><span>Aufrufe</span></div>
+      <div><b>knapp 5.000</b><span>Interaktionen</span></div>
+      <div><b>259</b><span>Mal geteilt</span></div>
+    </div>
+  </article>
+  <div class="liste drei">
+    <article class="eintrag">
+      <h3>Marke und Design-System</h3>
+      <p class="art">Corporate Design, Grafikvorlagen</p>
       <p>Einheitlicher Auftritt über Facebook, X und Instagram: Farben, Typografie und Vorlagen als Design-System festgehalten, daraus Grafiken, Karussells und Szenario-Darstellungen für Marktthemen.</p>
-      <div class="tags"><span class="tag">Design-System</span><span class="tag">Social Media</span></div>
+      <ul class="marken"><li>Design-System</li><li>Social Media</li></ul>
     </article>
-
-    <article class="card">
-      <h3>Faktenchecks &amp; Analysen</h3>
-      <div class="meta">Quellenarbeit</div>
+    <article class="eintrag">
+      <h3>Faktenchecks und Analysen</h3>
+      <p class="art">Quellenarbeit</p>
       <p>Faktenchecks zu Statistiken und viralen Behauptungen, Analysen zu Energie, Verteidigung und Wahlen, Wahrscheinlichkeitsmodelle für Fußballmeisterschaften (Monte Carlo, Poisson). Grundsatz: nur Aussagen, die sich belegen lassen.</p>
-      <div class="tags"><span class="tag">Quellenkritik</span><span class="tag">Statistik</span></div>
+      <ul class="marken"><li>Quellenkritik</li><li>Statistik</li></ul>
     </article>
-
-    <article class="card">
+    <article class="eintrag">
       <h3>Werkzeuge für den Redaktionsalltag</h3>
-      <div class="meta">HTML · Claude-Skills</div>
+      <p class="art">HTML, Claude-Skills</p>
       <p>Ein Konverter formatiert Beiträge von X für Facebook um, ein Archiv-Skill sichert Quellen dauerhaft als Beleg, ein Export-Skill macht Instagram-Karussells für WhatsApp nutzbar.</p>
-      <div class="tags"><span class="tag">Automatisierung</span><span class="tag">Content-Workflow</span></div>
-      <a class="link" href="https://x.com/TradeRadarAT" rel="noopener">@TradeRadarAT auf X →</a>
+      <ul class="marken"><li>Automatisierung</li><li>Content-Workflow</li></ul>
+      <p class="mehr"><a href="https://x.com/Trading_RadarAT" rel="noopener">@Trading_RadarAT auf X</a></p>
     </article>
-
   </div>
 </section>
 
-<section id="web">
-  <h2>Webseiten &amp; Web-Apps</h2>
-  <p class="sub">Veröffentlicht ohne Tracking und ohne externe Schriften.</p>
-  <div class="grid">
-
-    <article class="card feature">
+<section class="abschnitt wrap" id="web">
+  <div class="kopf">
+    <h2>Webseiten und Web-Apps</h2>
+    <p>Veröffentlicht ohne Tracking und ohne externe Schriften.</p>
+  </div>
+  <article class="breit">
+    <div>
       <h3>Die Eieruhranbeter: von der Idee zur Live-Seite in 18 Minuten</h3>
-      <div class="meta">Satire-Homepage · Idee um 20:16 Uhr, online um 20:34 Uhr</div>
-      <a class="shot" href="https://traderadarat.github.io/eieruhranbeter/" rel="noopener"><img src="img/eieruhranbeter.jpg" alt="Startseite der Eieruhranbeter mit Sanduhr" loading="lazy" width="1200" height="750"></a>
+      <p class="art">Satire-Homepage, Idee um 20:16 Uhr, online um 20:34 Uhr</p>
       <p>Ein Spaß aus einem Chat wurde in unter 20 Minuten zu einer fertigen, veröffentlichten Website: funktionierende Eieruhr mit Glocke und Vibration, druckbarer Mitgliedsausweis, versteckter Gag, Vorschaubild für WhatsApp. Ohne Cookies und externe Schriften. Zeigt, wie schnell heute aus einer Idee etwas Vorzeigbares wird.</p>
-      <div class="tags"><span class="tag">HTML/CSS/JS</span><span class="tag">GitHub Pages</span><span class="tag">Rapid Prototyping</span></div>
-      <a class="link" href="https://traderadarat.github.io/eieruhranbeter/" rel="noopener">Seite ansehen →</a>
-    </article>
-
-
-    <article class="card">
+      <ul class="marken"><li>HTML/CSS/JS</li><li>GitHub Pages</li><li>Rapid Prototyping</li></ul>
+      <p class="mehr"><a href="https://traderadarat.github.io/eieruhranbeter/" rel="noopener">Seite ansehen</a></p>
+    </div>
+    <a class="schau" href="https://traderadarat.github.io/eieruhranbeter/" rel="noopener"><img src="img/eieruhranbeter.jpg" alt="Startseite der Eieruhranbeter mit Sanduhr" loading="lazy" width="1200" height="750"></a>
+  </article>
+  <div class="liste drei">
+    <article class="eintrag">
       <h3>Geli's Holzwerkstatt</h3>
-      <div class="meta">Website eines Familienbetriebs</div>
-      <a class="shot" href="https://kohlhofer.net/" rel="noopener"><img src="img/holzwerkstatt.jpg" alt="Startseite von Geli's Holzwerkstatt" loading="lazy" width="1200" height="750"></a>
+      <p class="art">Website eines Familienbetriebs</p>
+      <a class="schau" href="https://kohlhofer.net/" rel="noopener"><img src="img/holzwerkstatt.jpg" alt="Startseite von Geli's Holzwerkstatt" loading="lazy" width="1200" height="750"></a>
       <p>Auftritt für handgemachte Holzprodukte mit Produktseiten, Galerie, Impressum und Datenschutz. Dazu ein Skript, das Produktfotos automatisch für das Web verkleinert und optimiert.</p>
-      <div class="tags"><span class="tag">HTML/CSS</span><span class="tag">Bildoptimierung</span></div>
-      <a class="link" href="https://kohlhofer.net/" rel="noopener">kohlhofer.net ansehen →</a>
+      <ul class="marken"><li>HTML/CSS</li><li>Bildoptimierung</li></ul>
+      <p class="mehr"><a href="https://kohlhofer.net/" rel="noopener">kohlhofer.net ansehen</a></p>
     </article>
-
-    <article class="card">
+    <article class="eintrag">
       <h3>PC-Werkstatt</h3>
-      <div class="meta">Persönliche Lernseite · an einem Tag gebaut und veröffentlicht</div>
-      <a class="shot" href="https://traderadarat.github.io/harry/" rel="noopener"><img src="img/pc-werkstatt.jpg" alt="Startseite der PC-Werkstatt mit Lernschritten" loading="lazy" width="1200" height="750"></a>
+      <p class="art">Persönliche Lernseite, an einem Tag gebaut und veröffentlicht</p>
+      <a class="schau" href="https://traderadarat.github.io/harry/" rel="noopener"><img src="img/pc-werkstatt.jpg" alt="Startseite der PC-Werkstatt mit Lernschritten" loading="lazy" width="1200" height="750"></a>
       <p>Schritt-für-Schritt-Lernseite, mit der eine Person ohne Vorkenntnisse den Umgang mit dem Computer lernt: Zehnfingersystem als Spiel, Maus, Tastenkürzel, Übungs-Word und -Excel, Dateien und sichere E-Mails. Der Fortschritt wird nur im eigenen Browser gespeichert.</p>
-      <div class="tags"><span class="tag">Didaktik</span><span class="tag">localStorage</span></div>
-      <a class="link" href="https://traderadarat.github.io/harry/" rel="noopener">Lernseite ansehen →</a>
+      <ul class="marken"><li>Didaktik</li><li>localStorage</li></ul>
+      <p class="mehr"><a href="https://traderadarat.github.io/harry/" rel="noopener">Lernseite ansehen</a></p>
     </article>
-
-    <article class="card">
+    <article class="eintrag">
       <h3>Kleine Werkzeuge</h3>
-      <div class="meta">HTML · JavaScript</div>
+      <p class="art">HTML, JavaScript</p>
       <ul>
         <li>Punktezähler für ein Kartenspiel mit sechs Personen, mit Sprachausgabe</li>
         <li>Abo-Verwaltung als installierbare Web-App (PWA)</li>
@@ -361,19 +588,46 @@
         <li>Fahrtenbuch, das die Kosten eines geteilten Autos fair aufteilt</li>
         <li>Trainingspläne als persönliche Webseiten</li>
       </ul>
-      <div class="tags"><span class="tag">PWA</span><span class="tag">Web Speech API</span></div>
+      <ul class="marken"><li>PWA</li><li>Web Speech API</li></ul>
     </article>
-
   </div>
 </section>
 
-<section id="werkzeuge">
-  <h2>Werkzeuge, mit denen ich arbeite</h2>
-  <div class="cols">
-    <div class="step"><h4>KI</h4><p>Claude (Chat, Code, Cowork, Projekte mit Gedächtnis, eigene Skills, geplante Aufgaben), MCP-Anbindungen an Mail, Kalender, Drive und Browser</p></div>
-    <div class="step"><h4>Sprachen &amp; Formate</h4><p>Python, VBA, PowerShell, Batch, HTML, CSS, JavaScript, SQL-Grundlagen, Markdown</p></div>
-    <div class="step"><h4>Office &amp; Plattformen</h4><p>Word- und Excel-Automatisierung, Google Workspace, Git und GitHub, Windows-Aufgabenplanung</p></div>
-    <div class="step"><h4>Hintergrund &amp; Hardware</h4><p>IT-Techniker, Microsoft-Zertifizierungen, rund zehn Jahre Praxis in Endgeräte-Management und Werkstattbetrieb. Reparaturen bis ins Gerät, zuletzt ein erfolgreicher Akkutausch an einem Microsoft Surface 3.</p></div>
+<section class="abschnitt wrap" id="werdegang">
+  <div class="kopf">
+    <h2>Werdegang</h2>
+    <p>Der vollständige Lebenslauf kommt mit jeder Bewerbung. Hier das Wichtigste in Kürze.</p>
+  </div>
+  <table class="werkzeug zeitleiste">
+    <tr><th scope="row">seit 12/2025</th><td><b>Berufliche Neuorientierung</b>, BBRZ Reha GmbH, Graz<br>Weiterbildung mit Schwerpunkt KI und Automatisierung. Dabei sind viele der Projekte auf dieser Seite entstanden.</td></tr>
+    <tr><th scope="row">03/2017 – 03/2025</th><td><b>IT-Techniker in der EDV-Werkstätte</b>, Steiermärkische Krankenanstaltengesellschaft (KAGes), Graz<br>Endgeräte-Management und Werkstattbetrieb. In den letzten zwei Jahren hauptverantwortlich für den Bereich Hardware-Endgeräte: Angebote, Bestellungen, Lager, Garantieabwicklung, Einteilung externer Techniker. Installation von Krankenhaus-, Befund- und Röntgensoftware, Aufbereitung von Altgeräten, datenschutzgerechte Datenträgervernichtung.</td></tr>
+    <tr><th scope="row">11/2010 – 06/2014</th><td><b>IT-Techniker</b>, Ulbel &amp; Freidorfer GmbH<br>Druckerwartung, PC-Aufstellungen, Support. Hauptverantwortlich für das Samsung-Reparaturzentrum für Monitore.</td></tr>
+    <tr><th scope="row">davor</th><td>Sicherheitsdienst, Fertigung bei Andritz Hydro und Verwaltung bei der Justiz</td></tr>
+    <tr><th scope="row">Ausbildung</th><td>Lehrabschluss IT-Techniker (2015), Matura Informationsmanagement und -technologie, BHAK Grazbachgasse (2009)</td></tr>
+    <tr><th scope="row">Zertifikate</th><td>Microsoft 365 Certified: Modern Desktop Administrator Associate (MD-100, MD-101), 2021</td></tr>
+    <tr><th scope="row">Geplant</th><td>Lehrgang KI-Manager:in, UNI for LIFE Graz, ab März 2027</td></tr>
+    <tr><th scope="row">Sprachen</th><td>Deutsch (Muttersprache), Englisch (gut), Italienisch (Grundkenntnisse)</td></tr>
+  </table>
+</section>
+
+<section class="abschnitt wrap" id="werkzeuge">
+  <div class="kopf">
+    <h2>Werkzeuge</h2>
+  </div>
+  <table class="werkzeug">
+    <tr><th scope="row">KI</th><td>Claude (Chat, Code, Cowork, Projekte mit Gedächtnis, eigene Skills, geplante Aufgaben), MCP-Anbindungen an Mail, Kalender, Drive und Browser</td></tr>
+    <tr><th scope="row">Sprachen und Formate</th><td>Python, VBA, PowerShell, Batch, HTML, CSS, JavaScript, SQL-Grundlagen, Markdown</td></tr>
+    <tr><th scope="row">Office und Plattformen</th><td>Word- und Excel-Automatisierung, Google Workspace, Git und GitHub, Windows-Aufgabenplanung, SAP-Ticketsystem</td></tr>
+    <tr><th scope="row">Hardware</th><td>Reparaturen bis ins Gerät, zuletzt ein erfolgreicher Akkutausch an einem Microsoft Surface 3</td></tr>
+  </table>
+</section>
+
+<section class="kontakt" id="kontakt">
+  <div class="wrap">
+    <h2>Kontakt</h2>
+    <p>Fragen zu einem Projekt oder Interesse an einem Gespräch? Am schnellsten erreichen Sie mich per E-Mail.</p>
+    <p class="adresse"><a href="mailto:guenter.kohlhofer@gmail.com">guenter.kohlhofer@gmail.com</a></p>
+    <p class="weitere"><a href="https://github.com/guenter-kohlhofer" rel="noopener">GitHub: guenter-kohlhofer</a> <span aria-hidden="true">|</span> Graz, Österreich</p>
   </div>
 </section>
 
@@ -382,8 +636,9 @@
 <footer>
   <div class="wrap">
     <p>Der Code der Projekte entstand mit KI-Unterstützung (Claude). Aufgabenstellung, Spezifikation, Tests und Betrieb liegen bei mir.</p>
-    <p>Diese Seite setzt keine Cookies, lädt keine externen Schriften und verwendet kein Tracking. Gehostet auf GitHub Pages; GitHub protokolliert laut eigener Dokumentation die IP-Adressen der Besucher.</p>
-    <p>Stand: 25.11.2026</p>
+    <p>Diese Seite setzt keine Cookies, lädt keine externen Schriften und verwendet kein Tracking. Die Schriften Archivo und IBM Plex Sans liegen lokal auf dieser Seite (SIL Open Font License). Gehostet auf GitHub Pages; GitHub protokolliert laut eigener Dokumentation die IP-Adressen der Besucher.</p>
+    <p>Offenlegung nach § 25 Mediengesetz: Medieninhaber ist Günter Kohlhofer, Graz. Die Seite stellt seine eigenen Projekte vor.</p>
+    <p>Stand: 27.11.2026</p>
   </div>
 </footer>
 
