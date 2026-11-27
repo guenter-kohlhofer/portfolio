@@ -414,11 +414,12 @@
   <ol class="kette" aria-label="Tägliche Aufrufkette">
     <li>Lagebild</li><li>Einstiegs-Check</li><li>Risiko-Check</li><li>Stop-Vorschläge</li><li>Trailing-Wächter</li><li>Nachrichten-Scan</li><li>Wochenschluss</li><li class="pruef">Prüfung aller Statusdateien</li>
   </ol>
-  <div class="liste drei">
+  <div class="liste">
     <article class="eintrag">
       <h3>Tägliche Aufrufkette</h3>
       <p class="art">Rund 50 Python-Skripte</p>
       <p>Lagebild, Einstiegs-Check, Risiko-Check, Stop-Vorschläge, Trailing-Wächter, Nachrichten-Scan und Wochenschluss laufen in fester Reihenfolge. Das Lagebild prüft am Ende Alter, tote Verweise und Widersprüche aller Statusdateien. Grundsatz: lieber keine Zahl als eine veraltete.</p>
+      <p>Den Anfang macht ein Watchlist-Scanner: Er rechnet jeden Abend nach US-Börsenschluss alle beobachteten Aktien durch, mit Trend, Relativer Stärke, Volumen und Sektor-Heatmap über 11 Sektoren. Der Lauf dauert rund 34 Sekunden, die Werte weichen von einer professionellen Datenquelle nur um 0,1 bis 0,4 % ab.</p>
       <ul class="marken"><li>Automatisierung</li><li>Datenqualität</li><li>Fehlerlogik</li></ul>
     </article>
     <article class="eintrag">
@@ -431,7 +432,15 @@
       <h3>Studien statt Bauchgefühl</h3>
       <p class="art">Walk-Forward, Bootstrap, Gegenproben</p>
       <p>Jede neue Regel muss sich in einer eigenen Studie beweisen, inklusive eines bewussten Widerlegungsversuchs. Beispiele: optimale Haltedauer, Alter der Kursdaten, Kapitalumschlag, Kosten und Steuern aus den echten Abrechnungen, Token-Verbrauch der KI.</p>
+      <p>Beispiel: Ein Backtest über 156 Aktien und vier Jahre mit 1.521 simulierten Trades zeigte, dass nicht die strengen Regeln, sondern die zu kleine Beobachtungsliste die Signale bremste. Drei Filter ohne messbaren Nutzen wurden gestrichen. Grenzen der Studie, etwa kein Bärenmarkt im Zeitraum, sind offen dokumentiert.</p>
       <ul class="marken"><li>Statistik</li><li>Reproduzierbarkeit</li><li>PowerShell</li></ul>
+    </article>
+    <article class="eintrag">
+      <h3>Ein gemeinsamer Datenstand für mehrere KI-Umgebungen</h3>
+      <p class="art">Claude Cowork, Claude Code, geplante Cloud-Aufgaben</p>
+      <p>Problem: Ergebnisse standen nur im jeweiligen Chat. Andere Umgebungen arbeiteten mit veralteten Daten, ein Bericht gab Werte als aktuell aus, die bis zu vier Tage alt waren.</p>
+      <p>Lösung: eine zentrale Übergabedatei, die jede Sitzung zuerst liest und in die alle Seiten schreiben, eine feste Lesereihenfolge der Quelldateien und eine Frische-Regel. Ist der Datenstand veraltet, geben geplante Aufgaben keine Empfehlung mehr ab, sondern melden den Ausfall. Die Aufgabenplanung wurde dabei von 15 auf 7 Aufgaben vereinfacht.</p>
+      <ul class="marken"><li>Single Source of Truth</li><li>Ausfallsicherheit</li><li>KI-Orchestrierung</li></ul>
     </article>
   </div>
 </section>
