@@ -10,7 +10,7 @@
 
 | Bereich | Beispiele |
 |---|---|
-| Vier Projekte zum Einstieg | Willhaben-Inserate aus Handyfotos, lokale KI-Box für Kleinbetriebe, [AI Trading Workbench](https://github.com/guenter-kohlhofer/ai-trading-workbench), Café-Kassa (mit Demo) |
+| Fünf Projekte zum Einstieg | Willhaben-Inserate aus Handyfotos mit [inserat-mcp](https://github.com/guenter-kohlhofer/inserat-mcp), lokale KI-Box für Kleinbetriebe, [KI im Betrieb einführen](ki-im-betrieb/) (Richtlinie, Schulung, Rollout), [AI Trading Workbench](https://github.com/guenter-kohlhofer/ai-trading-workbench), Café-Kassa (mit Demo) |
 | Praxis & Automatisierung | Ordnung in Cloud und Laptop, digitalisierte Gesundheitsakte (ohne Daten), Fahrtenbuch für ein geteiltes Auto |
 | Trading-System im Detail | Tägliche Aufrufkette mit rund 50 Python-Skripten, geplante KI-Aufgaben, Studien mit Gegenproben |
 | KI-Skills | Homepage-Pipeline auf GitHub Pages, drei Skills für den Trading-Alltag, Instagram-Export, Projektsicherung, Artikel-Archiv |

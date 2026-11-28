@@ -246,7 +246,7 @@
 
 <section class="abschnitt wrap" id="projekte">
   <div class="kopf">
-    <h2>Vier Projekte zum Einstieg</h2>
+    <h2>Fünf Projekte zum Einstieg</h2>
     <p>Wer nur ein paar Minuten Zeit hat, sieht hier am schnellsten, wie ich arbeite.</p>
   </div>
   <article class="gross">
@@ -284,13 +284,14 @@
     </div>
     <div class="inhalt">
       <h3>Inserate aus Handyfotos</h3>
-      <p class="art">Claude-Skill für Willhaben, Bildbearbeitung mit Python, Stapelverarbeitung</p>
+      <p class="art">Claude-Skill für Willhaben, Bildbearbeitung mit Python, MCP-Server mit Regelprüfung</p>
       <dl class="karte">
         <dt>Ausgangslage</dt><dd>Gebrauchte Ware zu inserieren heißt: jedes Foto zuschneiden, jeden Text einzeln schreiben.</dd>
-        <dt>Lösung</dt><dd>Man fotografiert ein Produkt mit dem Handy und lädt die Bilder hoch. Sie werden automatisch gedreht, begradigt, einheitlich im Format 4:3 zugeschnitten und farblich korrigiert. Fremde Etiketten und Seriennummern werden wegretuschiert.</dd>
-        <dt>Ergebnis</dt><dd class="geprueft">Fertige Anzeigentexte mit Preisempfehlung, gebündelt als Paket mit einem Ordner je Produkt, zum Weiterschicken per WhatsApp. Einmal als Skill beschrieben, danach für jedes neue Produkt mit einem Satz wiederholbar.</dd>
+        <dt>Lösung</dt><dd>Man fotografiert ein Produkt mit dem Handy und lädt die Bilder hoch. Sie werden automatisch gedreht, begradigt, einheitlich im Format 4:3 zugeschnitten und farblich korrigiert. Fremde Etiketten und Seriennummern werden wegretuschiert. Ein eigener MCP-Server schreibt die Inserate für willhaben, Shpock, eBay, Facebook Marketplace und Vinted, prüft sie auf typische Fehler wie Telefonnummer im Text oder unzulässigen Gewährleistungsausschluss und vergleicht Entwürfe. Die Regeln stecken in getestetem Python-Code, nicht im Prompt.</dd>
+        <dt>Ergebnis</dt><dd class="geprueft">Fertige Anzeigentexte mit Preisempfehlung, gebündelt als Paket mit einem Ordner je Produkt, zum Weiterschicken per WhatsApp. Bilder einheitlich höchstens 1600 × 1200 Pixel und unter 700 KB, mit Kontaktbogen zur Kontrolle. Ein Produkt, fünf Plattformen, Prüfung mit Punkten von 0 bis 100, abgesichert durch 15 automatische Tests. Einmal als Skill beschrieben, danach für jedes neue Produkt mit einem Satz wiederholbar.</dd>
       </dl>
-      <ul class="marken"><li>Pillow / NumPy</li><li>Bildbearbeitung</li><li>Texterstellung</li><li>E-Commerce</li></ul>
+      <ul class="marken"><li>Pillow / NumPy</li><li>MCP</li><li>pytest</li><li>E-Commerce</li></ul>
+      <p class="mehr"><a href="https://github.com/guenter-kohlhofer/inserat-mcp" rel="noopener">MCP-Server auf GitHub ansehen</a></p>
     </div>
   </article>
   <article class="gross">
@@ -335,6 +336,52 @@
   </article>
   <article class="gross">
     <div class="bild">
+      <svg viewBox="0 0 460 300" role="img" aria-label="Schema: Ein Betrieb führt KI in drei Schritten ein. Eine Richtlinie mit Daten-Ampel regelt, welche Daten in welches Werkzeug dürfen. Eine Schulung von 30 Minuten erfüllt die Schulungspflicht. Ein Rollout-Plan über 12 Wochen endet mit einem gemessenen Pilot.">
+        <g font-family="Plex,Segoe UI,Arial,sans-serif" font-size="13" fill="#e7eef4">
+          <!-- Richtlinie mit Ampel -->
+          <rect x="22" y="58" width="112" height="140" rx="4" fill="#fff" stroke="#5b7690"/>
+          <path d="M36 76h70M36 88h56" stroke="#13212e" stroke-width="2"/>
+          <circle cx="78" cy="118" r="11" fill="#3fa66b" stroke="#13212e" stroke-width="1.2"/>
+          <circle cx="78" cy="146" r="11" fill="#f2b705" stroke="#13212e" stroke-width="1.2"/>
+          <circle cx="78" cy="174" r="11" fill="#d9534f" stroke="#13212e" stroke-width="1.2"/>
+          <text x="78" y="226" text-anchor="middle" font-weight="600">Richtlinie</text>
+          <text x="78" y="244" text-anchor="middle" fill="#a3b3c1">Daten-Ampel</text>
+          <path d="M144 128h24m-8-7 8 7-8 7" fill="none" stroke="#8fc3f2" stroke-width="2.5"/>
+          <!-- Schulung -->
+          <rect x="176" y="70" width="112" height="78" rx="4" fill="#1a3045" stroke="#8fc3f2" stroke-width="1.5"/>
+          <path d="M192 90h52M192 104h70M192 118h44" stroke="#e7eef4" stroke-width="2"/>
+          <path d="M232 148v20M212 176h40" stroke="#8fc3f2" stroke-width="2"/>
+          <text x="232" y="226" text-anchor="middle" font-weight="600">Schulung</text>
+          <text x="232" y="244" text-anchor="middle" fill="#a3b3c1">30 Minuten, Quiz</text>
+          <path d="M298 128h24m-8-7 8 7-8 7" fill="none" stroke="#8fc3f2" stroke-width="2.5"/>
+          <!-- Checkliste -->
+          <rect x="330" y="58" width="110" height="140" rx="4" fill="#fff" stroke="#5b7690"/>
+          <g fill="none" stroke="#13212e" stroke-width="2">
+            <rect x="344" y="76" width="14" height="14"/><path d="M347 83l4 4 7-9" stroke="#3fa66b" stroke-width="2.5"/><path d="M366 83h60"/>
+            <rect x="344" y="104" width="14" height="14"/><path d="M347 111l4 4 7-9" stroke="#3fa66b" stroke-width="2.5"/><path d="M366 111h50"/>
+            <rect x="344" y="132" width="14" height="14"/><path d="M366 139h56"/>
+            <rect x="344" y="160" width="14" height="14"/><path d="M366 167h42"/>
+          </g>
+          <text x="385" y="226" text-anchor="middle" font-weight="600">Rollout</text>
+          <text x="385" y="244" text-anchor="middle" fill="#a3b3c1">12 Wochen, Pilot</text>
+          <text x="230" y="282" text-anchor="middle" fill="#a3b3c1">EU-KI-Verordnung, DSGVO und Arbeitsverfassung, mit Quellen.</text>
+        </g>
+      </svg>
+    </div>
+    <div class="inhalt">
+      <h3>KI im Betrieb einführen</h3>
+      <p class="art">Richtlinie, Schulung und Rollout-Plan für ein KMU, österreichisches Recht</p>
+      <dl class="karte">
+        <dt>Ausgangslage</dt><dd>In vielen Betrieben nutzen Mitarbeitende längst Gratis-Chatbots, ohne Regeln. Seit Februar 2025 verlangt die EU-KI-Verordnung, dass Firmen ihre Leute im Umgang mit KI schulen.</dd>
+        <dt>Lösung</dt><dd>Ein Paket am Beispiel eines erfundenen Grazer Installationsbetriebs: Nutzungsrichtlinie mit Daten-Ampel (was darf in welches Werkzeug), Grundschulung mit Praxisfällen aus dem Handwerk, Rollout von der Bestandsaufnahme über Betriebsrat und Verträge bis zum Pilot, der den Zeitaufwand vorher und nachher misst.</dd>
+        <dt>Ergebnis</dt><dd class="geprueft">30-Minuten-Schulung mit 17 Folien, Quiz und Teilnahmeliste als Nachweis. Rechtsstand November 2026 inklusive der Änderungen durch den Digital-Omnibus, jede Aussage mit Quelle, ungeklärte Punkte offen markiert.</dd>
+      </dl>
+      <ul class="marken"><li>EU-KI-Verordnung</li><li>DSGVO</li><li>Schulung</li><li>Change Management</li></ul>
+      <p class="mehr"><a href="ki-im-betrieb/">Unterlagen ansehen</a></p>
+    </div>
+  </article>
+  <article class="gross">
+    <div class="bild">
       <figure style="margin:0">
         <a href="img/pipeline-cockpit.jpg"><img src="img/pipeline-cockpit.jpg" alt="Pipeline-Cockpit: Marktampel Gate-0 auf Rot und gerankte Kandidatenliste mit Trigger, Abstand und Status" loading="lazy" width="1250" height="746"></a>
         <figcaption>Pipeline-Cockpit vom August 2026, Ausschnitt. Positionen und Depotwerte sind entfernt.</figcaption>
@@ -362,7 +409,7 @@
       <dl class="karte">
         <dt>Ausgangslage</dt><dd>Im Café des BBRZ Graz wurde mit Papier und Excel abgerechnet.</dd>
         <dt>Lösung</dt><dd>Eine Kassa, die in jedem Browser läuft, ohne Installation und ohne Internet. Mit Schichtjournal, Kassasturz, Archiv und Datensicherung. Der Excel-Export passt zu den bestehenden Arbeitsmappen.</dd>
-        <dt>Ergebnis</dt><dd class="geprueft">Beim Nachbauen der Logik wurden vier Fehler in den bisherigen Tabellen entdeckt.</dd>
+        <dt>Ergebnis</dt><dd class="geprueft">Im echten Einsatz im BBRZ-Café. Beim Nachbauen der Logik wurden vier Fehler in den bisherigen Tabellen entdeckt. Keine Installation, keine laufenden Kosten.</dd>
       </dl>
       <ul class="marken"><li>Vanilla JS</li><li>ohne Abhängigkeiten</li><li>Offline-first</li></ul>
       <p class="mehr"><a href="demo/cafe-kassa.html">Demo selbst ausprobieren</a></p>
