@@ -1,5 +1,7 @@
 # Portfolio: Projekte mit KI
 
+[![Qualitätsprüfung](https://github.com/guenter-kohlhofer/portfolio/actions/workflows/qualitaet.yml/badge.svg)](https://github.com/guenter-kohlhofer/portfolio/actions/workflows/qualitaet.yml)
+
 **👉 Zur Seite: https://guenter-kohlhofer.github.io/portfolio/**
 
 Übersicht über Projekte, die ich mit KI (vor allem Claude) spezifiziert, gebaut und im Alltag eingesetzt habe.
@@ -23,6 +25,7 @@
 - Schriften Archivo und IBM Plex Sans lokal im Ordner `fonts/` (SIL Open Font License, Lizenztexte liegen bei)
 - Eigene Druckansicht für den Ausdruck oder das Speichern als PDF
 - Veröffentlicht über GitHub Pages
+- Automatische Qualitätsprüfung per GitHub Action bei jedem Push und jeden Montag: HTML-Validierung (html-validate), Link-Prüfung (lychee) und Lighthouse mit Mindestwert 90 % bei Barrierefreiheit
 
 ## Datenschutz
 

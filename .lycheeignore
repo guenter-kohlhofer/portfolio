@@ -1,0 +1,2 @@
+# X/Twitter blockiert automatische Abrufe grundsätzlich (immer Fehler 403/400)
+^https://(www\.)?x\.com/
