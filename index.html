@@ -284,13 +284,14 @@
     </div>
     <div class="inhalt">
       <h3>Inserate aus Handyfotos</h3>
-      <p class="art">Claude-Skill für Willhaben, Bildbearbeitung mit Python, Stapelverarbeitung</p>
+      <p class="art">Claude-Skill für Willhaben, Bildbearbeitung mit Python, MCP-Server mit Regelprüfung</p>
       <dl class="karte">
         <dt>Ausgangslage</dt><dd>Gebrauchte Ware zu inserieren heißt: jedes Foto zuschneiden, jeden Text einzeln schreiben.</dd>
-        <dt>Lösung</dt><dd>Man fotografiert ein Produkt mit dem Handy und lädt die Bilder hoch. Sie werden automatisch gedreht, begradigt, einheitlich im Format 4:3 zugeschnitten und farblich korrigiert. Fremde Etiketten und Seriennummern werden wegretuschiert.</dd>
-        <dt>Ergebnis</dt><dd class="geprueft">Fertige Anzeigentexte mit Preisempfehlung, gebündelt als Paket mit einem Ordner je Produkt, zum Weiterschicken per WhatsApp. Bilder einheitlich höchstens 1600 × 1200 Pixel und unter 700 KB, mit Kontaktbogen zur Kontrolle. Einmal als Skill beschrieben, danach für jedes neue Produkt mit einem Satz wiederholbar.</dd>
+        <dt>Lösung</dt><dd>Man fotografiert ein Produkt mit dem Handy und lädt die Bilder hoch. Sie werden automatisch gedreht, begradigt, einheitlich im Format 4:3 zugeschnitten und farblich korrigiert. Fremde Etiketten und Seriennummern werden wegretuschiert. Ein eigener MCP-Server schreibt die Inserate für willhaben, Shpock, eBay, Facebook Marketplace und Vinted, prüft sie auf typische Fehler wie Telefonnummer im Text oder unzulässigen Gewährleistungsausschluss und vergleicht Entwürfe. Die Regeln stecken in getestetem Python-Code, nicht im Prompt.</dd>
+        <dt>Ergebnis</dt><dd class="geprueft">Fertige Anzeigentexte mit Preisempfehlung, gebündelt als Paket mit einem Ordner je Produkt, zum Weiterschicken per WhatsApp. Bilder einheitlich höchstens 1600 × 1200 Pixel und unter 700 KB, mit Kontaktbogen zur Kontrolle. Ein Produkt, fünf Plattformen, Prüfung mit Punkten von 0 bis 100, abgesichert durch 15 automatische Tests. Einmal als Skill beschrieben, danach für jedes neue Produkt mit einem Satz wiederholbar.</dd>
       </dl>
-      <ul class="marken"><li>Pillow / NumPy</li><li>Bildbearbeitung</li><li>Texterstellung</li><li>E-Commerce</li></ul>
+      <ul class="marken"><li>Pillow / NumPy</li><li>MCP</li><li>pytest</li><li>E-Commerce</li></ul>
+      <p class="mehr"><a href="https://github.com/guenter-kohlhofer/inserat-mcp" rel="noopener">MCP-Server auf GitHub ansehen</a></p>
     </div>
   </article>
   <article class="gross">
@@ -376,7 +377,7 @@
         <dt>Ergebnis</dt><dd class="geprueft">30-Minuten-Schulung mit 17 Folien, Quiz und Teilnahmeliste als Nachweis. Rechtsstand November 2026 inklusive der Änderungen durch den Digital-Omnibus, jede Aussage mit Quelle, ungeklärte Punkte offen markiert.</dd>
       </dl>
       <ul class="marken"><li>EU-KI-Verordnung</li><li>DSGVO</li><li>Schulung</li><li>Change Management</li></ul>
-      <p class="mehr"><a href="https://github.com/guenter-kohlhofer/portfolio/tree/main/ki-im-betrieb" rel="noopener">Unterlagen auf GitHub ansehen</a></p>
+      <p class="mehr"><a href="ki-im-betrieb/">Unterlagen ansehen</a></p>
     </div>
   </article>
   <article class="gross">
